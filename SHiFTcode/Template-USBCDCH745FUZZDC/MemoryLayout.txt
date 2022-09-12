@@ -1,0 +1,93 @@
+********** LLVM *******************
+
+The 64k for instrumentation pc guards in RAM_D1 are only nedded for LLVM 
+
+H745 and H743 memory layout single core fuzzing (M7 fuzzer and target)
+
+DTCMRAM (xrw)  : ORIGIN = 0x20000000, LENGTH = 128K   AFL data(64k bitmap)
+ITCMRAM (xrw)  : ORIGIN = 0x00000000, LENGTH = 64K    not used
+RAM_D1 (xrw)   : ORIGIN = 0x24000000, LENGTH = 128K   32k privileged data, 32k of global data, 64k for instrumentation guards  starting at 0x24010000
+RAM_D11 (xrw)  : ORIGIN = 0x24020000, LENGTH = 384K   64k AFL data (32k diff, and more fields), and .bss regions (task stack, etc.) 
+RAM_D2 (xrw)   : ORIGIN = 0x30000000, LENGTH = 288K   not used
+RAM_D3 (xrw)   : ORIGIN = 0x38000000, LENGTH = 64K    not used
+FLASH  (rx)    : ORIGIN = 0x08000000, LENGTH = 1024K  32k of privileged code, the rest is available to rest of implementation
+
+Note: H743 has 2048K of flash, h745 divides it in half for each core
+
+
+H745  memory layout dual core fuzzing (M7 fuzzer not instrumented) 
+DTCMRAM (xrw)  : ORIGIN = 0x20000000, LENGTH = 128K   not used
+ITCMRAM (xrw)  : ORIGIN = 0x00000000, LENGTH = 64K    not used
+RAM_D1 (xrw)   : ORIGIN = 0x24000000, LENGTH = 256K   32k privileged data, 32k of global data, .bss regions (task stack, etc.)
+RAM_D11 (xrw)  : ORIGIN = 0x24040000, LENGTH = 256K   128k AFL data(64k bitmap, 32k diff, and more fields) this is common between both cores 
+RAM_D2 (xrw)   : ORIGIN = 0x30000000, LENGTH = 288K   not used
+RAM_D3 (xrw)   : ORIGIN = 0x38000000, LENGTH = 64K    not used
+FLASH  (rx)    : ORIGIN = 0x08000000, LENGTH = 1024K
+
+H745  memory layout dual core fuzzing (M4 target instrumented)
+FLASH   (rx)    : ORIGIN = 0x08100000, LENGTH = 1024K
+RAM_D2  (xrw)   : ORIGIN = 0x10000000, LENGTH = 128K  32k privileged data, 32k of global data, 64k for instrumentation guards starting at 0x10010000
+RAM_D22 (xrw)   : ORIGIN = 0x10020000, LENGTH = 160K  .bss regions (task stack, etc.) 
+RAM_D11 (xrw)   : ORIGIN = 0x24040000, LENGTH = 256K  128k AFL data(64k bitmap, 32k diff, and more fields) this is common between both cores 
+RAM_D3  (xrw)   : ORIGIN = 0x38000000, LENGTH = 64K   not used
+
+
+
+
+
+********************** GCC ****************************
+The next descriptions eliminate the LLVM PC guards 
+
+H745 and H743 memory layout single core fuzzing (M7 fuzzer and target)
+
+DTCMRAM (xrw)  : ORIGIN = 0x20000000, LENGTH = 128K   64K used for shadow memory when using ASAN
+ITCMRAM (xrw)  : ORIGIN = 0x00000000, LENGTH = 64K    not used
+RAM_D1 (xrw)   : ORIGIN = 0x24000000, LENGTH = 512K   32k privileged data, 32k of global data
+                                                      64k AFL data (32k bitmap, 16k diff, and more fields), rodata and .bss regions (task stack, etc.) 
+RAM_D2 (xrw)   : ORIGIN = 0x30000000, LENGTH = 288K   not used
+RAM_D3 (xrw)   : ORIGIN = 0x38000000, LENGTH = 64K    not used
+FLASH  (rx)    : ORIGIN = 0x08000000, LENGTH = 1024K  32k of privileged code, the rest is available to rest of implementation
+
+Note: H743 has 2048K of flash, h745 divides it in half for each core
+
+
+***** wihout ASAN ************
+H745  memory layout dual core fuzzing (M7 fuzzer not instrumented) 
+DTCMRAM (xrw)  : ORIGIN = 0x20000000, LENGTH = 128K   not used
+ITCMRAM (xrw)  : ORIGIN = 0x00000000, LENGTH = 64K    not used
+RAM_D1 (xrw)   : ORIGIN = 0x24000000, LENGTH = 256K   32k privileged data, 32k of global data, .bss regions (task stack, etc.)
+RAM_D11 (xrw)  : ORIGIN = 0x24040000, LENGTH = 256K   128k AFL data(64k bitmap, 32k diff, and more fields) this is common between both cores 
+RAM_D2 (xrw)   : ORIGIN = 0x30000000, LENGTH = 288K   not used
+RAM_D3 (xrw)   : ORIGIN = 0x38000000, LENGTH = 64K    not used
+FLASH  (rx)    : ORIGIN = 0x08000000, LENGTH = 1024K
+
+H745  memory layout dual core fuzzing (M4 target instrumented)
+FLASH   (rx)    : ORIGIN = 0x08100000, LENGTH = 1024K
+RAM_D2  (xrw)   : ORIGIN = 0x10000000, LENGTH = 288K  32k privileged data, 32k of global data .bss regions (task stack, etc.) 
+RAM_D11 (xrw)   : ORIGIN = 0x24040000, LENGTH = 256K  128k AFL data(64k bitmap, 32k diff, and more fields) this is common between both cores 
+RAM_D3  (xrw)   : ORIGIN = 0x38000000, LENGTH = 64K   not used
+
+
+******* with ASAN ****************
+H745  memory layout dual core fuzzing (M7 fuzzer not instrumented) 
+DTCMRAM (xrw)  : ORIGIN = 0x20000000, LENGTH = 128K   not used
+ITCMRAM (xrw)  : ORIGIN = 0x00000000, LENGTH = 64K    not used
+RAM_D1  (xrw)  : ORIGIN = 0x24000000, LENGTH = 256k   not used -> used by CM7
+RAM_D11 (xrw)  : ORIGIN = 0x24040000, LENGTH = 128K   64k AFL data(32k bitmap, 16k diff, and more fields) this is common between both cores 
+RAM_D12 (xrw)  : ORIGIN = 0x24060000, LENGTH = 128K   32k privileged data, 32k of global data  .bss regions (task stack, etc.) 
+RAM_D2  (xrw)  : ORIGIN = 0x30000000, LENGTH = 288K   not used
+RAM_D3  (xrw)  : ORIGIN = 0x38000000, LENGTH = 64K    not used
+FLASH   (rx)   : ORIGIN = 0x08000000, LENGTH = 1024K
+
+H745  memory layout dual core fuzzing (M4 target instrumented)
+FLASH   (rx)    : ORIGIN = 0x08100000, LENGTH = 1024K 
+RAM_D2  (xrw)   : ORIGIN = 0x10000000, LENGTH = 288K  48K used for shadow memory when using ASAN  
+RAM_D1  (xrw)   : ORIGIN = 0x24000000, LENGTH = 256K  32k privileged data, 32k of global data  .bss regions (task stack, etc.) 
+RAM_D11 (xrw)   : ORIGIN = 0x24040000, LENGTH = 128K  64k AFL data(64k bitmap, 32k diff, and more fields) this is common between both cores 
+RAM_D12 (xrw)   : ORIGIN = 0x24060000, LENGTH = 128K  not used -> used by CM7
+RAM_D3  (xrw)   : ORIGIN = 0x38000000, LENGTH = 64K   not used
+
+
+
+
+

@@ -1,0 +1,151 @@
+[0.000] initConfigParams():  Configuration flags start
+[0.000] initConfigParams():   external-init                  false
+[0.000] initConfigParams():   pend-halt-timeout              (null)
+[0.000] initConfigParams():   halt                           false
+[0.000] initConfigParams():  +config-file                    "/usr/local/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin/config.txt"
+[0.000] initConfigParams():  +persistent                     true
+[0.000] initConfigParams():  +log-file                       "debug.log"
+[0.000] initConfigParams():   log-level                      31
+[0.000] initConfigParams():  +port-number                    61234
+[0.000] initConfigParams():   verbose                        false
+[0.000] initConfigParams():  +refresh-delay                  15
+[0.000] initConfigParams():   verify                         false
+[0.000] initConfigParams():  +swd                            true
+[0.000] initConfigParams():   swo-port                       61234
+[0.000] initConfigParams():   cpu-clock                      8000000
+[0.000] initConfigParams():   swo-clock-div                  128
+[0.000] initConfigParams():   initialize-reset               false
+[0.000] initConfigParams():   debuggers                      false
+[0.000] initConfigParams():   serial-number                  ""
+[0.000] initConfigParams():   apid                           0
+[0.000] initConfigParams():   attach                         false
+[0.000] initConfigParams():   shared                         false
+[0.000] initConfigParams():   erase-all                      false
+[0.000] initConfigParams():   memory-map                     ""
+[0.000] initConfigParams():   ext-memory-loaders             false
+[0.000] initConfigParams():   extload                        ""
+[0.000] initConfigParams():  +stm32cubeprogrammer-path       "/usr/local/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin"
+[0.000] initConfigParams():   temp-path                      ""
+[0.000] initConfigParams():   preserve-temps                 false
+[0.000] initConfigParams():   frequency                      -1
+[0.000] initConfigParams():   licenses                       false
+[0.000] initConfigParams():   ignore-rest                    false
+[0.000] initConfigParams():   version                        false
+[0.000] initConfigParams():   help                           false
+[0.000] initConfigParams():  Configuration flags end
+[0.000] init():  STMicroelectronics ST-LINK GDB server. Version 5.9.1
+Copyright (c) 2021, STMicroelectronics. All rights reserved.
+[0.009] Device_Initialise():  COM frequency = 24000 kHz
+[0.009] Device_Initialise():  Target connection mode: Default
+[0.511] readFromTarget():  Reading ROM table for AP 0 @0xe00fefd0
+[0.512] reset_hw_wtchpt_module():  Hardware watchpoint supported by the target 
+[0.513] Device_Initialise():  ST-LINK Firmware version : V3J8M3
+[0.513] Device_Initialise():  Device ID: 0x450
+[0.514] Device_Initialise():  PC: 0x800e830
+[0.514] Device_GetStatus():  ST-LINK device status: HALT_MODE
+[0.514] Device_Initialise():  ST-LINK detects target voltage = 3.28 V
+[0.514] Device_Initialise():  ST-LINK device status: HALT_MODE
+[0.514] initServerContext():  ST-LINK device initialization OK
+[0.514] WaitConnection():  Waiting for connection on port 61235...
+[0.514] WaitConnection():  Waiting for connection on port 61234...
+[10.827] WaitConnection():  Accepted connection on port 61234...
+[10.828] read():  <13> Rx: +$qSupported:multiprocess+;swbreak+;hwbreak+;qRelocInsn+;fork-events+;vfork-events+;exec-events+;vContSupported+;QThreadEvents+;no-resumed+#df
+[10.838] write():  <13> Tx: +
+[10.838] write():  <13> Tx: $PacketSize=c00;qXfer:memory-map:read+;qXfer:features:read+;QStartNoAckMode+;QNonStop+;qXfer:threads:read+;hwbreak+;swbreak+#f2
+[10.838] read():  <13> Rx: +
+[10.838] read():  <13> Rx: $vMustReplyEmpty#3a
+[10.838] write():  <13> Tx: +
+[10.838] write():  <13> Tx: $#00
+[10.838] read():  <13> Rx: +
+[10.838] read():  <13> Rx: $QStartNoAckMode#b0
+[10.838] write():  <13> Tx: +
+[10.838] write():  <13> Tx: $OK#9a
+[10.838] read():  <13> Rx: +
+[10.838] read():  <13> Rx: $Hg0#df
+[10.838] write():  <13> Tx: $#00
+[10.838] read():  <13> Rx: $qXfer:features:read:target.xml:0,bfb#75
+[10.838] write():  <13> Tx: $l<?xml version="1.0"?><!-- Copyright (C) 2009, 2010, 2011 Free Software Foundation, Inc.     Copying and distribution of this file, with or without modification,     are permitted in any medium without royalty provided the copyright     notice and this notice are preserved.  --><!DOCTYPE target SYSTEM "gdb-target.dtd"><target><feature name="org.gnu.gdb.arm.m-profile">  <reg name="r0" bitsize="32"/>  <reg name="r1" bitsize="32"/>  <reg name="r2" bitsize="32"/>  <reg name="r3" bitsize="32"/>  <reg name="r4" bitsize="32"/>  <reg name="r5" bitsize="32"/>  <reg name="r6" bitsize="32"/>  <reg name="r7" bitsize="32"/>  <reg name="r8" bitsize="32"/>  <reg name="r9" bitsize="32"/>  <reg name="r10" bitsize="32"/>  <reg name="r11" bitsize="32"/>  <reg name="r12" bitsize="32"/>  <reg name="sp" bitsize="32" type="data_ptr"/>  <reg name="lr" bitsize="32"/>  <reg name="pc" bitsize="32" type="code_ptr"/>  <reg name="xpsr" bitsize="32" regnum="25"/></feature><feature name="org.gnu.gdb.arm.vfp">  <reg name="d0" bitsize="64" type="ieee_double"/>  <reg name="d1" bitsize="64" type="ieee_double"/>  <reg name="d2" bitsize="64" type="ieee_double"/>  <reg name="d3" bitsize="64" type="ieee_double"/>  <reg name="d4" bitsize="64" type="ieee_double"/>  <reg name="d5" bitsize="64" type="ieee_double"/>  <reg name="d6" bitsize="64" type="ieee_double"/>  <reg name="d7" bitsize="64" type="ieee_double"/>  <reg name="d8" bitsize="64" type="ieee_double"/>  <reg name="d9" bitsize="64" type="ieee_double"/>  <reg name="d10" bitsize="64" type="ieee_double"/>  <reg name="d11" bitsize="64" type="ieee_double"/>  <reg name="d12" bitsize="64" type="ieee_double"/>  <reg name="d13" bitsize="64" type="ieee_double"/>  <reg name="d14" bitsize="64" type="ieee_double"/>  <reg name="d15" bitsize="64" type="ieee_double"/>  <reg name="fpscr" bitsize="32" type="int" group="float"/></feature><feature name="org.gnu.gdb.arm.m-system">  <reg name="primask" bitsize="32" regnum="93"/>  <reg name="basepri" bitsize="32" regnum="94"/>  <reg name="faultmask" bitsize="32" regnum="95"/>  <reg name="control" bitsize="32" regnum="96"/>  <reg name="msp" bitsize="32" type="data_ptr" regnum="97"/>  <reg name="psp" bitsize="32" type="data_ptr" regnum="98"/></feature></target>#ad
+[10.840] read():  <13> Rx: $QNonStop:0#8c
+[10.840] write():  <13> Tx: $OK#9a
+[10.840] read():  <13> Rx: $qTStatus#49
+[10.840] write():  <13> Tx: $#00
+[10.840] read():  <13> Rx: $?#3f
+[10.840] write():  <13> Tx: $S05#b8
+[10.840] read():  <13> Rx: $qXfer:threads:read::0,bfb#fb
+[10.840] write():  <13> Tx: $l<?xml version="1.0"?><threads><thread id="1" core="0" name="main"></thread></threads>#f7
+[10.840] read():  <13> Rx: $qAttached#8f
+[10.840] write():  <13> Tx: $#00
+[10.840] read():  <13> Rx: $Hc-1#09
+[10.840] write():  <13> Tx: $#00
+[10.840] read():  <13> Rx: $qC#b4
+[10.840] write():  <13> Tx: $QC1#c5
+[10.840] read():  <13> Rx: $qOffsets#4b
+[10.840] write():  <13> Tx: $#00
+[10.840] read():  <13> Rx: $g#67
+[10.843] write():  <13> Tx: $0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000424ffffffff30e8000800000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000ffffffff000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000ffffffff00000000000000000000000000000000000000000000042400000000#6d
+[10.843] read():  <13> Rx: $qXfer:threads:read::0,bfb#fb
+[10.843] write():  <13> Tx: $l<?xml version="1.0"?><threads><thread id="1" core="0" name="main"></thread></threads>#f7
+[10.843] read():  <13> Rx: $qXfer:memory-map:read::0,bfb#14
+[10.843] write():  <13> Tx: $l<?xml version="1.0"?>\x0a<!DOCTYPE memory-map\x0a          PUBLIC "+//IDN gnu.org//DTD GDB Memory Map V1.0//EN"\x0a                 "http://sourceware.org/gdb/gdb-memory-map.dtd">\x0a<memory-map>\x0a<memory type="ram" start="0x0" length="0x8000000"/>\x0a<memory type="flash" start="0x8000000" length="0x200000">\x0a<property name="blocksize">0x400</property>\x0a</memory>\x0a<memory type="ram" start="0x8200000" length="0xf7dfffff"/>\x0a</memory-map>#d3
+[10.843] read():  <13> Rx: $m800e830,4#65
+[10.843] handlePacket():  Reading 0x4 bytes of memory from addr 0x800e830 
+[10.844] write():  <13> Tx: $dff834d0#63
+[10.844] read():  <13> Rx: $m800e830,2#63
+[10.844] handlePacket():  Reading 0x2 bytes of memory from addr 0x800e830 
+[10.844] write():  <13> Tx: $dff8#68
+[10.844] read():  <13> Rx: $m800e832,2#65
+[10.844] handlePacket():  Reading 0x2 bytes of memory from addr 0x800e832 
+[10.844] write():  <13> Tx: $34d0#fb
+[15.787] read():  <13> Rx: $qSymbol::#5b
+[15.787] write():  <13> Tx: $#00
+[15.788] read():  <13> Rx: $m800e800,40#92
+[15.788] handlePacket():  Reading 0x40 bytes of memory from addr 0x800e800 
+[15.789] write():  <13> Tx: $e060884298bf70474ff0500080f31188bff36f8fbff34f8ffee700bff0e300e000a000240ced00e000b17047fff7c8bfdff834d0fff700ff0c480d490d4a0023#09
+[15.790] read():  <13> Rx: $m800e7c0,40#c4
+[15.790] handlePacket():  Reading 0x40 bytes of memory from addr 0x800e7c0 
+[15.790] write():  <13> Tx: $eff3148040f0010080f3148870470000eff3058010280ed31049405c10490978884208d24ff0500080f31188bff36f8fbff34f8ffee70b4809490068496800f4#9a
+[15.791] read():  <13> Rx: $m800e840,40#96
+[15.791] handlePacket():  Reading 0x40 bytes of memory from addr 0x800e840 
+[15.791] write():  <13> Tx: $02e0d458c4501b1dc4188c42f9d30a4a0a4c002301e01360121da242fbd300f01bf8faf70bfc70470000042400000024ec810024ccfb00080088002438ba0024#19
+[25.806] read():  <13> Rx: $vCont?#49
+[25.806] write():  <13> Tx: $vCont;c;s;t#05
+[25.806] read():  <13> Rx: $Hc0#db
+[25.806] write():  <13> Tx: $#00
+[25.806] read():  <13> Rx: $c#63
+[25.807] performContinue():  TraceCaptureStart and SWV event set to APP_TRUE 
+[25.822] Device_GetStatus():  ST-LINK device status: RUN_MODE
+[422.027] read():  <13> Rx: \x03
+[422.027] parseForPacket():  Received Ctrl-C from the client 
+[422.032] handleSignalPacket():  Device not halted(0), performing Ctrl-C
+[422.032] handleSignalPacket():  Device halted
+[422.032] handleGDBConnection():  TraceCaptureStart and SWV event set to APP_FALSE (1)
+[422.032] write():  <13> Tx: $S02#b5
+[422.032] read():  <13> Rx: $g#67
+[422.036] write():  <13> Tx: $0000000000000000000040220000001204000524000004241c900524f09f0024a8a000240080052400000000030000000a000000e89f0024bbe50008bae400080000006100389c1c0000000000000040000000000000803f00000000000000390000000000000000000000000000000000000000000000000000000000000000ffffffff000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000ffffffff000000000000000000000000000000000200000000000424e89f0024#2b
+[422.036] read():  <13> Rx: $qXfer:threads:read::0,bfb#fb
+[422.036] write():  <13> Tx: $l<?xml version="1.0"?><threads><thread id="1" core="0" name="main"></thread></threads>#f7
+[422.036] read():  <13> Rx: $m800e4ba,4#c1
+[422.036] handlePacket():  Reading 0x4 bytes of memory from addr 0x800e4ba 
+[422.037] write():  <13> Tx: $0028fbd0#26
+[422.037] read():  <13> Rx: $m24009fc0,40#f5
+[422.037] handlePacket():  Reading 0x40 bytes of memory from addr 0x24009fc0 
+[422.037] write():  <13> Tx: $030000002fe90008000000000000000000004022000000120a000000bbe50008bae4000800000061a5a5a5a510800524a5a5a5a500000000a5a5a5a5a5a5a5a5#82
+[422.037] read():  <13> Rx: $m0,4#fd
+[422.037] handlePacket():  Reading 0x4 bytes of memory from addr 0x0 
+[422.037] write():  <13> Tx: $1671bea9#30
+[422.038] read():  <13> Rx: $m800e480,40#96
+[422.038] handlePacket():  Reading 0x40 bytes of memory from addr 0x800e480 
+[422.038] write():  <13> Tx: $2046f3f7dcfe28b0d0bd00bf5cfa000844900524e0b502af0420fbf733fbfff711fd4748454c474e4d4ddff828814ff0000a1030019096f820000028fbd03068#d3
+[422.039] read():  <13> Rx: $m800e4c0,40#c1
+[422.039] handlePacket():  Reading 0x40 bytes of memory from addr 0x800e4c0 
+[422.039] write():  <13> Tx: $011f414800f022fa0420fbf71bfb0120fbf704fb01200021fbf70cfb002001210a22f9f753ff08280bd03549022889460cd0a0b90120c9f80000354800f08cfa#a5
+[422.049] Device_GetStatus():  ST-LINK device status: HALT_MODE
+[425.409] read():  <13> Rx: $vKill;a410#33
+[425.409] handlePacket():  Hidden/Unsupported v-command 'vKill', see RSP for details
+[425.409] write():  <13> Tx: $#00
+[425.409] read():  <13> Rx: $k#6b
+[425.409] WaitConnection():  Waiting for connection on port 61234...
+[427.982] stop():  Stopping port 61234
+[427.982] WaitConnection():  Received stop for port 61234, not accepting new connections.
+[427.982] stop():  Stopping port 61235
+[427.990] WaitConnection():  Received stop for port 61235, not accepting new connections.
