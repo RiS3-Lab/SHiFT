@@ -1,0 +1,4 @@
+file ./build/stm32h745M7.elf
+layout split
+target remote localhost:61234
+b __sanitizer_cov_trace_pc_guard
