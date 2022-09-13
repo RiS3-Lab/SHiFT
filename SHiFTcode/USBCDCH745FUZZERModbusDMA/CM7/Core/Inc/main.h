@@ -73,7 +73,7 @@ extern uint8_t AFLfuzzerRegion[AFLINPUTREGION_SIZE ] __attribute__( ( aligned( A
 
 
 #define AFLfuzzer  (*pAFLfuzzer)
-//#define aflbitmap (*paflbitmap)
+#define aflbitmap (*paflbitmap)
 
 
 /* USER CODE END Includes */
