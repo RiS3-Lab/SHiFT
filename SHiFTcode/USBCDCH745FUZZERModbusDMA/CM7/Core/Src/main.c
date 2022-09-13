@@ -90,7 +90,6 @@ DMA_HandleTypeDef hdma_usart3_rx;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_RNG_Init(void);
@@ -127,9 +126,6 @@ int main(void)
   int32_t timeout;
 /* USER CODE END Boot_Mode_Sequence_0 */
 
-  /* MPU Configuration--------------------------------------------------------*/
-  MPU_Config();
-
 /* USER CODE BEGIN Boot_Mode_Sequence_1 */
   /* Wait until CPU2 boots and enters in stop mode or timeout*/
   timeout = 0xFFFF;
@@ -146,7 +142,7 @@ int main(void)
 
   /* USER CODE BEGIN Init */
 
-  activateCortexMtraps();
+  //activateCortexMtraps();
 
 
 
@@ -199,13 +195,15 @@ if ( timeout < 0 )
 
 #endif
 
-  // call RTOS initialization routines
 
-  //buf2=malloc(32);
 
   testextern = (uint32_t)__user_heap_start__;
 
+  SCB->SHCSR |= SCB_SHCSR_USGFAULTENA_Msk
+    	  | SCB_SHCSR_BUSFAULTENA_Msk
+    	  | SCB_SHCSR_MEMFAULTENA_Msk; // enable Usage-/Bus-/MPU Fault
 
+    	  SCB->CCR |= SCB_CCR_DIV_0_TRP_Msk ; // enable div by zero trap
 
   app_main();
 
@@ -415,7 +413,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 115200;
+  huart2.Init.BaudRate = 1000000;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
@@ -506,13 +504,13 @@ static void MX_DMA_Init(void)
 
   /* DMA interrupt init */
   /* DMA1_Stream0_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Stream0_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(DMA1_Stream0_IRQn, 6, 0);
   HAL_NVIC_EnableIRQ(DMA1_Stream0_IRQn);
   /* DMA1_Stream1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Stream1_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(DMA1_Stream1_IRQn, 6, 0);
   HAL_NVIC_EnableIRQ(DMA1_Stream1_IRQn);
   /* DMA1_Stream2_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Stream2_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(DMA1_Stream2_IRQn, 6, 0);
   HAL_NVIC_EnableIRQ(DMA1_Stream2_IRQn);
 
 }
@@ -571,18 +569,6 @@ void led_init(void) {
     HAL_GPIO_Init(LD1_GPIO_PORT, &GPIO_InitStruct);
 }
 /* USER CODE END 4 */
-
-/* MPU Configuration */
-
-void MPU_Config(void)
-{
-
-  /* Disables the MPU */
-  HAL_MPU_Disable();
-  /* Enables the MPU */
-  HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
-
-}
 
 /**
   * @brief  Period elapsed callback in non blocking mode

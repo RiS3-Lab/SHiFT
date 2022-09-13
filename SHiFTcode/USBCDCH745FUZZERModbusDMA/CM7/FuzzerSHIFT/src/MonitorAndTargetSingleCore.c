@@ -16,7 +16,6 @@
 #include "McuASANconfig.h"
 #include "ConfigFuzzing.h"
 
-
 #include "modbus_rtu.h"
 #include "modbus_rtu_conf.h"
 
@@ -28,6 +27,11 @@ extern RNG_HandleTypeDef hrng;
 extern UART_HandleTypeDef huart3;
 extern uint32_t __user_heap_start__[];
 extern UART_HandleTypeDef huart2;
+
+
+
+
+
 
 const char * EX_str[]=
 {
@@ -63,12 +67,17 @@ const char * EX_str[]=
 
 #define MPUTESTENABLED 0
 
+#define modbusRxCount modbusVars.modbusRxCountV
+
+
 
 
 #if DUALCOREFUZZ == 0
-//uint8_t AFLfuzzerRegion[AFLINPUTREGION_SIZE ] __attribute__( ( aligned( AFLINPUTREGION_SIZE ) ) );
 extern uint8_t AFLfuzzerRegion[AFLINPUTREGION_SIZE ] __attribute__( ( aligned( AFLINPUTREGION_SIZE ) ) );
 #endif
+
+extern UART_HandleTypeDef huart4 __attribute__( ( aligned( next_power_of_2(sizeof(UART_HandleTypeDef)) ) ) );
+extern DMA_HandleTypeDef hdma_uart4_rx   __attribute__( ( aligned( next_power_of_2(sizeof(DMA_HandleTypeDef)) ) ) );;
 
 uint32_t error_cnt;
 
@@ -80,15 +89,12 @@ uint32_t error_cnt;
 static StackType_t targetTaskStack[ configMINIMAL_STACK_SIZE ] __attribute__( ( aligned( configMINIMAL_STACK_SIZE * sizeof( StackType_t ) ) ) );
 static StackType_t FuzzerTaskStack[ configMINIMAL_STACK_SIZE ] __attribute__( ( aligned( configMINIMAL_STACK_SIZE * sizeof( StackType_t ) ) ) );
 
-
 uint16_t redzone1[MODBUS_SLAVE_REGISTERS_NUM] __attribute__( ( aligned( MODBUS_SLAVE_REGISTERS_NUM * sizeof(uint16_t) ) ) );
 uint16_t modbusMemory[MODBUS_SLAVE_REGISTERS_NUM] __attribute__( ( aligned( MODBUS_SLAVE_REGISTERS_NUM * sizeof(uint16_t) ) ) );
 uint16_t redzone2[MODBUS_SLAVE_REGISTERS_NUM] __attribute__( ( aligned( MODBUS_SLAVE_REGISTERS_NUM * sizeof(uint16_t) ) ) );
 uint8_t modbusRxTxBuffer[MODBUS_MAX_FRAME_SIZE] __attribute__( ( aligned( MODBUS_MAX_FRAME_SIZE  ) ) );
 uint16_t redzone3[MODBUS_SLAVE_REGISTERS_NUM] __attribute__( ( aligned( MODBUS_SLAVE_REGISTERS_NUM * sizeof(uint16_t) ) ) );
 modbus_t  modbusVars __attribute__( ( aligned( next_power_of_2(sizeof(modbus_t)) ) ) );
-
-
 
 
 
@@ -110,7 +116,6 @@ void callbackInvalidFree()
 	INVALID_FREE;
 }
 #endif
-
 
 //this is the Modbus task
 static void targetTask( void * pvParameters )
@@ -149,6 +154,8 @@ static void targetTask( void * pvParameters )
 
 
 }
+
+
 
 static void spawnNewTarget()
 {
@@ -189,7 +196,6 @@ static void spawnNewTarget()
 
 uint16_t *indexdifP;
 uint8_t  bufferDMA[550];
-
 static void fuzzerTask( void * pvParameters )
 {
 	/* Unused parameters. */
@@ -437,6 +443,147 @@ static void fuzzerTask( void * pvParameters )
 }
 
 
+#if USARTHW == 1
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+#if DUALCOREFUZZ == 0
+	//uint16_t *paflbitmap =  (uint16_t *)DTCMRAMORIGIN;
+    Fuzzer_t *pAFLfuzzer = (Fuzzer_t *)AFLfuzzerRegion;
+#endif
+
+	if(huart == &huart3)
+    {
+    	AFLfuzzer.bTXcomplete = true;
+    }
+
+}
+
+uint32_t errors;
+
+
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
+{
+
+#if DUALCOREFUZZ == 0
+	//uint16_t *paflbitmap =  (uint16_t *)DTCMRAMORIGIN;
+    Fuzzer_t *pAFLfuzzer = (Fuzzer_t *)AFLfuzzerRegion;
+#endif
+/*
+     uint8_t *data;
+
+     data = AFLfuzzer.inputAFL.uxBuffer;
+
+	 HAL_UART_Abort_IT(&huart3);
+	 HAL_UART_Receive_IT(&huart3, data, 4);
+*/
+
+     HAL_UART_Abort(&huart3);
+ 	 __HAL_UART_FLUSH_DRREGISTER(&huart3);
+     HAL_UART_DeInit(&huart3);
+	 __HAL_UART_DISABLE(&huart3);
+	 __HAL_UART_ENABLE(&huart3);
+
+	 HAL_UART_Init(&huart3);
+
+
+    errors++;
+
+
+
+	 AFLfuzzer.bRXcomplete = false;
+	 AFLfuzzer.inputLength = 0;
+	 AFLfuzzer.previousGuard = 0;
+	 RingZeroes(&AFLfuzzer.inputAFL);
+	 HAL_UART_Receive_IT(&huart3, AFLfuzzer.inputAFL.uxBuffer, 4);
+	 //HAL_UARTEx_ReceiveToIdle_DMA(&huart3, bufferDMA, MAX_BUFFER_INPUT);
+
+}
+
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+
+#if DUALCOREFUZZ == 0
+	//uint16_t *paflbitmap =  (uint16_t *)DTCMRAMORIGIN;
+    Fuzzer_t *pAFLfuzzer = (Fuzzer_t *)AFLfuzzerRegion;
+#endif
+
+	union ubytes_t auxbytes;
+	uint8_t *data;
+	uint8_t padding;
+	data = AFLfuzzer.inputAFL.uxBuffer;
+
+    if(AFLfuzzer.breceiving == false)
+    {
+    	AFLfuzzer.breceiving = true;
+
+    	auxbytes.vbytes[0] = data[0];
+    	auxbytes.vbytes[1] = data[1];
+    	auxbytes.vbytes[2] = data[2];
+    	auxbytes.vbytes[3] = data[3];
+    	AFLfuzzer.inputLength = auxbytes.vint32;
+        if(auxbytes.vint32 < 530)
+        {
+        	if (auxbytes.vint32 % 4)
+        	{
+        	     padding = 4 - auxbytes.vint32 % 4;
+        	}
+        	if (auxbytes.vint32 % 4)
+        	{
+        	   padding = 4 - auxbytes.vint32 % 4;
+        	}
+        	else
+        	{
+        	    padding = 0;
+        	}
+        	AFLfuzzer.inputLengthpadded = auxbytes.vint32 + padding;
+        	HAL_UART_Receive_IT(&huart3, data+4, AFLfuzzer.inputLengthpadded);
+          }
+    }
+    else
+    {
+    	AFLfuzzer.breceiving = false;
+    	AFLfuzzer.inputAFL.u32available =  AFLfuzzer.inputLengthpadded  + 4;
+    	if(checkCRC(&AFLfuzzer.inputAFL))
+    	{
+    		AFLfuzzer.bRXcomplete = true;
+    	}
+    	else
+    	{
+			 AFLfuzzer.inputLength = 0;
+			 AFLfuzzer.bRXcomplete = false;
+			 AFLfuzzer.inputLength = 0;
+			 RingZeroes(&AFLfuzzer.inputAFL);
+			 HAL_UART_Receive_IT(&huart3, data, 4);
+
+    	}
+
+    }
+
+}
+
+
+
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+{
+#if DUALCOREFUZZ == 0
+	//uint16_t *paflbitmap =  (uint16_t *)DTCMRAMORIGIN;
+    Fuzzer_t *pAFLfuzzer = (Fuzzer_t *)AFLfuzzerRegion;
+#endif
+	uint16_t len;
+
+	len = Size;
+	FuzzingInputHandler(bufferDMA, (uint32_t *)(&len));
+	if(AFLfuzzer.bRXcomplete == false)
+	{
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart3, bufferDMA, MAX_BUFFER_INPUT);
+	}
+
+}
+
+#endif
+
 void vStartMPUDemo( void )
 {
 
@@ -462,6 +609,8 @@ TaskParameters_t fuzzerTaskParameters =
 	//spawnNewTarget();
 
 }
+/*-----------------------------------------------------------*/
+
 
 
 /*-----------------------------------------------------------*/
