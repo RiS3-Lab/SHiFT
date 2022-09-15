@@ -190,7 +190,18 @@ void activateCortexMtraps()
 	  | SCB_SHCSR_MEMFAULTENA_Msk; // enable Usage-/Bus-/MPU Fault
 
 	  SCB->CCR |= SCB_CCR_DIV_0_TRP_Msk;// | // enable div by zero trap
-			  //SCB_CCR_UNALIGN_TRP_Msk;    // enable unaligned access trap
+			   //SCB_CCR_UNALIGN_TRP_Msk;    // enable unaligned access trap
+
+}
+
+void activateCortexMtrapsUNA()
+{
+	 SCB->SHCSR |= SCB_SHCSR_USGFAULTENA_Msk
+	  | SCB_SHCSR_BUSFAULTENA_Msk
+	  | SCB_SHCSR_MEMFAULTENA_Msk; // enable Usage-/Bus-/MPU Fault
+
+	  SCB->CCR |= SCB_CCR_DIV_0_TRP_Msk | // enable div by zero trap
+			   SCB_CCR_UNALIGN_TRP_Msk;    // enable unaligned access trap
 
 }
 
