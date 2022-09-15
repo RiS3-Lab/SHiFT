@@ -4,11 +4,12 @@ SHiFT: Semi-hosted Fuzz Testing for Embedded Applications
 This is the repository of our paper SHiFT under submission in The Network and Distributed System Security (NDSS) Symposium 2023.
 
 
-This readme file contains the following main sections:
+This readme file contains the following sections:
 - A. [Getting Started](#a-getting-started)
 - B. [Fuzzing firmware with SHiFT](#b-fuzzing-firmware-with-shift)
+- C. [Fuzzing firmware with SHiFT](#b-fuzzing-firmware-with-shift)
  
-Each section describes steps to setup and use our framework. We also provide some technical details that were not
+Each section describes steps to set up and use our framework. We also provide some technical details that were not
 included in our paper. Nevertheless, our paper should be also used as a complement of this README file.
 We recommend following our instructions in the particular order described in this file.
 
@@ -20,7 +21,7 @@ SHiFT requires the following software and hardware components:
 * Python 3.7+ 
 * Pyserial 
 * cutecom
-* Embedded ARM crosscompiler toolchain
+* Embedded ARM cross-compiler toolchain
 * STM32CubeIDE (https://www.st.com/en/development-tools/stm32cubeide.html)
 * libserialport (https://sigrok.org/wiki/Libserialport)
 * Development boards NUCLEO-H745ZI and/or NUCLEO-H743ZI by ST Microelectronics
@@ -130,7 +131,7 @@ This part is [here](https://github.com/RiS3-Lab/SHiFT/blob/main/AFL/afl-fuzz.c#L
 
 
 ## Installing toolchains in STM32CubeIDE
-SHiFT uses modified embedded toolchains to support specific locations of the shadow memory for ASAN, as described in the implementation section of our paper. The original source code of the toolchain can be obtained from ARM website and compiled for particular offsets according the the user's needs (https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads). Compiling the toolchain might take several hours. Therefore, we provide 2 precompiled toolchains with specific offsets also detailed in our paper in Table III.
+SHiFT uses modified embedded toolchains to support specific locations of the shadow memory for ASAN, as described in the implementation section of our paper. The original source code of the toolchain can be obtained from ARM website and compiled for particular offsets according the user's needs (https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads). Compiling the toolchain might take several hours. Therefore, we provide 2 precompiled toolchains with specific offsets also detailed in our paper in Table III.
 
 To install the toolchains execute STM32CubeIDE and follow the next steps:
 1. Navigate in the bar menu to *File->Properties*, or press Ctrl+Enter
@@ -145,7 +146,7 @@ depicted in the following picture:
 
 <img src="./pictures/AddLocal.png"  width="800">
 
-3. Register two local toolchains using the decompressed toolchains provided in this repository. For the name field you need to use *GNU ARM embedded shadow 0x24000000* or *GNU ARM embedded shadow 0x24000000-0x10000000*, the prefix should be in both cases *arm-none-eabi-*, and the location should be the *bin* directory inside of the corresponding decompressed toolchain folder.
+3. Register two local toolchains using the decompressed toolchains provided in this repository. For the name field you need to use *GNU ARM embedded shadow 0x24000000* or *GNU ARM embedded shadow 0x24000000-0x10000000*, the prefix should be in both cases *arm-none-eabi-*, and the location should be the *bin* directory inside the corresponding decompressed toolchain folder.
  
 <img src="./pictures/ToolchainDetail.png"  width="600">
 
@@ -155,7 +156,7 @@ depicted in the following picture:
 We provide three pre-configured templates for fuzzing: two for single-core (for NUCLEO-H743 and NUCLEO-H745, respectively) and one for dual-core (for NUCLEO-H745ZI, exclusively). The templates are complete projects that can be imported directly into STM32CubeIDE.
 
 ## Cloning and importing templates
-We recommend not working directly on the templates. Instead, we provide a script [here](https://github.com/RiS3-Lab/SHiFT/blob/main/SHiFTcode/cloner.sh)  that allows cloning the templates maintaining all the preconfigured characteristics and avoiding naming conflicts in the IDE.
+We recommend not working directly on the templates. Instead, we provide a script [here](https://github.com/RiS3-Lab/SHiFT/blob/main/SHiFTcode/cloner.sh) that allows cloning the templates maintaining all the preconfigured characteristics and avoiding naming conflicts in the IDE.
 Do not duplicate a template copying directly the template folder. Use always the cloner script.  
 
 ### Example
@@ -208,29 +209,29 @@ flags to activate ASAN and SANCOV as depicted in the following picture of the po
 4. This is the modified linker script of the firmware with support for ASAN shadow memory.
 
 ### Note:
-We also provided preconfigured examples of the case studies that we presented in our paper.
-Some of them requires physical external connections and might not be launched direclty.
-We recommend to read the comments of the source code and the details of our paper 
+We also provided pre-configured examples of the case studies that we presented in our paper.
+Some of them requires physical external connections and might not be launched directly.
+We recommend reading the comments of the source code and the details of our paper 
 to configure the hardware accordingly.
 
 
 
 
 
-## Starting the fuzzing campaing
+## Starting the fuzzing campaign
 
 At this point, we assume the required software and hardware is ready to start a fuzzing campaign.
 Please check the steps in the [Getting started](#a-getting-started) before continuing.
 
 
-Before starting the fuzzing campaing, make sure that the template is flashed and ready for *execution* as described 
+Before starting the fuzzing campaign, make sure that the template is flashed and ready for *execution* as described 
 in section [Importing and compiling the cloned template](#importing-and-compiling-the-cloned-template). Also,
-verify on which tty device the workstation OS mounted the SHiFT's virtual serial port. It is worth noting that
+verify on which TTY device the workstation OS mounted the SHiFT's virtual serial port. It is worth noting that
 the ST-Link USB connection is a composite device that also enables a virtual serial port on the workstation. To identify
-the specific serial port used for fuzzing, we recommend to disconnect and connect the user USB connector of the development
+the specific serial port used for fuzzing, we recommend disconnecting and connecting the *user USB* cable of the development
 board and verify the name of the mounted serial port.
 We provide here [https://github.com/RiS3-Lab/SHiFT/blob/main/helpers/serialList.py] a helper script to verify the name of the
-mounted serial ports. This script and the fuzzing ssesion do not require root privileges, otherwise check the section [common prerequisites](#configuring-compiling-and-installing-common-prerequisites) for more details.
+mounted serial ports. This script and the fuzzing session do not require root privileges. Otherwise, check the section [common prerequisites](#configuring-compiling-and-installing-common-prerequisites) for more details.
 
 ### Example to verify the serial port name
 ```bash
@@ -259,17 +260,23 @@ AFL_SKIP_CPUFREQ=1 AFL_NO_FORKSRV=1 ./afl-fuzz -c /dev/ttyACM1 -w 9600 -t 5000 -
 ### Parameters:
 
 1. *AFL_NO_FORKSRV=1* mandatory, since we don't need the forkserver.
-2. *AFL_SKIP_CPUFREQ=1* optional and only necessary if the user has no root access to change the kernel parameters required by AFL (https://github.com/mirrorer/afl/blob/master/docs/env_variables.txt). Adding this parameter will slightly reduce AFL perfomance.
+2. *AFL_SKIP_CPUFREQ=1* optional and only necessary if the user has no root access to change the kernel parameters required by AFL (https://github.com/mirrorer/afl/blob/master/docs/env_variables.txt). Adding this parameter will slightly reduce AFL performance.
 2. *-c* specifies the name of the serial port used for fuzzing
-3. *-w* specifies the baud rate for the serial port. If the development board uses a Virtual Serial port over USB, as in our case, the baudrate is has no impact on the actual fuzzing speed, but it is necessary to launch the fuzzing session. 
-4. *-t* timeout in ms, specifies how much time to wait before deciding the MCU has enter in a non-recoverable state. This delay is specific to the firmware that is being fuzzed and should be adjusted accordingly.
-5. We recommend to write the stderr to a file err.txt, so it can be used later to analyze the events of the fuzzing campaign. 
+3. *-w* specifies the baud rate for the serial port. If the development board uses a Virtual Serial port over USB, as in our case, the baud rate has no impact on the actual fuzzing speed, but it is necessary to launch the fuzzing session. 
+4. *-t* timeout in ms, specifies how much time to wait before deciding the MCU has entered a non-recoverable state. This delay is specific to the firmware that is being fuzzed and should be adjusted accordingly.
+5. We recommend writing the stderr to a file err.txt, so it can be used later to analyze the events of the fuzzing campaign. 
 
 ### Notes:
 - We configured the ST-Link serial port as an output console terminal for printing messages of the ASAN runtime and the Monitor running on the MCU. 
-The user can open the ST-Link serial port in a terminal emulator to see the messages printed. The baudrate of the serial port is 7500000. 
+The user can open the ST-Link serial port in a terminal emulator to see the messages printed. The baud rate of the serial port is 7500000. 
 We recommend using *cutecom* as the terminal emulator. 
-- The test.c program contains ten synthetic bugs and 1 hang (eleven defects in total). SHiFT will be able to identify all of them in 10 or less minutes 
+- The test.c program contains ten synthetic bugs and 1 hang (eleven defects in total). SHiFT will be able to identify all of them in 10 or fewer minutes 
 using the setup described in our paper. 
 
 
+# C. Video Demo of SHiFT fuzzing the testing program
+
+This video shows the complete process starting from a template pre-configured to 
+fuzz the test.c file documented in our paper.
+
+<a href="./pictures/shift.webm" title="SHiFT Demo"><img src="./pictures/demo.png" alt="SHiFT fuzzing campaign vide demo" /></a>
