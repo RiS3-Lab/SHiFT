@@ -230,7 +230,7 @@ verify on which TTY device the workstation OS mounted the SHiFT's virtual serial
 the ST-Link USB connection is a composite device that also enables a virtual serial port on the workstation. To identify
 the specific serial port used for fuzzing, we recommend disconnecting and connecting the *user USB* cable of the development
 board and verify the name of the mounted serial port.
-We provide here [https://github.com/RiS3-Lab/SHiFT/blob/main/helpers/serialList.py] a helper script to verify the name of the
+We provide [here](https://github.com/RiS3-Lab/SHiFT/blob/main/helpers/serialList.py) a helper script to verify the name of the
 mounted serial ports. This script and the fuzzing session do not require root privileges. Otherwise, check the section [common prerequisites](#configuring-compiling-and-installing-common-prerequisites) for more details.
 
 ### Example to verify the serial port name
