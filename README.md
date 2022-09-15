@@ -4,12 +4,22 @@ SHiFT: Semi-hosted Fuzz Testing for Embedded Applications
 This is the repository of our paper SHiFT under submission in The Network and Distributed System Security (NDSS) Symposium 2023.
 
 
-# Getting Started
+This readme file contains the following main sections:
+- A. [Getting Started](#a-getting-started)
+- B. [Fuzzing firmware with SHiFT](#b-fuzzing-firmware-with-shift)
+ 
+Each section describes steps to setup and use our framework. We also provide some technical details that were not
+included in our paper. Nevertheless, our paper should be also used as a complement of this README file.
+We recommend following our instructions in the particular order described in this file.
+
+
+# A. Getting Started
 SHiFT requires the following software and hardware components:
 * A workstation running Ubuntu (18.04/20.04/22.04) 64bit LTS
 * GCC compiler
 * Python 3.7+ 
 * Pyserial 
+* cutecom
 * Embedded ARM crosscompiler toolchain
 * STM32CubeIDE (https://www.st.com/en/development-tools/stm32cubeide.html)
 * libserialport (https://sigrok.org/wiki/Libserialport)
@@ -52,16 +62,16 @@ After cloning and initializing all sub-modules the directory structure of SHiFT 
 ```
 
 
-## Compiling and Installing common prerequisites
+## Configuring, compiling and Installing common prerequisites
 
 
 ```bash
-# install GCC compiler
-sudo apt install build-essential
+#install GCC compiler and other required packages
+sudo apt install build-essential make cutecom
 
 cd SHiFT
 
-# installing libserialport
+#installing libserialport
 cd libserialport
 ./autogen.sh
 ./configure
@@ -69,16 +79,24 @@ make
 sudo make install
 cd ..
 
-# decompresing the embedded toolchains
+#decompresing the embedded toolchains
 cd toolchains
 mkdir gcc-arm-none-eabi-10.3-2021.12-0x24000000
 tar -xvf gcc-arm-none-eabi-10.3-2021.12-0x24000000.tar.xz -C ./gcc-arm-none-eabi-10.3-2021.12-0x24000000
 mkdir gcc-arm-none-eabi-10.3-2021.12-0x24000000-0x10000000
 tar -xvf gcc-arm-none-eabi-10.3-2021.12-0x24000000-0x10000000.tar.xz -C ./gcc-arm-none-eabi-10.3-2021.12-0x24000000-0x10000000
 cd ..
-# installing pyserial
+
+#installing pyserial
 pip install pyserial
 
+#add the current user to the dialout group
+#this is necessary to access the serial ports in the linux system wihtout root privileges
+
+sudo adduser $USER dialout
+
+#the new group privileges will only work after rebooting the system 
+sudo reboot now
 ```
 
 ## Specific instructions for compiling AFL 
@@ -86,8 +104,7 @@ pip install pyserial
 ### Example 
 
 ```bash
-cd SHiFT
-cd AFL
+cd SHiFT/AFL
 usb_input_max=512 bms_pow2=16 make
 ```
 ### Parameters
@@ -134,58 +151,125 @@ depicted in the following picture:
 
 
 
-
-
-# Fuzzing firmware with SHiFT
-We provide three preconfigured templates: two for single-core (for NUCLEO-H743 and NUCLEO-H745, respectively) and one for dual-core (for NUCLEO-H745ZI, exclusively). The templates are complete preconfigured projects that can be imported directly into STM32CubeIDE.
+# B. Fuzzing firmware with SHiFT
+We provide three pre-configured templates for fuzzing: two for single-core (for NUCLEO-H743 and NUCLEO-H745, respectively) and one for dual-core (for NUCLEO-H745ZI, exclusively). The templates are complete projects that can be imported directly into STM32CubeIDE.
 
 ## Cloning and importing templates
-We recommend not working directly on the templates. Instead, we provide a cloner script that allows 
-cloning the templates maintaining all the preconfigured characteristics and avoiding naming conflicts in the IDE.
+We recommend not working directly on the templates. Instead, we provide a script [here](https://github.com/RiS3-Lab/SHiFT/blob/main/SHiFTcode/cloner.sh)  that allows cloning the templates maintaining all the preconfigured characteristics and avoiding naming conflicts in the IDE.
 Do not duplicate a template copying directly the template folder. Use always the cloner script.  
 
 ### Example
 ```bash
-## cloning a template
+#cloning a template
 cd SHiFT/SHiFTcode
 
 #USAGE: ./cloner -s [source] -d [destination] 
-# source and destination should be at the same level in the SHiFTcode folder
+#source and destination should be at the same level in the SHiFTcode folder
 ./cloner.sh -s ./Template-USBCDCH743FUZZER -d ./FuzzTestH743 
 
 ```
 
-## Importing the cloned template and configuring the fuzzing target
+## Importing and compiling the cloned template
 To import the cloned template execute STM32CubeIDE and follow the next steps:
 1. Navigate in the menu bar to *File->Open Projects from file system*
 2. In the window dialog navigate to the folder of the cloned template and click finish
 
 <img src="./pictures/Importing.png"  width="800">
 
-3. Navigate to the imported template in the *Project Explorer* pane. The details of each folder are as follows: (1) contains files shared between all templates and might nood need modifications for each fuzzing campaign. (2) Contains initialization routines of the MCU and specific configuration of the fuzzer and FreeRTOS kernel, it is normally modified for each fuzzing campaign (3) This is the fuzzing target, (4) this is the modified linker script to support ASAN and its shadow memory.
+3. Navigate to the imported template in the *Project Explorer* and click the root node of the project to select it.
+4. Connect the development board to the workstation. We need two USB connections, the first one connected directly to the *ST-Link* and the second to *User USB* connector. Check the 
+corresponding development board manual for more details (https://www.st.com/resource/en/user_manual/um2407-stm32h7-nucleo144-boards-mb1364-stmicroelectronics.pdf). 
+5. Click the *bug* button (1 in the next figure) to compile, flash and *debug* the development board.  Click the *Play* button (2 in the next figure) to compile, flash and *execute* the firmware on the development board. 
 
-<img src="./pictures/ImportingDetails.png"  width="800">
-
-4. Right-click on the *test.c* file and navigate to the *Properties* option in the contextual menu.
-
-5. Activate the SANCOV and ASAN compilation flags for the *test.c* file. The *-fno-common* flag is also necessary for ASAN instrumention as depicted in the following picture:
-
-<img src="./pictures/flags.png"  width="800">
-
-6. Compile the imported template 
+<img src="./pictures/compiling.png"  width="800">
 
 
 
+## Details of the imported template
+The imported template contains common files shared between all the templates, and specific files 
+and configurations for each board or configuration mode (i.e., Single or Dual-core) as depicted in the following figure:
+
+<img src="./pictures/ImportDetails.png"  width="800">
+
+
+
+The details of the imported files are as follows: 
+
+1. *CommonSHIFT* contains files shared between all the templates including the runtimes, the FreeRTOS-Kernel with SHiFT extensions, Fuzzing routines to manage the communication protocol with the workstation and an experimental malloc function protected by the MPU. This last component is experimental and not documented in our paper. The files in this folder should not be modified, unless 
+it is necessary to update all the templates.
+2. *Core* contains initialization routines of the MCU and specific configurations for the components of the *CommonSHIFT* folder.
+3. *Test.c* is the target program that we aim to fuzz testing. In this particular case, it is the 
+*Testing program* also documented in the appendix of our paper. This file requires the activation of the corresponding compilation
+flags to activate ASAN and SANCOV as depicted in the following picture of the porperties dialog.
+
+
+<img src="./pictures/flags.png"  width="600">
+
+4. This is the modified linker script of the firmware with support for ASAN shadow memory.
+
+### Note:
+We also provided preconfigured examples of the case studies that we presented in our paper.
+Some of them requires physical external connections and might not be launched direclty.
+We recommend to read the comments of the source code and the details of our paper 
+to configure the hardware accordingly.
+
+
+
+
+
+## Starting the fuzzing campaing
+
+At this point, we assume the required software and hardware is ready to start a fuzzing campaign.
+Please check the steps in the [Getting started](#a-getting-started) before continuing.
+
+
+Before starting the fuzzing campaing, make sure that the template is flashed and ready for *execution* as described 
+in section [Importing and compiling the cloned template](#importing-and-compiling-the-cloned-template). Also,
+verify on which tty device the workstation OS mounted the SHiFT's virtual serial port. It is worth noting that
+the ST-Link USB connection is a composite device that also enables a virtual serial port on the workstation. To identify
+the specific serial port used for fuzzing, we recommend to disconnect and connect the user USB connector of the development
+board and verify the name of the mounted serial port.
+We provide here [https://github.com/RiS3-Lab/SHiFT/blob/main/helpers/serialList.py] a helper script to verify the name of the
+mounted serial ports. This script and the fuzzing ssesion do not require root privileges, otherwise check the section [common prerequisites](#configuring-compiling-and-installing-common-prerequisites) for more details.
+
+### Example to verify the serial port name
 ```bash
-AFL_SKIP_CPUFREQ=1 AFL_NO_FORKSRV=1 ./afl-fuzz -c /dev/ttyACM1 -w 9600 -t 5000 -i ./test/in -o ./test/out 2>err.txt
+cd SHiFT/helpers
+
+./serialList.py
+#sample output before connecting the user USB port: 
+#['/dev/ttyACM0'] --> this is the ST-link Virtual serial port
+
+./serialList.py
+#sample output after connecting the user USB port: 
+#['/dev/ttyACM1', '/dev/ttyACM0'] --> The SHiFT and ST-link Virtual serial ports
 ```
 
-1. *AFL_NO_FORKSRV=1* since we don't need the forkserver
-2. *-c* specifies the device file name for the serial port to use
-3. *-w* specifies the baud rate for the serial port, if it needs to be set.
-4. *-t* timeout in ms, specifies how much time to wait before deciding the MCU is dead
-5. it's good practice to write the stderr to a file, since the error information can be useful
+### Example to start the fuzzing session
 
+```bash
+cd SHiFT/AFL
+#create a folder for the fuzzing campaign
+mkdir -p ./test/in
+#provide a seed input 
+cp ./SeedSHiFT/1.txt ./test/in
+#Happy fuzzing =) 
+AFL_SKIP_CPUFREQ=1 AFL_NO_FORKSRV=1 ./afl-fuzz -c /dev/ttyACM1 -w 9600 -t 5000 -i ./test/in -o ./test/out 2>err.txt
+```
+### Parameters:
 
+1. *AFL_NO_FORKSRV=1* mandatory, since we don't need the forkserver.
+2. *AFL_SKIP_CPUFREQ=1* optional and only necessary if the user has no root access to change the kernel parameters required by AFL (https://github.com/mirrorer/afl/blob/master/docs/env_variables.txt). Adding this parameter will slightly reduce AFL perfomance.
+2. *-c* specifies the name of the serial port used for fuzzing
+3. *-w* specifies the baud rate for the serial port. If the development board uses a Virtual Serial port over USB, as in our case, the baudrate is has no impact on the actual fuzzing speed, but it is necessary to launch the fuzzing session. 
+4. *-t* timeout in ms, specifies how much time to wait before deciding the MCU has enter in a non-recoverable state. This delay is specific to the firmware that is being fuzzed and should be adjusted accordingly.
+5. We recommend to write the stderr to a file err.txt, so it can be used later to analyze the events of the fuzzing campaign. 
+
+### Notes:
+- We configured the ST-Link serial port as an output console terminal for printing messages of the ASAN runtime and the Monitor running on the MCU. 
+The user can open the ST-Link serial port in a terminal emulator to see the messages printed. The baudrate of the serial port is 7500000. 
+We recommend using *cutecom* as the terminal emulator. 
+- The test.c program contains ten synthetic bugs and 1 hang (eleven defects in total). SHiFT will be able to identify all of them in 10 or less minutes 
+using the setup described in our paper. 
 
 

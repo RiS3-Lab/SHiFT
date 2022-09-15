@@ -21,7 +21,7 @@ def main(argv):
     b'2FR this is a double free',                       # 4  triggers double free (detected as invalid free) (ASAN)
     b'IFR this is an invalid free',                     # 5  invalid free (ASAN)
     b'OFS \4 buffer overflow stack',                    # 6  overflow stack (ASAN)
-    b'OFH buffer overflow HEAP',                        # 7  overflow heap (ASAN)
+    b'OFH  \x0b buffer overflow HEAP',                  # 7  overflow heap (ASAN)
     b'ZER0 \0 division by zero test',                   # 8  triggers a division by zero     (Cortex-M)
     b'UNAL \3 unaligned halfword access',               # 9  triggers unnaligned access      (Cortex-M)
     b'UDF undefined instruction',                       # 10 triggers undefined instruction  (Cortex-M)
