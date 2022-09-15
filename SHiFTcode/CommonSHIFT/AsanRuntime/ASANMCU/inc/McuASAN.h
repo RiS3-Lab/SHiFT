@@ -1,8 +1,10 @@
 /*
- * Copyright (c) 2021, Erich Styger
  *
- * SPDX-License-Identifier: BSD-3-Clause
+ *  modified on: Mar 4, 2022
+ *  Author: alejandro
  */
+
+
 
 #ifndef MCUASAN_H_
 #define MCUASAN_H_

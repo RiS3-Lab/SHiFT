@@ -299,7 +299,7 @@ void FastPoisonShadow(uptr aligned_beg, uptr aligned_size, uint8_t value)
   uptr shadow_end = MEM_TO_SHADOW(
       aligned_beg + aligned_size - SHADOW_GRANULARITY) + 1;
 
-    uptr page_size = 1024; // we don't have paging so lets set to 1024
+    uptr page_size = 8; // we don't have paging so lets set to 8
     uptr page_beg = RoundUpTo(shadow_beg, page_size);
     uptr page_end = RoundDownTo(shadow_end, page_size);
 
@@ -638,7 +638,7 @@ void *Allocate(uptr size, uptr alignment,
         return NULL;
     }
 
-    if (*(uint8_t *)MEM_TO_SHADOW((uptr)allocated) == 0 ) {
+    //if (*(uint8_t *)MEM_TO_SHADOW((uptr)allocated) == 0 ) {
       // Heap poisoning is enabled, but the allocator provides an unpoisoned
       // chunk. This is possible if CanPoisonMemory() was false for some
       // time, for example, due to flags()->start_disabled.
@@ -646,7 +646,7 @@ void *Allocate(uptr size, uptr alignment,
       //uptr allocated_size = allocator.GetActuallyAllocatedSize(allocated);
       uptr allocated_size = needed_size;
       PoisonShadow((uptr)allocated, allocated_size, kAsanHeapLeftRedzoneMagic);
-    }
+    //}
 
     uptr alloc_beg = (uint32_t)(allocated);
     //uptr alloc_end = alloc_beg + needed_size;
