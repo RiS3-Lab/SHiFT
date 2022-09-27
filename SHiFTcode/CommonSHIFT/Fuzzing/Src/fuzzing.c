@@ -183,24 +183,27 @@ void FuzzingInputHandler(uint8_t* Buf, uint32_t *Len)
 }
 
 
+
+// Activate the Cortex-M traps without unaligned access
 void activateCortexMtraps()
 {
-	 SCB->SHCSR |= SCB_SHCSR_USGFAULTENA_Msk
-	  | SCB_SHCSR_BUSFAULTENA_Msk
-	  | SCB_SHCSR_MEMFAULTENA_Msk; // enable Usage-/Bus-/MPU Fault
+	SCB->SHCSR |= SCB_SHCSR_USGFAULTENA_Msk
+		  | SCB_SHCSR_BUSFAULTENA_Msk
+		  | SCB_SHCSR_MEMFAULTENA_Msk; // enable Usage-/Bus-/MPU Fault
 
 	  SCB->CCR |= SCB_CCR_DIV_0_TRP_Msk;// | // enable div by zero trap
-			   //SCB_CCR_UNALIGN_TRP_Msk;    // enable unaligned access trap
 
 }
 
+
+// Activate the Cortex-M traps including unaligned access
 void activateCortexMtrapsUNA()
 {
 	 SCB->SHCSR |= SCB_SHCSR_USGFAULTENA_Msk
 	  | SCB_SHCSR_BUSFAULTENA_Msk
 	  | SCB_SHCSR_MEMFAULTENA_Msk; // enable Usage-/Bus-/MPU Fault
 
-	  SCB->CCR |= SCB_CCR_DIV_0_TRP_Msk | // enable div by zero trap
+	  SCB->CCR |= SCB_CCR_DIV_0_TRP_Msk |  // enable div by zero trap
 			   SCB_CCR_UNALIGN_TRP_Msk;    // enable unaligned access trap
 
 }

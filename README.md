@@ -7,7 +7,7 @@ This is the repository of our paper SHiFT under submission in The Network and Di
 This readme file contains the following sections:
 - A. [Getting Started](#a-getting-started)
 - B. [Fuzzing firmware with SHiFT](#b-fuzzing-firmware-with-shift)
-- C. [Fuzzing firmware with SHiFT](#b-fuzzing-firmware-with-shift)
+- C. [Video demo](#c-video-demo-of-shift-fuzzing-the-testing-program)
  
 Each section describes steps to set up and use our framework. We also provide some technical details that were not
 included in our paper. Nevertheless, our paper should be also used as a complement of this README file.
@@ -270,7 +270,7 @@ AFL_SKIP_CPUFREQ=1 AFL_NO_FORKSRV=1 ./afl-fuzz -c /dev/ttyACM1 -w 9600 -t 5000 -
 - We configured the ST-Link serial port as an output console terminal for printing messages of the ASAN runtime and the Monitor running on the MCU. 
 The user can open the ST-Link serial port in a terminal emulator to see the messages printed. The baud rate of the serial port is 7500000. 
 We recommend using *cutecom* as the terminal emulator. 
-- The test.c program contains ten synthetic bugs and 1 hang (eleven defects in total). SHiFT will be able to identify all of them in 10 or fewer minutes 
+- The test.c program contains ten synthetic bugs and one hang (eleven defects in total). SHiFT will be able to identify all of them in 6 or fewer minutes 
 using the setup described in our paper. 
 
 
