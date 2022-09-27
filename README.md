@@ -92,7 +92,7 @@ cd ..
 pip install pyserial
 
 #add the current user to the dialout group
-#this is necessary to access the serial ports in the linux system wihtout root privileges
+#this is necessary to access the serial ports in the linux system without root privileges
 
 sudo adduser $USER dialout
 
