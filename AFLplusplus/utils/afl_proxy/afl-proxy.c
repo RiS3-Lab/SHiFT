@@ -207,6 +207,23 @@ static void __afl_end_testcase(void) {
 
 }
 
+
+static int afl_find_wifsignaled_id(void) {
+
+  int ret = 0; // A faux status code that AFL will accept as signaled/crashed. 1 on linux.
+  while (!(WIFSIGNALED(ret))) ret++;
+  return ret;
+
+}
+
+static void __afl_end_testcase_crash(int ret) {
+
+  int status = ret;
+
+  if (write(FORKSRV_FD + 1, &status, 4) != 4) exit(1);
+
+}
+
 /* you just need to modify the while() loop in this main() */
 
 int main(int argc, char *argv[]) {
@@ -232,11 +249,46 @@ int main(int argc, char *argv[]) {
 
       // ... the magic ...
 
+
       // remove this, this is just to make afl-fuzz not complain when run
+        // remove this, this is just to make afl-fuzz not complain when run
+      /*
       if (buf[0] == 0xff)
         __afl_area_ptr[1] = 1;
       else
         __afl_area_ptr[2] = 2;
+*/
+
+      if (buf[0] == 0xff)
+        __afl_area_ptr[1] = 1;
+      else 
+        __afl_area_ptr[2] = 2;
+      
+      if(buf[10] == 'D')
+        __afl_area_ptr[3] = 3;
+      if(buf[11] == 'E')
+        __afl_area_ptr[4] = 4;
+      if(buf[12] == 'A')
+        __afl_area_ptr[5] = 5;    
+      if(buf[13] == 'D')
+        __afl_area_ptr[6] = 6;
+    
+      if(buf[10] == 'D' && buf[11] == 'E' && buf[12] == 'A' && buf[13] == 'D')
+      {
+         
+         __afl_end_testcase_crash(afl_find_wifsignaled_id()); //signal a crash
+       
+      }
+
+      /*
+        __afl_area_ptr[2] = 2;
+      else if (buf[2] == 0xff-2)
+      {
+        __afl_area_ptr[3] = 3;
+         __afl_end_testcase_crash(afl_find_wifsignaled_id());
+      }
+      */
+      
 
     }
 
