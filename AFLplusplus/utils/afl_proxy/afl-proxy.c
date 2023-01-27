@@ -44,6 +44,11 @@
 #include <sys/types.h>
 #include <fcntl.h>
 
+
+#ifndef INPUT_MAX_LEN
+#    define INPUT_MAX_LEN 1024
+#endif
+
 u8 *__afl_area_ptr;
 
 #ifdef __ANDROID__
@@ -227,9 +232,9 @@ static void __afl_end_testcase_crash(int ret) {
 /* you just need to modify the while() loop in this main() */
 
 int main(int argc, char *argv[]) {
-
+  
   /* This is were the testcase data is written into */
-  u8  buf[1024];  // this is the maximum size for a test case! set it!
+  u8  buf[INPUT_MAX_LEN];  // this is the maximum size for a test case! set it!
   s32 len;
 
   /* here you specify the map size you need that you are reporting to

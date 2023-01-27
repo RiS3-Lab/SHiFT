@@ -45,6 +45,10 @@ ifdef NO_SPLICING
   override CFLAGS_OPT += -DNO_SPLICING
 endif
 
+ifdef bms_pow2
+	CFLAGS += -DMAP_SIZE_POW2_CUSTOM=$(bms_pow2)
+endif
+
 ifdef ASAN_BUILD
   $(info Compiling ASAN version of binaries)
   override CFLAGS += $(ASAN_CFLAGS)
@@ -588,6 +592,7 @@ clean:
 	-$(MAKE) -C utils/libtokencap clean
 	-$(MAKE) -C utils/aflpp_driver clean
 	-$(MAKE) -C utils/afl_network_proxy clean
+	-$(MAKE) -C utils/afl_proxy clean
 	-$(MAKE) -C utils/socket_fuzzing clean
 	-$(MAKE) -C utils/argv_fuzzing clean
 	-$(MAKE) -C utils/plot_ui clean
@@ -632,6 +637,7 @@ ifneq "$(SYS)" "Darwin"
 	-$(MAKE) -C utils/libtokencap
 endif
 	-$(MAKE) -C utils/afl_network_proxy
+	-$(MAKE) -C utils/afl_proxy
 	-$(MAKE) -C utils/socket_fuzzing
 	-$(MAKE) -C utils/argv_fuzzing
 	# -$(MAKE) -C utils/plot_ui
@@ -664,6 +670,7 @@ ifneq "$(SYS)" "Darwin"
 	-$(MAKE) -C utils/libtokencap
 endif
 	-$(MAKE) -C utils/afl_network_proxy
+	-$(MAKE) -C utils/afl_proxy
 	-$(MAKE) -C utils/socket_fuzzing
 	-$(MAKE) -C utils/argv_fuzzing
 	# -$(MAKE) -C utils/plot_ui
@@ -784,6 +791,7 @@ install: all $(MANPAGES)
 	@if [ -f afl-frida-trace.so ]; then install -m 755 afl-frida-trace.so $${DESTDIR}$(HELPER_PATH); fi
 	@if [ -f libnyx.so ]; then install -m 755 libnyx.so $${DESTDIR}$(HELPER_PATH); fi
 	@if [ -f utils/afl_network_proxy/afl-network-server ]; then $(MAKE) -C utils/afl_network_proxy install; fi
+	@if [ -f utils/afl_proxy/afl-proxy ]; then $(MAKE) -C utils/afl_proxy install; fi
 	@if [ -f utils/aflpp_driver/libAFLDriver.a ]; then set -e; install -m 644 utils/aflpp_driver/libAFLDriver.a $${DESTDIR}$(HELPER_PATH); fi
 	@if [ -f utils/aflpp_driver/libAFLQemuDriver.a ]; then set -e; install -m 644 utils/aflpp_driver/libAFLQemuDriver.a $${DESTDIR}$(HELPER_PATH); fi
 	-$(MAKE) -f GNUmakefile.llvm install
