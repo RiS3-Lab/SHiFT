@@ -70,7 +70,11 @@ void SendBackFault(uint32_t faultcode)
 	RingZeroes(&AFLfuzzer.inputAFL);
 
 #if USARTHW == 0
+#ifdef STM32H723xx
+    CDC_Transmit_HS((uint8_t *)AFLfuzzer.aflheader, 12);
+#else
     CDC_Transmit_FS((uint8_t *)AFLfuzzer.aflheader, 12);
+#endif
 #else
     HAL_UART_Transmit_IT(&huart3, (uint8_t *)AFLfuzzer.aflheader, 12);
     while(!AFLfuzzer.bTXcomplete);
