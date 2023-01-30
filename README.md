@@ -92,7 +92,7 @@ cd ..
 pip install pyserial
 
 #add the current user to the dialout group
-#this is necessary to access the serial ports in the linux system wihtout root privileges
+#this is necessary to access the serial ports in the linux system without root privileges
 
 sudo adduser $USER dialout
 
@@ -126,7 +126,7 @@ And step 2 is replaced with waiting for the MCU to send back the feedback which 
 [here](https://github.com/RiS3-Lab/SHiFT/blob/main/AFL/afl-fuzz.c#L2403)
 
 Since the coverage feedback sent back from the MCU are in pairs of hit edges, 
-instead of reconstructing a bitmap, we direct use these pairs to find interesting edges, saving us some time.
+instead of reconstructing a bitmap, we directly use these pairs to find interesting edges and save some time.
 This part is [here](https://github.com/RiS3-Lab/SHiFT/blob/main/AFL/afl-fuzz.c#L996)
 
 
