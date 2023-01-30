@@ -125,7 +125,10 @@ int main(void)
   MX_CRC_Init();
   /* USER CODE BEGIN 2 */
 
+  //Activate cortex-M traps
   activateCortexMtrapsUNA();
+
+
   // call RTOS initialization routines
   app_main();
 
