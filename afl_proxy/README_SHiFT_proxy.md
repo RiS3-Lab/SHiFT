@@ -13,4 +13,4 @@
     - baudrate: 9600 (does not take effect on the virtual serial port)
     - usb_channel_name: /dev/ttyACM1
 
-- `./afl-fuzz -i in -o out -t <timeout> -- ./shift_proxy/afl-proxy -t <timeout> -c <usb_channel_name> -w <baud rate>
+- `./afl-fuzz -i in -o out -t <timeout> -- ./shift_proxy/afl-proxy -t <timeout> -c <usb_channel_name> -w <baud rate>`
