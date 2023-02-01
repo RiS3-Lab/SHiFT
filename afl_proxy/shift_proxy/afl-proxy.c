@@ -44,6 +44,7 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <fcntl.h>
+#include <time.h>
 
 
 #include "protocol.h"
@@ -306,7 +307,14 @@ int main(int argc, char *argv[]) {
     fprintf(dbg_file, "exit_status:%d\n");
     fflush(dbg_file);
 #endif
-    __afl_end_testcase(exit_status);
+    
+    if(exit_status == FAULT_TMOUT)
+    {
+      usleep(1000*exec_tmout); // this multiplication mas be equal or larger than EXEC_TIMEOUT in config.h. otherwise hangs will be detected as crashes
+      exit_status = SIGKILL;
+    }
+
+    __afl_end_testcase(exit_status);  
     total_execs++;
   }
 
