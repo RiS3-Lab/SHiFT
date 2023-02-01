@@ -9,7 +9,7 @@
 # How to run
 
 - configurables
-    - timeout: suggest 5000
+    - timeout: suggest 5000, minimum 1000 to detect hangs for default configuration of AFL
     - baudrate: 9600 (does not take effect on the virtual serial port)
     - usb_channel_name: /dev/ttyACM1
 
