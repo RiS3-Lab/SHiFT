@@ -1,0 +1,81 @@
+Only in vanillaAFL: .git
+Only in afl_proxy: .vscode
+diff -ur vanillaAFL/Makefile afl_proxy/Makefile
+--- vanillaAFL/Makefile	2023-02-01 14:26:14.882913348 -0500
++++ afl_proxy/Makefile	2023-01-31 13:57:59.096607345 -0500
+@@ -32,6 +32,10 @@
+ 	      -DAFL_PATH=\"$(HELPER_PATH)\" -DDOC_PATH=\"$(DOC_PATH)\" \
+ 	      -DBIN_PATH=\"$(BIN_PATH)\"
+ 
++ifdef bms_pow2
++	CFLAGS += -DMAP_SIZE_POW2_CUSTOM=$(bms_pow2)
++endif
++
+ ifneq "$(filter Linux GNU%,$(shell uname))" ""
+   LDFLAGS  += -ldl
+ endif
+Only in afl_proxy: README_SHiFT_proxy.md
+Only in afl_proxy: afl-analyze
+Only in afl_proxy: afl-as
+Only in afl_proxy: afl-clang
+Only in afl_proxy: afl-clang++
+Only in afl_proxy: afl-fuzz
+Only in afl_proxy: afl-g++
+Only in afl_proxy: afl-gcc
+Only in afl_proxy: afl-gotcpu
+Only in afl_proxy: afl-showmap
+Only in afl_proxy: afl-tmin
+Only in afl_proxy: as
+diff -ur vanillaAFL/config.h afl_proxy/config.h
+--- vanillaAFL/config.h	2023-02-01 14:26:15.038916150 -0500
++++ afl_proxy/config.h	2023-01-31 14:25:42.292245762 -0500
+@@ -325,9 +325,13 @@
+    problems with complex programs). You need to recompile the target binary
+    after changing this - otherwise, SEGVs may ensue. */
+ 
++#ifdef MAP_SIZE_POW2_CUSTOM
++#define MAP_SIZE_POW2       MAP_SIZE_POW2_CUSTOM
++#else
+ #define MAP_SIZE_POW2       16
+-#define MAP_SIZE            (1 << MAP_SIZE_POW2)
++#endif
+ 
++#define MAP_SIZE            (1 << MAP_SIZE_POW2)
+ /* Maximum allocator request size (keep well under INT_MAX): */
+ 
+ #define MAX_ALLOC           0x40000000
+diff -ur vanillaAFL/types.h afl_proxy/types.h
+--- vanillaAFL/types.h	2023-02-01 14:26:17.242955736 -0500
++++ afl_proxy/types.h	2023-01-31 14:52:27.417364247 -0500
+@@ -91,4 +91,31 @@
+ #define likely(_x)   __builtin_expect(!!(_x), 1)
+ #define unlikely(_x)  __builtin_expect(!!(_x), 0)
+ 
++
++/* Reporting errors */
++#define FS_OPT_ERROR 0xf800008f
++#define FS_OPT_GET_ERROR(x) ((x & 0x00ffff00) >> 8)
++#define FS_OPT_SET_ERROR(x) ((x & 0x0000ffff) << 8)
++#define FS_ERROR_MAP_SIZE 1
++#define FS_ERROR_MAP_ADDR 2
++#define FS_ERROR_SHM_OPEN 4
++#define FS_ERROR_SHMAT 8
++#define FS_ERROR_MMAP 16
++#define FS_ERROR_OLD_CMPLOG 32
++#define FS_ERROR_OLD_CMPLOG_QEMU 64
++
++/* Reporting options */
++#define FS_OPT_ENABLED 0x80000001
++#define FS_OPT_MAPSIZE 0x40000000
++#define FS_OPT_SNAPSHOT 0x20000000
++#define FS_OPT_AUTODICT 0x10000000
++#define FS_OPT_SHDMEM_FUZZ 0x01000000
++#define FS_OPT_NEWCMPLOG 0x02000000
++#define FS_OPT_OLD_AFLPP_WORKAROUND 0x0f000000
++// FS_OPT_MAX_MAPSIZE is 8388608 = 0x800000 = 2^23 = 1 << 23
++#define FS_OPT_MAX_MAPSIZE ((0x00fffffeU >> 1) + 1)
++#define FS_OPT_GET_MAPSIZE(x) (((x & 0x00fffffe) >> 1) + 1)
++#define FS_OPT_SET_MAPSIZE(x) \
++  (x <= 1 || x > FS_OPT_MAX_MAPSIZE ? 0 : ((x - 1) << 1))
++  
+ #endif /* ! _HAVE_TYPES_H */

@@ -1,3 +1,9 @@
 [submodule "libserialport"]
 	path = libserialport
 	url = git://sigrok.org/libserialport
+[submodule "vanillaAFL"]
+	path = vanillaAFL
+	url = https://github.com/google/AFL.git
+[submodule "vanillaAFLplusplus"]
+	path = vanillaAFLplusplus
+	url = https://github.com/AFLplusplus/AFLplusplus.git

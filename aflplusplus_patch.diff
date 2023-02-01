@@ -1,0 +1,91 @@
+Only in workingafl++/: afl-analyze
+Only in workingafl++/: afl-as
+Only in workingafl++/: afl-c++
+Only in workingafl++/: afl-c++.8
+Only in workingafl++/: afl-cc
+Only in workingafl++/: afl-cc.8
+Only in workingafl++/: afl-clang
+Only in workingafl++/: afl-clang++
+Only in workingafl++/: afl-clang-fast
+Only in workingafl++/: afl-clang-fast++
+Only in workingafl++/: afl-clang-fast++.8
+Only in workingafl++/: afl-clang-fast.8
+Only in workingafl++/: afl-compiler-rt-64.o
+Only in workingafl++/: afl-compiler-rt.o
+Only in workingafl++/: afl-fuzz
+Only in workingafl++/: afl-g++
+Only in workingafl++/: afl-gcc
+Only in workingafl++/: afl-gotcpu
+Only in workingafl++/: afl-llvm-dict2file.so
+Only in workingafl++/: afl-llvm-pass.so
+Only in workingafl++/: afl-showmap
+Only in workingafl++/: afl-tmin
+Only in workingafl++/: as
+Only in workingafl++/: cmplog-instructions-pass.so
+Only in workingafl++/: cmplog-routines-pass.so
+Only in workingafl++/: cmplog-switches-pass.so
+Only in workingafl++/: compare-transform-pass.so
+diff -ur vanillaAFLplusplus/config.h workingafl++/config.h
+--- vanillaAFLplusplus/config.h	2023-02-01 14:50:07.616455509 -0500
++++ workingafl++/config.h	2023-02-01 14:41:13.258989013 -0500
+@@ -439,7 +439,12 @@
+    problems with complex programs). You need to recompile the target binary
+    after changing this - otherwise, SEGVs may ensue. */
+ 
+-#define MAP_SIZE_POW2 16
++#ifdef MAP_SIZE_POW2_CUSTOM
++#define MAP_SIZE_POW2       MAP_SIZE_POW2_CUSTOM
++#else
++#define MAP_SIZE_POW2       16
++#endif
++
+ #define MAP_SIZE (1U << MAP_SIZE_POW2)
+ 
+ /* Maximum allocator request size (keep well under INT_MAX): */
+diff -ur vanillaAFLplusplus/GNUmakefile workingafl++/GNUmakefile
+--- vanillaAFLplusplus/GNUmakefile	2023-02-01 14:50:07.560454517 -0500
++++ workingafl++/GNUmakefile	2023-02-01 14:38:27.480028109 -0500
+@@ -144,6 +144,11 @@
+   CFLAGS ?= -O2 $(CFLAGS_OPT) # -funroll-loops is slower on modern compilers
+ endif
+ 
++ifdef bms_pow2
++    CFLAGS ?= -DMAP_SIZE_POW2_CUSTOM=$(bms_pow2)
++endif
++
++
+ override CFLAGS += -g -Wno-pointer-sign -Wno-variadic-macros -Wall -Wextra -Wno-pointer-arith \
+ 			-fPIC -I include/ -DAFL_PATH=\"$(HELPER_PATH)\" \
+ 			-DBIN_PATH=\"$(BIN_PATH)\" -DDOC_PATH=\"$(DOC_PATH)\"
+diff -ur vanillaAFLplusplus/include/config.h workingafl++/include/config.h
+--- vanillaAFLplusplus/include/config.h	2023-02-01 14:50:07.616455509 -0500
++++ workingafl++/include/config.h	2023-02-01 14:41:13.258989013 -0500
+@@ -439,7 +439,12 @@
+    problems with complex programs). You need to recompile the target binary
+    after changing this - otherwise, SEGVs may ensue. */
+ 
+-#define MAP_SIZE_POW2 16
++#ifdef MAP_SIZE_POW2_CUSTOM
++#define MAP_SIZE_POW2       MAP_SIZE_POW2_CUSTOM
++#else
++#define MAP_SIZE_POW2       16
++#endif
++
+ #define MAP_SIZE (1U << MAP_SIZE_POW2)
+ 
+ /* Maximum allocator request size (keep well under INT_MAX): */
+Only in workingafl++/instrumentation: afl-common.o
+Only in workingafl++/instrumentation: afl-llvm-common.o
+Only in workingafl++/: libAFLDriver.a
+Only in workingafl++/: libAFLQemuDriver.a
+Only in workingafl++/: SanitizerCoveragePCGUARD.so
+Only in workingafl++/: split-compares-pass.so
+Only in workingafl++/: split-switches-pass.so
+Only in workingafl++/src: afl-common.o
+Only in workingafl++/src: afl-forkserver.o
+Only in workingafl++/src: afl-performance.o
+Only in workingafl++/src: afl-sharedmem.o
+Only in workingafl++/utils/aflpp_driver: aflpp_driver.o
+Only in workingafl++/utils/aflpp_driver: aflpp_qemu_driver.o
+Only in workingafl++/utils/aflpp_driver: libAFLDriver.a
+Only in workingafl++/utils/aflpp_driver: libAFLQemuDriver.a
