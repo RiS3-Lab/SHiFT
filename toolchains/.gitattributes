@@ -3,3 +3,4 @@ gcc-arm-none-eabi-10.3-2021.12-0x24000000.tar.bz2 filter=lfs diff=lfs merge=lfs 
 gcc-arm-none-eabi-10.3-2021.12-0x24000000-0x10000000.tar.bz2 filter=lfs diff=lfs merge=lfs -text
 gcc-arm-none-eabi-10.3-2021.12-0x24000000.tar.xz filter=lfs diff=lfs merge=lfs -text
 gcc-arm-none-eabi-10.3-2021.12-0x24000000-0x10000000.tar.xz filter=lfs diff=lfs merge=lfs -text
+gcc-linaro-12.2.1-12.2.rel1-0x20010000.tar.xz filter=lfs diff=lfs merge=lfs -text

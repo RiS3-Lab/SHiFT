@@ -10,7 +10,19 @@
 
 #include "FreeRTOS.h"
 #include "malloc_mpu.h"
+
+#ifdef STM32H743xx
 #include "stm32h7xx_hal.h"
+#endif
+#ifdef STM32H745xx
+#include "stm32h7xx_hal.h"
+#endif
+
+#ifdef STM32L152xE
+#include "stm32l1xx_hal.h"
+#endif
+
+
 
 #if ( portUSING_MPU_WRAPPERS == 1 && INCLUDE_HeapMPU ==1)
 
