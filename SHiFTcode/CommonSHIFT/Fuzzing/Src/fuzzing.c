@@ -16,9 +16,12 @@
 #if USARTHW == 0
 #include "usbd_cdc_if.h"
 extern USBD_HandleTypeDef hUsbDeviceFS;
+#else
+
+extern UART_HandleTypeDef huart2;
 #endif
 extern CRC_HandleTypeDef hcrc;
-extern RNG_HandleTypeDef hrng;
+//extern RNG_HandleTypeDef hrng;
 //extern UART_HandleTypeDef huart3;
 
 
@@ -43,7 +46,7 @@ bool checkCRC(RingBuffer_t *input)
 
 }
 
-extern uint8_t  bufferDMA[550];
+extern uint8_t  bufferDMA[512];
 void SendBackFault(uint32_t faultcode)
 {
 
@@ -70,15 +73,15 @@ void SendBackFault(uint32_t faultcode)
 	RingZeroes(&AFLfuzzer.inputAFL);
 
 #if USARTHW == 0
-#ifdef STM32H723xx
-	CDC_Transmit_HS((uint8_t *)AFLfuzzer.aflheader, 12);
+    #ifdef STM32H723xx
+	    CDC_Transmit_HS((uint8_t *)AFLfuzzer.aflheader, 12);
+    #else
+        CDC_Transmit_FS((uint8_t *)AFLfuzzer.aflheader, 12);
+    #endif
 #else
-    CDC_Transmit_FS((uint8_t *)AFLfuzzer.aflheader, 12);
-#endif
-#else
-    HAL_UART_Transmit_IT(&huart3, (uint8_t *)AFLfuzzer.aflheader, 12);
-    while(!AFLfuzzer.bTXcomplete);
-    HAL_UART_Receive_IT(&huart3, AFLfuzzer.inputAFL.uxBuffer, 4);
+    HAL_UART_Transmit(&HUART, (uint8_t *)AFLfuzzer.aflheader, 12,100);
+
+    HAL_UART_Receive_IT(&HUART, AFLfuzzer.inputAFL.uxBuffer, 4);
 
 #endif
 
@@ -162,7 +165,7 @@ void FuzzingInputHandler(uint8_t* Buf, uint32_t *Len)
 	  	    		AFLfuzzer.inputAFL.u32availablenopad = AFLfuzzer.inputLength;
 	  	    		AFLfuzzer.bRXcomplete = 1;
 	  	    		AFLfuzzer.timespan = HAL_GetTick();
-	  	    		if(AFLfuzzer.inputAFL.u32availablenopad ==0)printf("Zero USB \n");
+	  	    		//if(AFLfuzzer.inputAFL.u32availablenopad ==0)printf("Zero USB \n");
 
 	  	    		xTaskNotifyIndexedFromISR(AFLfuzzer.xTaskFuzzer,
 	  	    				1, //index

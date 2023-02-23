@@ -31,4 +31,7 @@ enum {
 
 void protocol_cleaning_and_setting_up();
 
+
+#define CRCL152 1
+
 #endif

@@ -46,7 +46,7 @@
 //extern USBD_HandleTypeDef hUsbDeviceFS;FAULT_NONE_RTOS
 extern CRC_HandleTypeDef hcrc;
 extern RNG_HandleTypeDef hrng;
-extern UART_HandleTypeDef huart3;
+extern UART_HandleTypeDef HUART;
 extern uint32_t __user_heap_start__[];
 
 
@@ -264,8 +264,8 @@ static void fuzzerTask( void * pvParameters )
     #if USARTHW == 1
 
     		   AFLfuzzer.receiving = false;
-	           HAL_UART_Receive_IT(&huart3, AFLfuzzer.inputAFL.uxBuffer, 4);
-	           //HAL_UARTEx_ReceiveToIdle_DMA(&huart3, bufferDMA, MAX_BUFFER_INPUT);
+	           HAL_UART_Receive_IT(&HUART, AFLfuzzer.inputAFL.uxBuffer, 4);
+	           //HAL_UARTEx_ReceiveToIdle_DMA(&HUART, bufferDMA, MAX_BUFFER_INPUT);
     #endif
 	MX_USB_DEVICE_Init();
 	error_cnt = 0;
@@ -402,8 +402,8 @@ static void fuzzerTask( void * pvParameters )
 			 #if USARTHW == 0
 			 CDC_Transmit_FS((uint8_t *)AFLfuzzer.aflheader, 8);
              #else
-			 HAL_UART_Transmit_IT(&huart3, (uint8_t *)AFLfuzzer.aflheader, 8);
-			 //HAL_UART_Transmit_DMA(&huart3,(uint8_t *)AFLfuzzer.aflheader, 8);
+			 HAL_UART_Transmit_IT(&HUART, (uint8_t *)AFLfuzzer.aflheader, 8);
+			 //HAL_UART_Transmit_DMA(&HUART,(uint8_t *)AFLfuzzer.aflheader, 8);
              #endif
 
 			 //while(AFLfuzzer.bTXcomplete ==false); //wait for end of transmission
@@ -413,8 +413,8 @@ static void fuzzerTask( void * pvParameters )
              #if USARTHW == 0
 			 CDC_Transmit_FS((uint8_t *)auxdiff, AFLfuzzer.aflheader[1]);
              #else
-			 HAL_UART_Transmit_IT(&huart3, (uint8_t *)auxdiff, AFLfuzzer.aflheader[1]);
-			 //HAL_UART_Transmit_DMA(&huart3, (uint8_t *)auxdiff, AFLfuzzer.aflheader[1]);
+			 HAL_UART_Transmit_IT(&HUART, (uint8_t *)auxdiff, AFLfuzzer.aflheader[1]);
+			 //HAL_UART_Transmit_DMA(&HUART, (uint8_t *)auxdiff, AFLfuzzer.aflheader[1]);
              #endif
 
 			 //while(AFLfuzzer.bTXcomplete ==false); //wait for end of transmission
@@ -438,8 +438,8 @@ static void fuzzerTask( void * pvParameters )
 
 			 //printf("Total time: %u \n", (uint)AFLfuzzer.timespan);
 #if USARTHW == 1
-			 HAL_UART_Receive_IT(&huart3, AFLfuzzer.inputAFL.uxBuffer, 4);
-			// HAL_UARTEx_ReceiveToIdle_DMA(&huart3, bufferDMA, MAX_BUFFER_INPUT);
+			 HAL_UART_Receive_IT(&HUART, AFLfuzzer.inputAFL.uxBuffer, 4);
+			// HAL_UARTEx_ReceiveToIdle_DMA(&HUART, bufferDMA, MAX_BUFFER_INPUT);
 #endif
 		}
 
@@ -455,7 +455,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
     Fuzzer_t *pAFLfuzzer = (Fuzzer_t *)AFLfuzzerRegion;
 #endif
 
-	if(huart == &huart3)
+	if(huart == &HUART)
     {
     	AFLfuzzer.bTXcomplete = true;
     }
@@ -475,17 +475,17 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
 
      data = AFLfuzzer.inputAFL.uxBuffer;
 
-	 HAL_UART_Abort_IT(&huart3);
-	 HAL_UART_Receive_IT(&huart3, data, 4);
+	 HAL_UART_Abort_IT(&HUART);
+	 HAL_UART_Receive_IT(&HUART, data, 4);
 */
 
-     HAL_UART_Abort(&huart3);
- 	 __HAL_UART_FLUSH_DRREGISTER(&huart3);
-     HAL_UART_DeInit(&huart3);
-	 __HAL_UART_DISABLE(&huart3);
-	 __HAL_UART_ENABLE(&huart3);
+     HAL_UART_Abort(&HUART);
+ 	 __HAL_UART_FLUSH_DRREGISTER(&HUART);
+     HAL_UART_DeInit(&HUART);
+	 __HAL_UART_DISABLE(&HUART);
+	 __HAL_UART_ENABLE(&HUART);
 
-	 HAL_UART_Init(&huart3);
+	 HAL_UART_Init(&HUART);
 
 
     errors++;
@@ -496,8 +496,8 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
 	 AFLfuzzer.inputLength = 0;
 	 AFLfuzzer.previousGuard = 0;
 	 RingZeroes(&AFLfuzzer.inputAFL);
-	 HAL_UART_Receive_IT(&huart3, AFLfuzzer.inputAFL.uxBuffer, 4);
-	 //HAL_UARTEx_ReceiveToIdle_DMA(&huart3, bufferDMA, MAX_BUFFER_INPUT);
+	 HAL_UART_Receive_IT(&HUART, AFLfuzzer.inputAFL.uxBuffer, 4);
+	 //HAL_UARTEx_ReceiveToIdle_DMA(&HUART, bufferDMA, MAX_BUFFER_INPUT);
 
 }
 
@@ -539,7 +539,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
         	    padding = 0;
         	}
         	AFLfuzzer.inputLengthpadded = auxbytes.vint32 + padding;
-        	HAL_UART_Receive_IT(&huart3, data+4, AFLfuzzer.inputLengthpadded);
+        	HAL_UART_Receive_IT(&HUART, data+4, AFLfuzzer.inputLengthpadded);
           }
     }
     else
@@ -556,7 +556,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			 AFLfuzzer.bRXcomplete = false;
 			 AFLfuzzer.inputLength = 0;
 			 RingZeroes(&AFLfuzzer.inputAFL);
-			 HAL_UART_Receive_IT(&huart3, data, 4);
+			 HAL_UART_Receive_IT(&HUART, data, 4);
 
     	}
 
@@ -578,7 +578,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 	FuzzingInputHandler(bufferDMA, (uint32_t *)(&len));
 	if(AFLfuzzer.bRXcomplete == false)
 	{
-		HAL_UARTEx_ReceiveToIdle_DMA(&huart3, bufferDMA, MAX_BUFFER_INPUT);
+		HAL_UARTEx_ReceiveToIdle_DMA(&HUART, bufferDMA, MAX_BUFFER_INPUT);
 	}
 
 }

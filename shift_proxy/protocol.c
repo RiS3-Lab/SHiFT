@@ -20,6 +20,79 @@ extern u64 total_execs;
 
 extern u32 exec_tmout;
 
+
+
+
+#if CRCL152 ==1
+
+uint32_t _poly = 0x04C11DB7;
+
+
+void crc32(const uint8_t *data, size_t n_bytes, uint32_t* crc) {
+  static uint32_t table[0x100];
+  static uint32_t c;
+
+  if(!*table)// this table is only initialized once in a fuzzing compaign
+    for(size_t i = 0; i < 256; ++i)
+    {
+       c = i << 24;
+       for(size_t j=0; j<8; j++)
+       {
+          c =  ((c & 0x80000000)?  (c<<1) ^ _poly :   (c<<1));     
+       }
+       table[i] =  c & 0xffffffff;
+      
+    }
+       
+    size_t   length = n_bytes;
+    *crc = 0xffffffff;
+    uint32_t k = 0;
+    uint32_t v = 0;
+
+    while( length >= 4)
+    {
+                      
+        v = ((data[k] << 24) & 0xFF000000) | ((data[k+1] << 16) & 0xFF0000) | 
+            ((data[k+2] << 8) & 0xFF00) | (data[k+3] & 0xFF);
+
+        *crc = ((*crc << 8) & 0xffffffff) ^ table[0xFF & ((*crc >> 24) ^ v)];
+        *crc = ((*crc << 8) & 0xffffffff) ^ table[0xFF & ((*crc >> 24) ^ (v >> 8))];
+        *crc = ((*crc << 8) & 0xffffffff) ^ table[0xFF & ((*crc >> 24) ^ (v >> 16))];
+        *crc = ((*crc << 8) & 0xffffffff) ^ table[0xFF & ((*crc >> 24) ^ (v >> 24))];
+
+        k = k + 4;
+        length = length - 4;
+
+        if(length > 0)
+        {
+            v = 0;
+
+            for(size_t i=0; i< length; i++)
+                v = v | (data[k+i] << 24-i*8);
+
+            if (length == 1)
+                v = v & 0xFF000000;
+            else if (length == 2)
+                v = v & 0xFFFF0000;
+            else if (length == 3)
+                v = v & 0xFFFFFF00;
+
+            *crc = (( *crc << 8 ) & 0xffffffff) ^ table[0xFF & ( (*crc >> 24) ^ (v ) )];
+            *crc = (( *crc << 8 ) & 0xffffffff) ^ table[0xFF & ( (*crc >> 24) ^ (v >> 8) )];
+            *crc = (( *crc << 8 ) & 0xffffffff) ^ table[0xFF & ( (*crc >> 24) ^ (v >> 16) )];
+            *crc = (( *crc << 8 ) & 0xffffffff) ^ table[0xFF & ( (*crc >> 24) ^ (v >> 24) )];
+        }
+    }
+
+    *crc = ~*crc;
+
+}
+
+
+
+
+#else
+
 uint32_t crc32_for_byte(uint32_t r) {
   for(int j = 0; j < 8; ++j)
     r = (r & 1? 0: (uint32_t)0xEDB88320L) ^ r >> 1;
@@ -34,6 +107,10 @@ void crc32(const void *data, size_t n_bytes, uint32_t* crc) {
   for(size_t i = 0; i < n_bytes; ++i)
     *crc = table[(uint8_t)*crc ^ ((uint8_t*)data)[i]] ^ *crc >> 8;
 }
+
+#endif
+
+
 
 
 #define MAX_LEN_SEND_BUF 4 + MAX_LEN_INPUT_PAYLOAD + 4

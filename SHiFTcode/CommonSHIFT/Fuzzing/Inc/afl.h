@@ -32,6 +32,12 @@ uint16_t val;
 #define AFL_BITMAP_MASK  0x1fff
 #elif AFL_BITMAP_SIZE == SIZE4
 #define AFL_BITMAP_MASK  0x0fff
+#elif AFL_BITMAP_SIZE == SIZE2
+#define AFL_BITMAP_MASK  0x07ff
+#elif AFL_BITMAP_SIZE == SIZE1
+#define AFL_BITMAP_MASK  0x03ff
+
+
 #endif
 
 

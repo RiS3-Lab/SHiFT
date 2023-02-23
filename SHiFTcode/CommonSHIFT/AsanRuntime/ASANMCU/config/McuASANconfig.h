@@ -7,7 +7,6 @@
 #define MCUASANCONFIG_H_
 #include "stdint.h"
 
-#define HUSART huart3
 
 
 

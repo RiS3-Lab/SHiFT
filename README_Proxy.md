@@ -23,3 +23,13 @@
     - usb_channel_name: /dev/ttyACM1
 
 - `./afl-fuzz -i in -o out -t <timeout> -- ./shift_proxy/afl-proxy -t <timeout> -c <usb_channel_name> -w <baud rate>`
+
+## Note:
+Before running execute the following as root:
+```bash
+su -
+echo core >/proc/sys/kernel/core_pattern 
+cd /sys/devices/system/cpu
+echo performance | tee cpu*/cpufreq/scaling_governor
+
+```

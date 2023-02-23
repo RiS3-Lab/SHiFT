@@ -6,10 +6,18 @@ import zlib
 import sys
 import os
 import ast
+from stm32crc import crcstm32l1
 #from IPython import embed
 
 
 def main(argv):
+
+    serialport = '/dev/ttyACM0'
+
+    CRCtype = 'L152' # vlaid values H7x or L152
+
+    
+
 
     data= b''
  
@@ -78,19 +86,33 @@ def main(argv):
         data = data + b'\x00'*(4- len(data) % 4 )
         print("Paddding added, new Frame len: {}".format(len(data)))
 
-    crc = zlib.crc32(data) & 0xffffffff
+    #crc = zlib.crc32(data) & 0xffffffff
 
-    crc = crc
+    if CRCtype == 'L152':
+        crcl1= crcstm32l1()
+        crc = crcl1.crc32(data) & 0xffffffff
+    else:
+        crc = zlib.crc32(data) & 0xffffffff 
+
 
     print("TX crc: {}".format(hex(crc)))
 
     data = data + struct.pack('I', crc)
 
-    ser = serial.Serial('/dev/ttyACM1', baudrate=115200)
+    ser = serial.Serial(serialport, baudrate=115200)
 
     # write the test input to the board
 
     print("Total length TX: {}".format(len(data)))
+
+    print("DATA TX: {}".format(data))
+
+    s=''
+    for c in data:
+        s+=str(hex(int(c)))+" "
+    print("DATA TX for CRC: {}".format(s))
+
+
     ser.write(data)
 
     #read the answer
@@ -131,11 +153,22 @@ def main(argv):
 
     CRC = unpack("I", bitmap[bitmaplength-4:])[0]
     print("CRC: {}".format(hex(CRC)))
+    
 
 
     d = r + bitmap[:-4]
 
-    CRCverify = zlib.crc32(d) & 0xffffffff 
+    #CRCverify = zlib.crc32(d) & 0xffffffff 
+    CRCverify =  crcl1.crc32(d) & 0xffffffff 
+
+    if CRCtype == 'L152':
+        CRCverify =  crcl1.crc32(d) & 0xffffffff 
+    else:
+        CRCverify = zlib.crc32(d) & 0xffffffff 
+
+
+
+
 
     if CRCverify == CRC:
         print("CRC verified: {}".format(hex(CRCverify)))

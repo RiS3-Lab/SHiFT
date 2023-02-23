@@ -1004,7 +1004,9 @@ void *Reallocate(void *old_ptr, uptr new_size) {
 
 void *asan_malloc(size_t size) {
 #if McuASAN_CONFIG_FreeRTOs
-	return (void *) ASAN_malloc(size);
+	//return (void *) ASAN_malloc(size);
+	return (void *) MPU_ASAN_malloc(size);
+
 #else
 	return Allocate(size, 8, FROM_MALLOC, true);
 #endif
@@ -1012,7 +1014,8 @@ void *asan_malloc(size_t size) {
 
 void asan_free(void *ptr) {
 #if McuASAN_CONFIG_FreeRTOs
-	ASAN_free(ptr);
+	//ASAN_free(ptr);
+	MPU_ASAN_free(ptr);
 #else
 	 Deallocate(ptr, 0, 0, FROM_MALLOC);
 #endif

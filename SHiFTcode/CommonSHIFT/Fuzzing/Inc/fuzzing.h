@@ -100,5 +100,6 @@ void FuzzingInputHandler(uint8_t* Buf, uint32_t *Len);
 bool checkCRC(RingBuffer_t *input);
 void activateCortexMtraps();
 void activateCortexMtrapsUNA();
+void SendBackFault(uint32_t faultcode);
 
 #endif /* INC_FUZZING_H_ */

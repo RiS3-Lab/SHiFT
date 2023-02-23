@@ -23,7 +23,7 @@ void deleteTask()
 	Fuzzer_t *pAFLfuzzer = (Fuzzer_t *)AFLfuzzerRegion;
 	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
     xTaskNotifyFromISR(AFLfuzzer.xTaskFuzzer,FAULT_CRASH,eSetValueWithOverwrite, &xHigherPriorityTaskWoken);
-	HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
+	//HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
 	vTaskDelete(AFLfuzzer.xTaskTarget);
 
 }

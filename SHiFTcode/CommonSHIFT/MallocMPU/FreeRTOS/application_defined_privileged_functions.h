@@ -93,7 +93,13 @@ void *MPU_ASAN_malloc(size_t size)
 
 	vPortResetPrivilege( xRunningPrivileged );
 	return  (void *	)ptr;
+
+
 }
+
+
+
+
 
 
 void MPU_ASAN_free(void *ptr)
