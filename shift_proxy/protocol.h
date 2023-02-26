@@ -32,6 +32,7 @@ enum {
 void protocol_cleaning_and_setting_up();
 
 
-#define CRCL152 1
+#define CRCL152 1  // enables CRC for STM32L152
+#define DBGPRINT 0 // 1 enables debugging of AFL data send through protocol
 
 #endif
