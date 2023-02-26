@@ -62,28 +62,25 @@ void crc32(const uint8_t *data, size_t n_bytes, uint32_t* crc) {
 
         k = k + 4;
         length = length - 4;
-
-        if(length > 0)
-        {
-            v = 0;
-
-            for(size_t i=0; i< length; i++)
-                v = v | (data[k+i] << 24-i*8);
-
-            if (length == 1)
-                v = v & 0xFF000000;
-            else if (length == 2)
-                v = v & 0xFFFF0000;
-            else if (length == 3)
-                v = v & 0xFFFFFF00;
-
-            *crc = (( *crc << 8 ) & 0xffffffff) ^ table[0xFF & ( (*crc >> 24) ^ (v ) )];
-            *crc = (( *crc << 8 ) & 0xffffffff) ^ table[0xFF & ( (*crc >> 24) ^ (v >> 8) )];
-            *crc = (( *crc << 8 ) & 0xffffffff) ^ table[0xFF & ( (*crc >> 24) ^ (v >> 16) )];
-            *crc = (( *crc << 8 ) & 0xffffffff) ^ table[0xFF & ( (*crc >> 24) ^ (v >> 24) )];
-        }
     }
 
+    if(length > 0)
+    {
+        v = 0;
+        for(size_t i=0; i< length; i++)
+            v = v | (data[k+i] << 24-i*8);
+        if (length == 1)
+            v = v & 0xFF000000;
+        else if (length == 2)
+            v = v & 0xFFFF0000;
+        else if (length == 3)
+            v = v & 0xFFFFFF00;
+        *crc = (( *crc << 8 ) & 0xffffffff) ^ table[0xFF & ( (*crc >> 24) ^ (v ) )];
+        *crc = (( *crc << 8 ) & 0xffffffff) ^ table[0xFF & ( (*crc >> 24) ^ (v >> 8) )];
+        *crc = (( *crc << 8 ) & 0xffffffff) ^ table[0xFF & ( (*crc >> 24) ^ (v >> 16) )];
+        *crc = (( *crc << 8 ) & 0xffffffff) ^ table[0xFF & ( (*crc >> 24) ^ (v >> 24) )];
+    }
+    
     *crc = ~*crc;
 
 }
@@ -358,6 +355,32 @@ void sendInputs(uint8_t* buf, uint32_t size){
     u32 crc_result = 0;
     crc32(buf_to_send, 4 + size + padded_bytes, &crc_result);
     *(uint32_t*) (buf_to_send + 4 + size + padded_bytes) = crc_result;
+
+#if DBGPRINT==1
+
+    FILE *logfile;
+    char buffaux[1024];
+    char *ptr = &buffaux[0];
+    int i;
+
+    logfile = fopen("lofgile.txt", "a"); 
+
+    if(logfile)
+    {      
+        for(i=0; i<total_size; i++)
+        {
+            //sprintf returns the number of written characters without the null, 
+            //so ptr will point exactly where we need to write the next one
+            ptr += sprintf(ptr, "\\x%02X", buf_to_send[i]); 
+        }
+        fprintf(logfile,"Size: %d, Total Size: %d, CRC 0x%x, Data: %s\n", size, total_size, crc_result, buffaux);
+        fclose(logfile);
+    }
+    
+
+#endif
+
+
 
 #ifdef MEASSURE_TIME
     // start recording time
