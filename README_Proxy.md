@@ -3,6 +3,13 @@
     - p1: bms_pow2: power to 2 of the bit map size, default 16.
     - p2: max_afl_input: max input mutated by afl, default 1024, suggested: 512.
 
+## Apply the patch
+
+- `patch -p0 < afl_patch.diff`
+- `patch -p0 < aflplusplus_patch.diff`
+    - please ignore the error "File vanillaAFLplusplus/config.h is not a regular file -- refusing to patch"
+    - as this file is just a symbolic link
+
 ## Make for AFL
 - `cd vanillaAFL`
 - ` bms_pow2=<p1> make` 
