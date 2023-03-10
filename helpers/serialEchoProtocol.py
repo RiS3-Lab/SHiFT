@@ -15,7 +15,7 @@ def main():
 
     serialport = args.port
 
-    CRCtype = 'L152' # vlaid values H7x or L152
+    CRCtype = args.crc # vlaid values H7x or L152
    
     data= b''
  
@@ -171,7 +171,7 @@ def main():
     d = r + bitmap[:-4]
 
     #CRCverify = zlib.crc32(d) & 0xffffffff 
-    CRCverify =  crcl1.crc32(d) & 0xffffffff 
+   
 
     if CRCtype == 'L152':
         CRCverify =  crcl1.crc32(d) & 0xffffffff 
@@ -194,6 +194,7 @@ if __name__ == "__main__":
    parser.add_argument("-f","--file", type=str,default="", help="input file with crashes or hangs")
    parser.add_argument("-p","--port", type=str,default="/dev/ttyACM0", help="serial port")
    parser.add_argument("-b","--baud", type=int,default="500000", help="baudrate for serial port")
+   parser.add_argument("-c","--crc", type=str,default="L152", help="L152 or H7X")
    args = parser.parse_args()
    #main(sys.argv[1:])
    main()
