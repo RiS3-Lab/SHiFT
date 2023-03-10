@@ -53,5 +53,10 @@ class crcstm32l1:
 
         return (~crc) & 0xffffffff
 
-crc = crcstm32l1()
-print(hex(crc.crc32(b'\xde\xad\xbe\xef')))
+
+    
+
+if __name__ == "__main__":    
+   crc = crcstm32l1()
+   print("Test CRC")
+   print(hex(crc.crc32(b'\x0E\x00\x00\x00\x74\x65\x73\x74\x69\x6E\x70\x75\x74\x0A\x00\x00')))

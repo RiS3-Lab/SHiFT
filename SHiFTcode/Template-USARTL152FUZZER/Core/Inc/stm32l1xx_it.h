@@ -47,6 +47,8 @@
 
 /* Exported functions prototypes ---------------------------------------------*/
 void DebugMon_Handler(void);
+void DMA1_Channel6_IRQHandler(void);
+void DMA1_Channel7_IRQHandler(void);
 void TIM11_IRQHandler(void);
 void USART2_IRQHandler(void);
 void USART3_IRQHandler(void);
