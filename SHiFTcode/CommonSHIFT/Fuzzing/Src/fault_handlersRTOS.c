@@ -9,6 +9,7 @@
 #include "task.h"
 #include "main.h"
 #include "fuzzing.h"
+#include <stdio.h>
 
 
 #if DUALCOREFUZZ == 0
@@ -130,6 +131,9 @@ Fuzzer_t *pAFLfuzzer = (Fuzzer_t *)AFLfuzzerRegion;
 	  {
 		  // this should never happen if we reach this point the whole firmware state can be corrupted
 		  // TODO: can we reboot the MCU here?
+		  printf("Fuzzer crash bus fault!\n");
+		  NVIC_SystemReset();
+
 	  }
 
   }
@@ -173,6 +177,11 @@ Fuzzer_t *pAFLfuzzer = (Fuzzer_t *)AFLfuzzerRegion;
 	  {
 		  // this should never happen if we reach this point the whole firmware state can be corrupted
 		  // TODO: can we reboot the MCU here?
+		  printf("Fuzzer crash usage fault!: ");
+		  if(SCB->CFSR & SCB_CFSR_DIVBYZERO_Msk) printf("EX_CORTEX_DIV0 \n");
+		  if(SCB->CFSR & SCB_CFSR_UNALIGNED_Msk) printf("EX_CORTEX_UNA_ACCESS \n");
+		  if(SCB->CFSR & SCB_CFSR_UNDEFINSTR_Msk) printf("EX_CORTEX_UNDEF_INST \n");
+		  NVIC_SystemReset();
 	  }
 
   }

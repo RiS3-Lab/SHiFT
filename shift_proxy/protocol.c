@@ -363,7 +363,7 @@ void sendInputs(uint8_t* buf, uint32_t size){
     char *ptr = &buffaux[0];
     int i;
 
-    logfile = fopen("lofgile.txt", "a"); 
+    logfile = fopen("/home/alejandro/Documents/semi-fuzz-project/SHiFT/vanillaAFLplusplus/log/lofgile.txt", "a"); 
 
     if(logfile)
     {      

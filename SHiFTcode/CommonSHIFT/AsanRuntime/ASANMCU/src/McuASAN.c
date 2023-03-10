@@ -630,13 +630,15 @@ void *Allocate(uptr size, uptr alignment,
     //AsanThread *t = GetCurrentThread();
     void *allocated;
     allocated = malloc(needed_size);
-    addAlloc(allocated);
+
 
     if(!allocated)
     {
     	//printf("AddressSanitizer malloc run out of memory\n");
         return NULL;
     }
+
+    addAlloc(allocated);
 
     //if (*(uint8_t *)MEM_TO_SHADOW((uptr)allocated) == 0 ) {
       // Heap poisoning is enabled, but the allocator provides an unpoisoned

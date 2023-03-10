@@ -326,6 +326,7 @@ static void fuzzerTask( void * pvParameters )
 					 if(AFLfuzzer.allocs[i])
 				     {
 						 free(AFLfuzzer.allocs[i]);
+						 AFLfuzzer.allocs[i]=NULL;
 					 }
 					 i++;
 				  }
@@ -364,14 +365,17 @@ static void fuzzerTask( void * pvParameters )
 #endif
 					i = 0;
 
+
 					while(i<McuASAN_MAX_NUMBER_ALLOCS)
 					{
 						 if(AFLfuzzer.allocs[i])
 						 {
 							 free(AFLfuzzer.allocs[i]);
+							 AFLfuzzer.allocs[i]=NULL;
 						 }
 							 i++;
 					}
+
 					vTaskDelete(AFLfuzzer.xTaskTarget);
 				    taskYIELD();
 					spawnNewTarget();

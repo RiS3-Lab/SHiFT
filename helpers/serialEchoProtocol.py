@@ -7,18 +7,16 @@ import sys
 import os
 import ast
 from stm32crc import crcstm32l1
+import argparse
 #from IPython import embed
 
 
-def main(argv):
+def main():
 
-    serialport = '/dev/ttyACM0'
+    serialport = args.port
 
     CRCtype = 'L152' # vlaid values H7x or L152
-
-    
-
-
+   
     data= b''
  
     payloads = [
@@ -59,21 +57,35 @@ def main(argv):
     '9':'FAULT_ASAN'
     }
 
+    
+    if args.file != "":
+        if not os.path.exists(args.file):
+           print("{} does not exist")
+           exit(-1)
 
-    crashing_input_filename = "./crash_inputs.txt"
-    buggy_payloads = []
-    if os.path.exists(crashing_input_filename):
-        with open(crashing_input_filename,"r") as rfile:
-            for each_buggy_input in rfile.readlines():
-                each_buggy_input = each_buggy_input.strip()
-                a = ast.literal_eval(each_buggy_input)
-                buggy_payloads.append(a)
+        crashing_input_filename = args.file
+        payloads = []
+        if os.path.exists(crashing_input_filename):
+            with open(crashing_input_filename,"r") as rfile:
+                for each_buggy_input in rfile.readlines():
+                    each_buggy_input = each_buggy_input.strip()
+                    a = ast.literal_eval(each_buggy_input)
+                    payloads.append(a)
+            print("Using inputs from external file")
+            print("Total crashes or hangs: {}".format(len(payloads)))
+    
+    else:
+        print("Using inputs from internal samples")
 
-    print("{} buggy inputs".format(len(buggy_payloads)))
-    payload = (payloads[int(argv[0])])
-    if len(argv) == 2:
-        payload = buggy_payloads[int(argv[1])]
+    
+    if(args.index>=len(payloads) or args.index<0 ):
+        print("Index must be  between 0 and {}".format(len(payloads)-1))
+        exit(-1)
 
+
+    payload = (payloads[args.index])
+
+    
 
     inputLen = len(payload)+4 #4bytes added for crc
     data =  pack('I', inputLen) + payload
@@ -99,7 +111,7 @@ def main(argv):
 
     data = data + struct.pack('I', crc)
 
-    ser = serial.Serial(serialport, baudrate=115200)
+    ser = serial.Serial(serialport, baudrate=args.baud)
 
     # write the test input to the board
 
@@ -177,6 +189,13 @@ def main(argv):
 
 
 if __name__ == "__main__":
-   main(sys.argv[1:])
+   parser = argparse.ArgumentParser()
+   parser.add_argument("-i","--index", type=int,required=True, help="index of test case")
+   parser.add_argument("-f","--file", type=str,default="", help="input file with crashes or hangs")
+   parser.add_argument("-p","--port", type=str,default="/dev/ttyACM0", help="serial port")
+   parser.add_argument("-b","--baud", type=int,default="500000", help="baudrate for serial port")
+   args = parser.parse_args()
+   #main(sys.argv[1:])
+   main()
 
    

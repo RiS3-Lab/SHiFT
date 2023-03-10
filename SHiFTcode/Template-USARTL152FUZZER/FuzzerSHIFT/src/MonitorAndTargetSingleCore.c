@@ -81,7 +81,7 @@ uint32_t error_cnt;
  * requirements as mentioned at the top of this file.
  */
 
-static StackType_t targetTaskStack[ configMINIMAL_STACK_SIZE ] __attribute__( ( aligned( configMINIMAL_STACK_SIZE * sizeof( StackType_t ) ) ) );
+static StackType_t targetTaskStack[ 4*configMINIMAL_STACK_SIZE ] __attribute__( ( aligned( 4*configMINIMAL_STACK_SIZE * sizeof( StackType_t ) ) ) );
 static StackType_t FuzzerTaskStack[ configMINIMAL_STACK_SIZE ] __attribute__( ( aligned( configMINIMAL_STACK_SIZE * sizeof( StackType_t ) ) ) );
 
 
@@ -205,7 +205,7 @@ static void spawnNewTarget( )
    {
         	.pvTaskCode		= targetTask,
         	.pcName			= "Target",
-        	.usStackDepth	= configMINIMAL_STACK_SIZE,
+        	.usStackDepth	= 4*configMINIMAL_STACK_SIZE,
         	.pvParameters	= NULL,
         	.uxPriority		= 20, //| portPRIVILEGE_BIT, //20,     //20 | portPRIVILEGE_BIT,
         	.puxStackBuffer	= targetTaskStack,
@@ -276,6 +276,8 @@ static void fuzzerTask( void * pvParameters )
 	HelperShadowSize = MAX_BUFFER_INPUT>>3;
 	memset((void *)HelperShadow, 0x00,HelperShadowSize);
 
+	for(i=0; i<McuASAN_MAX_NUMBER_ALLOCS;i++)AFLfuzzer.allocs[i]=NULL;
+
 
 	numberofcycles = 0;
 	spawnNewTarget();
@@ -316,7 +318,8 @@ static void fuzzerTask( void * pvParameters )
 				 {
 					 if(AFLfuzzer.allocs[i])
 				     {
-						// free(AFLfuzzer.allocs[i]);
+						 free(AFLfuzzer.allocs[i]);
+						 AFLfuzzer.allocs[i]=NULL;
 					 }
 					 i++;
 				  }
@@ -360,6 +363,7 @@ static void fuzzerTask( void * pvParameters )
 						 if(AFLfuzzer.allocs[i])
 						 {
 							 free(AFLfuzzer.allocs[i]);
+							 AFLfuzzer.allocs[i]=NULL;
 						 }
 							 i++;
 					}
@@ -426,7 +430,7 @@ static void fuzzerTask( void * pvParameters )
 			 //printf("Total time: %u \n", (uint)AFLfuzzer.timespan);
 #if USARTHW == 1
 			 HAL_UART_Receive_IT(&HUART, AFLfuzzer.inputAFL.uxBuffer, 4);
-			// HAL_UARTEx_ReceiveToIdle_DMA(&HUART, bufferDMA, MAX_BUFFER_INPUT);
+			 //HAL_UARTEx_ReceiveToIdle_DMA(&HUART, bufferDMA, MAX_BUFFER_INPUT);
 #endif
 		}
 
@@ -507,6 +511,8 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
 		 AFLfuzzer.previousGuard = 0;
 		 RingZeroes(&AFLfuzzer.inputAFL);
 		 HAL_UART_Receive_IT(&HUART, AFLfuzzer.inputAFL.uxBuffer, 4);
+		 //HAL_UARTEx_ReceiveToIdle_DMA(&HUART, bufferDMA, MAX_BUFFER_INPUT);
+
     }
 
 
@@ -521,7 +527,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     Fuzzer_t *pAFLfuzzer = (Fuzzer_t *)AFLfuzzerRegion;
 #endif
 
-    BaseType_t xHigherPriorityTaskWoken;
+    BaseType_t xHigherPriorityTaskWoken =pdFALSE;
 	union ubytes_t auxbytes;
 	uint8_t *data;
 	uint8_t padding;
@@ -554,6 +560,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 				}
 				AFLfuzzer.inputLengthpadded = auxbytes.vint32 + padding;
 				HAL_UART_Receive_IT(&HUART, data+4, AFLfuzzer.inputLengthpadded);
+				//HAL_UARTEx_ReceiveToIdle_DMA(&HUART, data+4, AFLfuzzer.inputLengthpadded);
+
 			  }
 		}
 		else
@@ -599,20 +607,82 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
     Fuzzer_t *pAFLfuzzer = (Fuzzer_t *)AFLfuzzerRegion;
 #endif
 	uint16_t len;
+	BaseType_t xHigherPriorityTaskWoken =pdFALSE;
 
 
+
+/*
 	if(huart == &HUART)
 	{
 		len = Size;
 		FuzzingInputHandler(bufferDMA, (uint32_t *)(&len));
 		if(AFLfuzzer.bRXcomplete == false)
 		{
-			//HAL_UARTEx_ReceiveToIdle_DMA(&HUART, bufferDMA, MAX_BUFFER_INPUT);
-			HAL_UART_Receive_IT(&HUART, bufferDMA, MAX_BUFFER_INPUT);
+			HAL_UARTEx_ReceiveToIdle_DMA(&HUART, bufferDMA, MAX_BUFFER_INPUT);
+			//HAL_UART_Receive_IT(&HUART, bufferDMA, MAX_BUFFER_INPUT);
 		}
 	}
 
+*/
 
+	/*
+	if(AFLfuzzer.breceiving == false  && huart == &HUART)
+	{
+				AFLfuzzer.breceiving = true;
+
+				auxbytes.vbytes[0] = data[0];
+				auxbytes.vbytes[1] = data[1];
+				auxbytes.vbytes[2] = data[2];
+				auxbytes.vbytes[3] = data[3];
+				AFLfuzzer.inputLength = auxbytes.vint32;
+				if(auxbytes.vint32 < 512)
+				{
+					if (auxbytes.vint32 % 4)
+					{
+						 padding = 4 - auxbytes.vint32 % 4;
+					}
+					if (auxbytes.vint32 % 4)
+					{
+					   padding = 4 - auxbytes.vint32 % 4;
+					}
+					else
+					{
+						padding = 0;
+					}
+					AFLfuzzer.inputLengthpadded = auxbytes.vint32 + padding;
+					//HAL_UART_Receive_IT(&HUART, data+4, AFLfuzzer.inputLengthpadded);
+					HAL_UARTEx_ReceiveToIdle_DMA(&HUART, data+4, AFLfuzzer.inputLengthpadded);
+
+				  }
+			}*/
+	if(AFLfuzzer.breceiving  && huart == &HUART)
+    {
+				AFLfuzzer.breceiving = false;
+				AFLfuzzer.inputAFL.u32available =  AFLfuzzer.inputLengthpadded  + 4;
+				if(checkCRC(&AFLfuzzer.inputAFL))
+				{
+					AFLfuzzer.bRXcomplete = true;
+					xTaskNotifyIndexedFromISR(AFLfuzzer.xTaskFuzzer,
+				  	    				1, //index
+										1, //value = 1 data received
+										eSetBits,
+										&xHigherPriorityTaskWoken);
+
+				}
+				else
+				{
+					 AFLfuzzer.inputLength = 0;
+					 AFLfuzzer.bRXcomplete = false;
+					 AFLfuzzer.inputLength = 0;
+					 RingZeroes(&AFLfuzzer.inputAFL);
+					 SendBackFault(FAULT_INLEGTH);
+
+				}
+
+	 }
+
+
+	portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
 
 
 }
