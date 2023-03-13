@@ -305,6 +305,7 @@ static void fuzzerTask( void * pvParameters )
 					 if(AFLfuzzer.allocs[i])
 				     {
 						 free(AFLfuzzer.allocs[i]);
+						 AFLfuzzer.allocs[i] = NULL;
 					 }
 					 i++;
 				  }
@@ -348,6 +349,7 @@ static void fuzzerTask( void * pvParameters )
 						 if(AFLfuzzer.allocs[i])
 						 {
 							 free(AFLfuzzer.allocs[i]);
+							 AFLfuzzer.allocs[i] = NULL;
 						 }
 							 i++;
 					}

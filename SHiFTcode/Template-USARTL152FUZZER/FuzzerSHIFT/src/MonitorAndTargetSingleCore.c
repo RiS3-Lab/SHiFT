@@ -544,7 +544,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			auxbytes.vbytes[2] = data[2];
 			auxbytes.vbytes[3] = data[3];
 			AFLfuzzer.inputLength = auxbytes.vint32;
-			if(auxbytes.vint32 < 512)
+			if(auxbytes.vint32 < (MAX_BUFFER_INPUT-20)) // we reserve 20 bytes for CRC and padding
 			{
 				if (auxbytes.vint32 % 4)
 				{

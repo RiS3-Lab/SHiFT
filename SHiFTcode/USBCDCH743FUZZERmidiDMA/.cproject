@@ -120,12 +120,12 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="MallocMPU/Config|Fuzzing/Src/sanitizer.c|Fuzzing/Config|AsanRuntime/ASANMCU/config|AsanRuntime/printf|AsanRuntime/stdlib|Fuzzing/Src/fault_handlersRTOS_DC.c|MallocMPU/Baremetal|Fuzzing/MonitorTargetTemplates|Test|NDSS_wycinwyc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CommonSHIFT"/>
-						<entry excluding="App/usbd_cdc_if2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
-						<entry excluding="Target/inc|Target/src" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="FuzzerSHIFT"/>
+						<entry excluding="FreeRTOS-Kernel-M3|MallocMPU/Config|Fuzzing/Src/sanitizer.c|Fuzzing/Config|AsanRuntime/ASANMCU/config|AsanRuntime/printf|AsanRuntime/stdlib|Fuzzing/Src/fault_handlersRTOS_DC.c|MallocMPU/Baremetal|Fuzzing/MonitorTargetTemplates|Test|NDSS_wycinwyc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CommonSHIFT"/>
 						<entry excluding="Test/modbusoriginal.c|Src/sanitizer.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+						<entry excluding="Target/inc|Target/src" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="FuzzerSHIFT"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
+						<entry excluding="App/usbd_cdc_if2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -203,10 +203,10 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="App/usbd_cdc_if2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
 						<entry excluding="Test/modbusoriginal.c|Src/sanitizer.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
+						<entry excluding="App/usbd_cdc_if2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
