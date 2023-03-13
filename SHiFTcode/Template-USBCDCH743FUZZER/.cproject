@@ -95,7 +95,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="MallocMPU/Config|Fuzzing/Src/sanitizer.c|Fuzzing/Config|AsanRuntime/ASANMCU/config|AsanRuntime/printf|AsanRuntime/stdlib|Fuzzing/Src/fault_handlersRTOS_DC.c|MallocMPU/Baremetal|Fuzzing/MonitorTargetTemplates|Test|NDSS_wycinwyc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CommonSHIFT"/>
+						<entry excluding="AsanRuntime/ASANMCU/inc|FreeRTOS-Kernel-M3|MallocMPU/Config|Fuzzing/Src/sanitizer.c|Fuzzing/Config|AsanRuntime/ASANMCU/config|AsanRuntime/printf|AsanRuntime/stdlib|Fuzzing/Src/fault_handlersRTOS_DC.c|MallocMPU/Baremetal|Fuzzing/MonitorTargetTemplates|Test|NDSS_wycinwyc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CommonSHIFT"/>
 						<entry excluding="Test/modbusoriginal.c|Src/sanitizer.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="FuzzerSHIFT"/>
@@ -194,15 +194,6 @@
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
-	<storageModule moduleId="scannerConfiguration">
-		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1984320805;com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1984320805.;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.1882088675;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.939979584">
-			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.2118836534;com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.2118836534.;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.2090525774;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.781005397">
-			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-	</storageModule>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Debug">
 			<resource resourceType="PROJECT" workspacePath="/Template-USBCDCH743FUZZER"/>
@@ -210,5 +201,14 @@
 		<configuration configurationName="Release">
 			<resource resourceType="PROJECT" workspacePath="/Template-USBCDCH743FUZZER"/>
 		</configuration>
+	</storageModule>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.2118836534;com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.2118836534.;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.2090525774;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.781005397">
+			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1984320805;com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1984320805.;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.1882088675;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.939979584">
+			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
 	</storageModule>
 </cproject>

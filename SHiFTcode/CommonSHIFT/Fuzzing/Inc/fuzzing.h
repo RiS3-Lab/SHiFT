@@ -71,6 +71,7 @@ typedef struct
     uint16_t previousGuard;
     uint32_t N; //a counter for instrumentation
     bool iniGuard;
+    bool faultcom;
     uint16_t indexdif;
     volatile bool bRXcomplete;  // variable must be declared as volatile otherwise the compiler may optimize out it
     volatile bool bTXcomplete;

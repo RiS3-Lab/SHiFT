@@ -70,6 +70,7 @@ void SendBackFault(uint32_t faultcode)
 	AFLfuzzer.bRXcomplete = false;
 	AFLfuzzer.inputLength = 0;
 	AFLfuzzer.previousGuard = 0;
+	AFLfuzzer.faultcom = true;
 	RingZeroes(&AFLfuzzer.inputAFL);
 
 #if USARTHW == 0
@@ -166,6 +167,7 @@ void FuzzingInputHandler(uint8_t* Buf, uint32_t *Len)
 	  	    		AFLfuzzer.bRXcomplete = 1;
 	  	    		AFLfuzzer.timespan = HAL_GetTick();
 	  	    		//if(AFLfuzzer.inputAFL.u32availablenopad ==0)printf("Zero USB \n");
+	  	    		AFLfuzzer.faultcom = false;
 
 	  	    		xTaskNotifyIndexedFromISR(AFLfuzzer.xTaskFuzzer,
 	  	    				1, //index
@@ -177,6 +179,7 @@ void FuzzingInputHandler(uint8_t* Buf, uint32_t *Len)
 	  	    	{
 	  	    		// wrong CRC
 	  	    		//u32copied = 0;
+	  	    		AFLfuzzer.faultcom = true;
 	  	    		SendBackFault(FAULT_COMM);
 
 	  	    	}

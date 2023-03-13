@@ -13,11 +13,10 @@
 #include "usb_device.h"
 #include "usbd_cdc_if.h"
 #include "stdbool.h"
+#include "test.h"
 #include "McuASANconfig.h"
 #include "ConfigFuzzing.h"
 
-
-#include "atc.h"
 
 
 
@@ -57,6 +56,209 @@ const char * EX_str[]=
  *   address must be N x 0x1000, where N is an integer.
  */
 
+
+// beginning of cAT needded configurations and callbacks
+int32_t speed;
+uint16_t adr;
+uint8_t x;
+uint8_t y;
+uint8_t bytes_buf[4];
+char msg[16];
+bool quit_flag;
+
+int x_write(const struct cat_variable *var, size_t write_size)
+{
+        printf("x variable updated internally to: %u\n", x);
+        return 0;
+}
+
+int y_write(const struct cat_variable *var, size_t write_size)
+{
+        printf("y variable updated internally to: %u\n", y);
+        return 0;
+}
+
+int msg_write(const struct cat_variable *var, size_t write_size)
+{
+        printf("msg variable updated %lu bytes internally to: <%s>\n", write_size, msg);
+        return 0;
+}
+
+int speed_write(const struct cat_variable *var, size_t write_size)
+{
+        printf("speed variable updated internally to: %d\n", speed);
+        return 0;
+}
+
+int adr_write(const struct cat_variable *var, size_t write_size)
+{
+        printf("adr variable updated internally to: 0x%04X\n", adr);
+        return 0;
+}
+
+int bytesbuf_write(const struct cat_variable *var, size_t write_size)
+{
+        int i = 0;
+
+        printf("bytes_buf variable updated %lu bytes internally to: ", write_size);
+        for (i = 0; i < sizeof(bytes_buf); i++)
+                printf("%02X", bytes_buf[i]);
+        printf("\n");
+
+        return 0;
+}
+
+int go_write(const struct cat_command *cmd, const uint8_t *data, const size_t data_size, const size_t args_num)
+{
+        int i = 0;
+
+        printf("<%s>: x=%d y=%d msg=%s @ speed=%d\n",
+                cmd->name,
+                *(uint8_t*)(cmd->var[0].data),
+                *(uint8_t*)(cmd->var[1].data),
+                msg,
+                speed
+        );
+
+        printf("<bytes>: ");
+        for (i = 0; i < sizeof(bytes_buf); i++)
+                printf("%02X", bytes_buf[i]);
+        printf("\n");
+        return 0;
+}
+
+int set_write(const struct cat_command *cmd, const uint8_t *data, const size_t data_size, const size_t args_num)
+{
+        printf("<%s>: SET SPEED TO = %d\n",
+                cmd->name,
+                speed
+        );
+        return 0;
+}
+
+int set_read(const struct cat_command *cmd, uint8_t *data, size_t *data_size, const size_t max_data_size)
+{
+        return 0;
+}
+
+int test_run(const struct cat_command *cmd)
+{
+        printf("TEST: <%s>", cmd->name);
+        return 0;
+}
+
+int quit_run(const struct cat_command *cmd)
+{
+        printf("QUIT: <%s>", cmd->name);
+        quit_flag = true;
+        return 0;
+}
+
+int print_cmd_list1(const struct cat_command *cmd)
+{
+        return CAT_RETURN_STATE_PRINT_CMD_LIST_OK;
+}
+
+struct cat_variable go_vars[] = {
+        {
+                .type = CAT_VAR_UINT_DEC,
+                .data = &x,
+                .data_size = sizeof(x),
+                .write = x_write,
+                .name = "x"
+        },
+        {
+                .type = CAT_VAR_UINT_DEC,
+                .data = &y,
+                .data_size = sizeof(y),
+                .write = y_write,
+                .name = "y"
+        },
+        {
+                .type = CAT_VAR_BUF_STRING,
+                .data = msg,
+                .data_size = sizeof(msg),
+                .write = msg_write,
+                .name = "msg"
+        }
+};
+
+struct cat_variable set_vars[] = {
+        {
+                .type = CAT_VAR_INT_DEC,
+                .data = &speed,
+                .data_size = sizeof(speed),
+                .write = speed_write,
+                .name = "speed"
+        },
+        {
+                .type = CAT_VAR_NUM_HEX,
+                .data = &adr,
+                .data_size = sizeof(adr),
+                .write = adr_write,
+                .name = "address"
+        },
+        {
+                .type = CAT_VAR_BUF_HEX,
+                .data = &bytes_buf,
+                .data_size = sizeof(bytes_buf),
+                .write = bytesbuf_write,
+                .name = "buffer"
+        }
+};
+
+struct cat_command cmds[] = {
+        {
+                .name = "+GO",
+                .write = go_write,
+                .var = go_vars,
+                .var_num = sizeof(go_vars) / sizeof(go_vars[0]),
+                .need_all_vars = true
+        },
+        {
+                .name = "+SET",
+                .write = set_write,
+                .read = set_read,
+                .var = set_vars,
+                .var_num = sizeof(set_vars) / sizeof(set_vars[0]),
+        },
+        {
+                .name = "#TEST",
+                .run = test_run
+        },
+        {
+                .name = "#HELP",
+                .run = print_cmd_list1,
+        },
+        {
+                .name = "#QUIT",
+                .run = quit_run
+        },
+
+};
+
+char buf[128];
+
+struct cat_command_group cmd_group = {
+        .cmd = cmds,
+        .cmd_num = sizeof(cmds) / sizeof(cmds[0]),
+};
+
+struct cat_command_group *cmd_desc[] = {
+        &cmd_group
+};
+
+struct cat_descriptor desc = {
+        .cmd_group = cmd_desc,
+        .cmd_group_num = sizeof(cmd_desc) / sizeof(cmd_desc[0]),
+
+        .buf = buf,
+        .buf_size = sizeof(buf)
+};
+
+struct cat_object cat_obj;
+
+// end of cAT needed call backs
 /**
  * @brief Size of the shared memory region.
  */
@@ -66,32 +268,12 @@ const char * EX_str[]=
 
 
 
+#if DUALCOREFUZZ == 0
+//uint8_t AFLfuzzerRegion[AFLINPUTREGION_SIZE ] __attribute__( ( aligned( AFLINPUTREGION_SIZE ) ) );
+extern uint8_t AFLfuzzerRegion[AFLINPUTREGION_SIZE ] __attribute__( ( aligned( AFLINPUTREGION_SIZE ) ) );
+#endif
 
-
-atc_t  atc __attribute__( ( aligned(next_power_of_2(sizeof(atc_t) )  ) ) );
-uint8_t AFLfuzzerRegion[AFLINPUTREGION_SIZE ] __attribute__( ( aligned( AFLINPUTREGION_SIZE ) ) );
-
-uint8_t AFLfuzzerRegion[AFLINPUTREGION_SIZE ]    __attribute__( ( aligned( AFLINPUTREGION_SIZE ) ) );
-
-cmd_t cmds[4] __attribute__( ( aligned( sizeof(cmd_t)*4 ) ) );
-
-
-
-const char * cmds_const[] = {
-    "\r\n+CMD:1",
-    "\r\n+CMD:2",
-    "\r\n+CMD:3",
-	"\r\n+CMD:4"
-
-};
-
-
-
-extern volatile uint32_t uwTick;
-
-
-
-
+uint32_t error_cnt;
 
 /**
  * Since stack of a task is protected using MPU, it must satisfy MPU
@@ -120,8 +302,30 @@ void callbackInvalidFree()
 }
 #endif
 
+int write_char(char ch)
+{
+        putc(ch, stdout);
+        return 1;
+}
 
+unsigned int input_cursor = 0;
 
+int read_char(char *ch)
+{
+	Fuzzer_t *pAFLfuzzer = (Fuzzer_t *)AFLfuzzerRegion;
+	if(input_cursor >= (pAFLfuzzer->inputAFL.u32availablenopad-4)){
+		*ch = '\0';
+	}else{
+		*ch = pAFLfuzzer->inputAFL.uxBuffer[input_cursor + 4];
+		input_cursor ++;
+	}
+	return 1;
+}
+
+struct cat_io_interface iface = {
+        .read = read_char,
+        .write = write_char
+};
 
 static void targetTask( void * pvParameters )
 {
@@ -133,36 +337,81 @@ static void targetTask( void * pvParameters )
    Fuzzer_t *pAFLfuzzer = (Fuzzer_t *)AFLfuzzerRegion;
    #endif
 
+	//uint32_t testnumber = 0;
+    //vTaskAllocateMPURegions(NULL,targetTaskParameters.xRegions );
 
+   /*
+   InitmallocMPU(MALLOCMPU_ADRESS_A,
+   MALLOCMPU_ADRESS_B,
+   MALLOCMPU_BLOCK_SIZE,
+   MALLOCMPU_REGION_SIZE,
+   MALLOCMPU_FIRST_REGION,
+   MALLOCMPU_TOTAL_REGION,
+   callbackInvalidFree);
+   uint8_t *pointer;// = mallocMPU(32);
+   uint8_t readaux;
+   readaux = 10;
+
+   if(pointer)
+   	 {
+	     readaux = pointer[32];    // This should trigger exception out of bounds read
+	     pointer[-1]=readaux; 		   // This should trigger an exception out of bounds write
+   		 pointer[0]=1;             // This is a valid access
+   		 pointer[32-1]=1;            // This is a valid access
+
+   		 //free_mpu(pointer + 2);    // This should trigger invalid free
+   		 //free_mpu(pointer);        // This is a valid free
+   		 //pointer[0]=1;      	   // This should trigger exception use after free
+   	 }
+   pointer[3] = readaux;
+
+   freeMPU(pointer);
+
+
+    pointer = mallocMPU(32);
+
+    */
 
     AFLfuzzer.xTypeEx = EX_NO_EX;
-    //uint8_t firstRun=1;
-
-    atc_init(&atc, "MY_ATC", UART4, atc_found);
-
-    int i;
-    for(i=0; i<4; i++)
-    {
-    	atc_addSearch(&atc,(char *)cmds_const[i] );
-    	strcpy((char *)&cmds[i],(char *)cmds_const[i]);
-    }
-
-
-
-    portSWITCH_TO_USER_MODE(); //after initialization set itself into Unprivileged mode
+    HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_SET);
+    uint8_t firstRun=1;
 
    	xTaskNotifyIndexed(AFLfuzzer.xTaskFuzzer,2,1,eSetValueWithOverwrite); //notify the fuzzer task the target is ready
-    for( ; ; )
+   	cat_init(&cat_obj, &desc, &iface, NULL);
+   	for( ; ; )
 	{
 
-    	ulTaskNotifyTake(pdTRUE, portMAX_DELAY); // wait for the data coming from the fuzzer task and inject directly in the library buffer
-    	atc.rxIndex = AFLfuzzer.inputAFL.u32availablenopad-4 >= _ATC_RXSIZE ? _ATC_RXSIZE : AFLfuzzer.inputAFL.u32availablenopad-4;
-    	memcpy(atc.rxBuffer, &AFLfuzzer.inputAFL.uxBuffer[4], atc.rxIndex );
-    	atc.rxTime = HAL_GetTick();
-    	atc.loopTime = HAL_GetTick();
-    	atc_loop(&atc);
-		xTaskNotifyIndexed(AFLfuzzer.xTaskFuzzer,0,FAULT_NONE_RTOS,eSetValueWithOverwrite);//notify that the test finished
+    	ulTaskNotifyTake(pdTRUE, portMAX_DELAY); // wait for the data coming from the fuzzer task
 
+    	if(firstRun)
+    	{
+    		//AFLfuzzer.bRXcomplete = false;
+    		//AFLfuzzer.inputLength = 0;
+    		AFLfuzzer.previousGuard = 0;
+    		//RingZeroes(&AFLfuzzer.inputAFL);
+    		memset(AFLfuzzer.aflbmp,0,AFL_BITMAP_SIZE*sizeof(uint16_t));
+    		memset(AFLfuzzer.afldiff,0, AFL_BITMAP_SIZE/4 *sizeof(tuple_t)); //we need on extra tuple to clean which is used for the CRC
+    		AFLfuzzer.indexdif = 0;
+    		firstRun=0;
+    	}
+
+		HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
+		/*
+		printf("Input: ");
+		for(i=0; i< (AFLfuzzer.inputAFL.u32availablenopad-4); i++ )
+		{
+			printf("\\x\%02x",AFLfuzzer.inputAFL.uxBuffer[i+4]);
+		}
+		printf("\n");
+		*/
+		input_cursor = 0;
+		// since if input_cursor goes beyond the input buffer, read will just return \n so the buffer won't overflow
+		while(input_cursor < (pAFLfuzzer->inputAFL.u32availablenopad-4))
+		{
+			cat_service(&cat_obj);
+		}
+		xTaskNotifyIndexed(AFLfuzzer.xTaskFuzzer,0,FAULT_NONE_RTOS,eSetValueWithOverwrite);//notify that the test finished
+		HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_SET);
 	}
 }
 
@@ -186,10 +435,10 @@ static void spawnNewTarget( )
         	.xRegions		=	{
         			                { AFLfuzzerRegion, AFLINPUTREGION_SIZE, portMPU_REGION_READ_WRITE }, // AFL bitmap, diff buffer, TX diff buffer, this region is shareable
 									{ __user_heap_start__, 8*1024, portMPU_REGION_READ_WRITE  },
-   								    { ( void * )0x20000000, 64*1024, portMPU_REGION_READ_WRITE },        // shadow memory
-									{ &atc, next_power_of_2(sizeof(atc_t)), portMPU_REGION_READ_WRITE},
-        			                { &uwTick,32, portMPU_REGION_READ_WRITE},
-									{ cmds, sizeof(cmds),portMPU_REGION_READ_WRITE}
+   							 	    //{ paflbitmap, AFL_BITMAP_SIZE_BYTES, portMPU_REGION_READ_WRITE},    // This is necessary because AFL_BITMAP is in the TCM region
+   								    { ( void * )0x20000000, 64*1024, portMPU_REGION_READ_WRITE },     // shadow memory
+
+									//{0,0,0}
         						 }
    };
 
@@ -209,7 +458,6 @@ static void fuzzerTask( void * pvParameters )
 	( void ) pvParameters;
 	uint32_t notificationvalue;
 	uint32_t numberofcycles;
-	uint32_t refreshtarget = 0;
 	int i;
 
 
@@ -231,7 +479,7 @@ static void fuzzerTask( void * pvParameters )
 	           //HAL_UARTEx_ReceiveToIdle_DMA(&huart3, bufferDMA, MAX_BUFFER_INPUT);
     #endif
 	MX_USB_DEVICE_Init();
-
+	error_cnt = 0;
 
 	/**NOTIFICATION INDEXES**
 	 * 0: Notification from target to fuzzer after test execution
@@ -261,13 +509,7 @@ static void fuzzerTask( void * pvParameters )
 		ulTaskNotifyTakeIndexed(1,pdTRUE, portMAX_DELAY);
 		{
 
-
-			 refreshtarget = 0;
-			 AFLfuzzer.previousGuard = 0;
-			 memset(paflbitmap, 0, AFL_BITMAP_SIZE_BYTES);
-			 memset(AFLfuzzer.afldiff,0,AFL_BITMAP_SIZE_BYTES/4);
-			 AFLfuzzer.indexdif = 0;
-			 xTaskNotify(AFLfuzzer.xTaskTarget,0,eSetValueWithOverwrite); // Notify that data is ready
+			 xTaskNotify(AFLfuzzer.xTaskTarget,0,eSetValueWithOverwrite);
 
 			 //we will wait on Index 0 for notification from target task when testing finished
 			 notificationvalue = ulTaskNotifyTakeIndexed(0,pdTRUE, TARGET_TIMEOUT);
@@ -280,7 +522,10 @@ static void fuzzerTask( void * pvParameters )
 				 vTaskDelete(AFLfuzzer.xTaskTarget);
 				 taskYIELD(); //lets the kernel clean the TCB
 				 numberofcycles = 0;
-				 refreshtarget = 1;
+				 spawnNewTarget();
+				 // wait for the target task notification when ready
+				 ulTaskNotifyTakeIndexed(2,pdTRUE, TARGET_TIMEOUT/2);
+
 
 			 }
 			 else if(notificationvalue == FAULT_ASAN)
@@ -300,9 +545,8 @@ static void fuzzerTask( void * pvParameters )
 				  printf("ASAN violation %s \n", (char *)EX_str[AFLfuzzer.xTypeEx]);
 				  vTaskDelete(AFLfuzzer.xTaskTarget);
 				  taskYIELD();
-				  numberofcycles = 0;
-				  refreshtarget = 1;
-
+ 				  spawnNewTarget();
+ 				  ulTaskNotifyTakeIndexed(2,pdTRUE, TARGET_TIMEOUT/2);
 			 }
 			 else if(notificationvalue == FAULT_CRASH)
 			 {
@@ -311,7 +555,10 @@ static void fuzzerTask( void * pvParameters )
 				 //The target process was already killed in the Fault Handler ISR,
 				 //We need to spawn a new target task
 				 numberofcycles = 0;
-				 refreshtarget = 1;
+				 spawnNewTarget();
+				 taskYIELD(); // let's the kernel clean the TCB
+				 // wait for the target task notification when ready
+				 ulTaskNotifyTakeIndexed(2,pdTRUE, TARGET_TIMEOUT/2);
 
 			 }
 			 else if (notificationvalue == FAULT_NONE_RTOS)
@@ -319,7 +566,31 @@ static void fuzzerTask( void * pvParameters )
 				 // we need this because 0 means timeout for the RTOS notification system
 				notificationvalue = FAULT_NONE;
 				AFLfuzzer.aflheader[0] = notificationvalue;
-				refreshtarget = 0;
+
+#if PERSISTENT_MODE
+				numberofcycles++;
+				if(numberofcycles>=FUZZING_CYCLES_IN_PROCESS)
+				{
+					numberofcycles=0;
+#endif
+					i = 0;
+
+					while(i<McuASAN_MAX_NUMBER_ALLOCS)
+					{
+						 if(AFLfuzzer.allocs[i])
+						 {
+							 free(AFLfuzzer.allocs[i]);
+						 }
+							 i++;
+					}
+					vTaskDelete(AFLfuzzer.xTaskTarget);
+				    taskYIELD();
+					spawnNewTarget();
+					ulTaskNotifyTakeIndexed(2,pdTRUE, TARGET_TIMEOUT/2);
+
+#if PERSISTENT_MODE
+				}
+#endif
 
 			 }
 
@@ -338,50 +609,45 @@ static void fuzzerTask( void * pvParameters )
 			 crcbytes->vuint32 = ~uwCRCValue; //write the CRC at the end of the buffer
 
 			 AFLfuzzer.bTXcomplete = false;
+
+			 #if USARTHW == 0
 			 CDC_Transmit_FS((uint8_t *)AFLfuzzer.aflheader, 8);
+             #else
+			 HAL_UART_Transmit_IT(&huart3, (uint8_t *)AFLfuzzer.aflheader, 8);
+			 //HAL_UART_Transmit_DMA(&huart3,(uint8_t *)AFLfuzzer.aflheader, 8);
+             #endif
+
 			 //while(AFLfuzzer.bTXcomplete ==false); //wait for end of transmission
 			 ulTaskNotifyTakeIndexed(1,pdTRUE, 10);
 
 			 AFLfuzzer.bTXcomplete = false;
+             #if USARTHW == 0
 			 CDC_Transmit_FS((uint8_t *)auxdiff, AFLfuzzer.aflheader[1]);
+             #else
+			 HAL_UART_Transmit_IT(&huart3, (uint8_t *)auxdiff, AFLfuzzer.aflheader[1]);
+			 //HAL_UART_Transmit_DMA(&huart3, (uint8_t *)auxdiff, AFLfuzzer.aflheader[1]);
+             #endif
 
+			 //while(AFLfuzzer.bTXcomplete ==false); //wait for end of transmission
 			 ulTaskNotifyTakeIndexed(1,pdTRUE, 10);
-
-
-#if PERSISTENT_MODE
-				numberofcycles++;
-				if(numberofcycles>=FUZZING_CYCLES_IN_PROCESS && refreshtarget == 0)
-				{
-					numberofcycles=0;
-#endif
-					i = 0;
-
-					while(i<McuASAN_MAX_NUMBER_ALLOCS)
-					{
-						 if(AFLfuzzer.allocs[i])
-						 {
-							 free(AFLfuzzer.allocs[i]);
-						 }
-							 i++;
-					}
-					vTaskDelete(AFLfuzzer.xTaskTarget);
-				    taskYIELD();
-				    refreshtarget =1;
-
-#if PERSISTENT_MODE
-				}
-#endif
-
-			 if(refreshtarget == 1)
-			 {
-				 refreshtarget = 0;
-				 spawnNewTarget();
-				 ulTaskNotifyTakeIndexed(2,pdTRUE, TARGET_TIMEOUT/2);
-			 }
-
+			 AFLfuzzer.bRXcomplete = false;
 			 AFLfuzzer.inputLength = 0;
+			 AFLfuzzer.previousGuard = 0;
 			 RingZeroes(&AFLfuzzer.inputAFL);
 
+			 for(uint32_t i=0; i<AFLfuzzer.indexdif; i++)
+			 {
+				 paflbitmap[auxdiff[i].index]=0;
+			 }
+			 memset(AFLfuzzer.afldiff,0,(AFLfuzzer.indexdif+2)*sizeof(tuple_t)); //we need on extra tuple to clean which is used for the CRC
+			 AFLfuzzer.indexdif = 0;
+			 AFLfuzzer.timespan = HAL_GetTick() - AFLfuzzer.timespan;
+
+			 //printf("Total time: %u \n", (uint)AFLfuzzer.timespan);
+#if USARTHW == 1
+			 HAL_UART_Receive_IT(&huart3, AFLfuzzer.inputAFL.uxBuffer, 4);
+			// HAL_UARTEx_ReceiveToIdle_DMA(&huart3, bufferDMA, MAX_BUFFER_INPUT);
+#endif
 		}
 
 	}
