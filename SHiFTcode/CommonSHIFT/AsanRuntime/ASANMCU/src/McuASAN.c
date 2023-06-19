@@ -1110,7 +1110,7 @@ static void FreeRTOSReportFailure(type_exception_t  tEX)
 		  	AFLfuzzer.notiVCM4TOCM7 = FAULT_CRASH; //we detected a crash
 		  	//HAL_HSEM_FastTake(HSEM_ID_2);          //notify CM7 about the crash
 		  	//HAL_HSEM_Release(HSEM_ID_2,0);
-		  	HSEM_notify(HSEM_ID_2);
+		  	MPU_HSEM_notify(HSEM_ID_2);
 
 		  	//&hwwdg2->Instance->CR=64; //this should trigger a reboot immediately
 		  	//hwwdg2.Instance->CR=64; //this should trigger a reboot immediately
