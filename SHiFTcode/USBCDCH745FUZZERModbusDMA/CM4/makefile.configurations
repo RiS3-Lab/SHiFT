@@ -1,6 +1,0 @@
-"makefile.configurations": [
-    {
-        "name": "Clang CM4",
-        "makeArgs": ["Compiler=clang"]
-    }
-]
