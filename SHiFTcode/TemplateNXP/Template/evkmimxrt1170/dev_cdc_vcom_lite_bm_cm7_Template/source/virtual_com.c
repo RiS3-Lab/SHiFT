@@ -850,8 +850,8 @@ void main(void)
 
     APPInit();
 
-    activateCortexMtrapsUNA();
-    //activateCortexMtraps();
+    //activateCortexMtrapsUNA();
+    activateCortexMtraps();
     app_main();
 
 

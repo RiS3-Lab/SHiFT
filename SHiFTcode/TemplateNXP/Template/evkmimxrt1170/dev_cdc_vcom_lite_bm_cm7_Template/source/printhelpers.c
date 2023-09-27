@@ -136,3 +136,24 @@ int _execve(char *name, char **argv, char **env)
 	errno = ENOMEM;
 	return -1;
 }
+
+
+
+
+extern int  __user_heap_start__;
+
+caddr_t _sbrk ( int incr )
+{
+  static unsigned char *heap = NULL;
+  unsigned char *prev_heap;
+
+  if (heap == NULL) {
+    heap = (unsigned char *)&__user_heap_start__;
+  }
+  prev_heap = heap;
+  /* check removed to show basic approach */
+
+  heap += incr;
+
+  return (caddr_t) prev_heap;
+}
