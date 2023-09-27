@@ -47,7 +47,7 @@ void __sanitizer_cov_trace_pc(void)
 	 uint16_t *paflbitmap =  pAFLfuzzer->aflbmp;
 #endif
 
-	register uint32_t R14 asm("r14");
+	register uint32_t R14 __ASM("r14");
 
 	uint16_t guard;
 
