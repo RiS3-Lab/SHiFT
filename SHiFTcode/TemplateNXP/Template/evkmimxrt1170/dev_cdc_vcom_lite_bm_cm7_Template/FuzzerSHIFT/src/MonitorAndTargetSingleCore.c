@@ -175,7 +175,7 @@ static void spawnNewTarget( )
         			                { AFLfuzzerRegion, AFLINPUTREGION_SIZE, portMPU_REGION_READ_WRITE }, // AFL bitmap, diff buffer, TX diff buffer, this region is shareable
 									{ __user_heap_start__, 8*1024, portMPU_REGION_READ_WRITE  },
    							 	    //{ paflbitmap, AFL_BITMAP_SIZE_BYTES, portMPU_REGION_READ_WRITE},    // This is necessary because AFL_BITMAP is in the TCM region
-   								    { ( void * )0x20000000, 64*1024, portMPU_REGION_READ_WRITE },     // shadow memory
+   								    { ( void * )0x20240000, 32*1024, portMPU_REGION_READ_WRITE },     // shadow memory
 
 									//{0,0,0}
         						 }
@@ -257,7 +257,7 @@ static void fuzzerTask( void * pvParameters )
 			 if (notificationvalue == 0) // TIMEOUT
 			 {
 				 AFLfuzzer.aflheader[0] = FAULT_TMOUT;
-				 printf("Target timeout, starting a new target process...\n");
+				 DbgConsole_Printf("Target timeout, starting a new target process...\n");
 			     //We need to kill the target task and spawn a new target
 				 vTaskDelete(AFLfuzzer.xTaskTarget);
 				 taskYIELD(); //lets the kernel clean the TCB
@@ -283,7 +283,7 @@ static void fuzzerTask( void * pvParameters )
 				  }
 				  notificationvalue = FAULT_CRASH;
 				  AFLfuzzer.aflheader[0] = notificationvalue;
-				  printf("ASAN violation %s \n", (char *)EX_str[AFLfuzzer.xTypeEx]);
+				  DbgConsole_Printf("ASAN violation %s \n", (char *)EX_str[AFLfuzzer.xTypeEx]);
 				  vTaskDelete(AFLfuzzer.xTaskTarget);
 				  taskYIELD();
  				  spawnNewTarget();
@@ -292,7 +292,7 @@ static void fuzzerTask( void * pvParameters )
 			 else if(notificationvalue == FAULT_CRASH)
 			 {
 				 AFLfuzzer.aflheader[0] = notificationvalue;
-				 printf("T. crash at: 0x%x, %s \n", (unsigned int)AFLfuzzer.PCcrash, (char *)EX_str[AFLfuzzer.xTypeEx]);
+				 DbgConsole_Printf("T. crash at: 0x%x, %s \n", (unsigned int)AFLfuzzer.PCcrash, (char *)EX_str[AFLfuzzer.xTypeEx]);
 				 //The target process was already killed in the Fault Handler ISR,
 				 //We need to spawn a new target task
 				 numberofcycles = 0;
