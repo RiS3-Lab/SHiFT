@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="65">
+  <logicalFolder name="root" displayName="root" projectFiles="true">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <logicalFolder name="config" displayName="config" projectFiles="true">
+        <itemPath>config/hpl_cmcc_config.h</itemPath>
+        <itemPath>config/hpl_dmac_config.h</itemPath>
+        <itemPath>config/hpl_gclk_config.h</itemPath>
+        <itemPath>config/hpl_mclk_config.h</itemPath>
+        <itemPath>config/hpl_osc32kctrl_config.h</itemPath>
+        <itemPath>config/hpl_oscctrl_config.h</itemPath>
+        <itemPath>config/hpl_port_config.h</itemPath>
+        <itemPath>config/hpl_usb_config.h</itemPath>
+        <itemPath>config/peripheral_clk_config.h</itemPath>
+        <itemPath>config/usbd_config.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="examples" displayName="examples" projectFiles="true">
+        <itemPath>examples/driver_examples.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="hal" displayName="hal" projectFiles="true">
+        <logicalFolder name="include" displayName="include" projectFiles="true">
+          <itemPath>hal/include/hal_atomic.h</itemPath>
+          <itemPath>hal/include/hal_cache.h</itemPath>
+          <itemPath>hal/include/hal_delay.h</itemPath>
+          <itemPath>hal/include/hal_gpio.h</itemPath>
+          <itemPath>hal/include/hal_init.h</itemPath>
+          <itemPath>hal/include/hal_io.h</itemPath>
+          <itemPath>hal/include/hal_sleep.h</itemPath>
+          <itemPath>hal/include/hal_usb_device.h</itemPath>
+          <itemPath>hal/include/hpl_cmcc.h</itemPath>
+          <itemPath>hal/include/hpl_core.h</itemPath>
+          <itemPath>hal/include/hpl_delay.h</itemPath>
+          <itemPath>hal/include/hpl_dma.h</itemPath>
+          <itemPath>hal/include/hpl_gpio.h</itemPath>
+          <itemPath>hal/include/hpl_init.h</itemPath>
+          <itemPath>hal/include/hpl_irq.h</itemPath>
+          <itemPath>hal/include/hpl_ramecc.h</itemPath>
+          <itemPath>hal/include/hpl_sleep.h</itemPath>
+          <itemPath>hal/include/hpl_usb.h</itemPath>
+          <itemPath>hal/include/hpl_usb_device.h</itemPath>
+          <itemPath>hal/include/hpl_usb_host.h</itemPath>
+          <itemPath>hal/include/hpl_missing_features.h</itemPath>
+          <itemPath>hal/include/hpl_reset.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="utils" displayName="utils" projectFiles="true">
+          <logicalFolder name="include" displayName="include" projectFiles="true">
+            <itemPath>hal/utils/include/compiler.h</itemPath>
+            <itemPath>hal/utils/include/err_codes.h</itemPath>
+            <itemPath>hal/utils/include/events.h</itemPath>
+            <itemPath>hal/utils/include/utils.h</itemPath>
+            <itemPath>hal/utils/include/utils_assert.h</itemPath>
+            <itemPath>hal/utils/include/utils_event.h</itemPath>
+            <itemPath>hal/utils/include/utils_increment_macro.h</itemPath>
+            <itemPath>hal/utils/include/utils_list.h</itemPath>
+            <itemPath>hal/utils/include/utils_repeat_macro.h</itemPath>
+            <itemPath>hal/utils/include/parts.h</itemPath>
+          </logicalFolder>
+        </logicalFolder>
+      </logicalFolder>
+      <logicalFolder name="hpl" displayName="hpl" projectFiles="true">
+        <logicalFolder name="core" displayName="core" projectFiles="true">
+          <itemPath>hpl/core/hpl_core_port.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="gclk" displayName="gclk" projectFiles="true">
+          <itemPath>hpl/gclk/hpl_gclk_base.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="pm" displayName="pm" projectFiles="true">
+          <itemPath>hpl/pm/hpl_pm_base.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="port" displayName="port" projectFiles="true">
+          <itemPath>hpl/port/hpl_gpio_base.h</itemPath>
+        </logicalFolder>
+      </logicalFolder>
+      <logicalFolder name="hri" displayName="hri" projectFiles="true">
+        <itemPath>hri/hri_ac_d51.h</itemPath>
+        <itemPath>hri/hri_adc_d51.h</itemPath>
+        <itemPath>hri/hri_aes_d51.h</itemPath>
+        <itemPath>hri/hri_ccl_d51.h</itemPath>
+        <itemPath>hri/hri_cmcc_d51.h</itemPath>
+        <itemPath>hri/hri_d51.h</itemPath>
+        <itemPath>hri/hri_dac_d51.h</itemPath>
+        <itemPath>hri/hri_dmac_d51.h</itemPath>
+        <itemPath>hri/hri_dsu_d51.h</itemPath>
+        <itemPath>hri/hri_eic_d51.h</itemPath>
+        <itemPath>hri/hri_evsys_d51.h</itemPath>
+        <itemPath>hri/hri_freqm_d51.h</itemPath>
+        <itemPath>hri/hri_gclk_d51.h</itemPath>
+        <itemPath>hri/hri_hmatrixb_d51.h</itemPath>
+        <itemPath>hri/hri_i2s_d51.h</itemPath>
+        <itemPath>hri/hri_icm_d51.h</itemPath>
+        <itemPath>hri/hri_mclk_d51.h</itemPath>
+        <itemPath>hri/hri_nvmctrl_d51.h</itemPath>
+        <itemPath>hri/hri_osc32kctrl_d51.h</itemPath>
+        <itemPath>hri/hri_oscctrl_d51.h</itemPath>
+        <itemPath>hri/hri_pac_d51.h</itemPath>
+        <itemPath>hri/hri_pcc_d51.h</itemPath>
+        <itemPath>hri/hri_pdec_d51.h</itemPath>
+        <itemPath>hri/hri_pm_d51.h</itemPath>
+        <itemPath>hri/hri_port_d51.h</itemPath>
+        <itemPath>hri/hri_qspi_d51.h</itemPath>
+        <itemPath>hri/hri_ramecc_d51.h</itemPath>
+        <itemPath>hri/hri_rstc_d51.h</itemPath>
+        <itemPath>hri/hri_rtc_d51.h</itemPath>
+        <itemPath>hri/hri_sdhc_d51.h</itemPath>
+        <itemPath>hri/hri_sercom_d51.h</itemPath>
+        <itemPath>hri/hri_supc_d51.h</itemPath>
+        <itemPath>hri/hri_tc_d51.h</itemPath>
+        <itemPath>hri/hri_tcc_d51.h</itemPath>
+        <itemPath>hri/hri_trng_d51.h</itemPath>
+        <itemPath>hri/hri_usb_d51.h</itemPath>
+        <itemPath>hri/hri_wdt_d51.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="usb" displayName="usb" projectFiles="true">
+        <logicalFolder name="class" displayName="class" projectFiles="true">
+          <logicalFolder name="cdc" displayName="cdc" projectFiles="true">
+            <logicalFolder name="device" displayName="device" projectFiles="true">
+              <itemPath>usb/class/cdc/device/cdcdf_acm.h</itemPath>
+              <itemPath>usb/class/cdc/device/cdcdf_acm_desc.h</itemPath>
+            </logicalFolder>
+            <itemPath>usb/class/cdc/usb_protocol_cdc.h</itemPath>
+          </logicalFolder>
+        </logicalFolder>
+        <logicalFolder name="device" displayName="device" projectFiles="true">
+          <itemPath>usb/device/usbdc.h</itemPath>
+        </logicalFolder>
+        <itemPath>usb/usb_atmel.h</itemPath>
+        <itemPath>usb/usb_debug.h</itemPath>
+        <itemPath>usb/usb_includes.h</itemPath>
+        <itemPath>usb/usb_protocol.h</itemPath>
+      </logicalFolder>
+      <itemPath>driver_init.h</itemPath>
+      <itemPath>atmel_start_pins.h</itemPath>
+      <itemPath>usb_start.h</itemPath>
+      <itemPath>atmel_start.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="LinkerScript"
+                   displayName="Linker Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <logicalFolder name="examples" displayName="examples" projectFiles="true">
+        <itemPath>examples/driver_examples.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="hal" displayName="hal" projectFiles="true">
+        <logicalFolder name="src" displayName="src" projectFiles="true">
+          <itemPath>hal/src/hal_atomic.c</itemPath>
+          <itemPath>hal/src/hal_cache.c</itemPath>
+          <itemPath>hal/src/hal_delay.c</itemPath>
+          <itemPath>hal/src/hal_gpio.c</itemPath>
+          <itemPath>hal/src/hal_init.c</itemPath>
+          <itemPath>hal/src/hal_io.c</itemPath>
+          <itemPath>hal/src/hal_sleep.c</itemPath>
+          <itemPath>hal/src/hal_usb_device.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="utils" displayName="utils" projectFiles="true">
+          <logicalFolder name="src" displayName="src" projectFiles="true">
+            <itemPath>hal/utils/src/utils_assert.c</itemPath>
+            <itemPath>hal/utils/src/utils_event.c</itemPath>
+            <itemPath>hal/utils/src/utils_list.c</itemPath>
+            <itemPath>hal/utils/src/utils_syscalls.c</itemPath>
+          </logicalFolder>
+        </logicalFolder>
+      </logicalFolder>
+      <logicalFolder name="hpl" displayName="hpl" projectFiles="true">
+        <logicalFolder name="cmcc" displayName="cmcc" projectFiles="true">
+          <itemPath>hpl/cmcc/hpl_cmcc.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="core" displayName="core" projectFiles="true">
+          <itemPath>hpl/core/hpl_core_m4.c</itemPath>
+          <itemPath>hpl/core/hpl_init.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="dmac" displayName="dmac" projectFiles="true">
+          <itemPath>hpl/dmac/hpl_dmac.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="gclk" displayName="gclk" projectFiles="true">
+          <itemPath>hpl/gclk/hpl_gclk.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="mclk" displayName="mclk" projectFiles="true">
+          <itemPath>hpl/mclk/hpl_mclk.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="osc32kctrl" displayName="osc32kctrl" projectFiles="true">
+          <itemPath>hpl/osc32kctrl/hpl_osc32kctrl.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="oscctrl" displayName="oscctrl" projectFiles="true">
+          <itemPath>hpl/oscctrl/hpl_oscctrl.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="pm" displayName="pm" projectFiles="true">
+          <itemPath>hpl/pm/hpl_pm.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="ramecc" displayName="ramecc" projectFiles="true">
+          <itemPath>hpl/ramecc/hpl_ramecc.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="usb" displayName="usb" projectFiles="true">
+          <itemPath>hpl/usb/hpl_usb.c</itemPath>
+        </logicalFolder>
+      </logicalFolder>
+      <logicalFolder name="samd51a" displayName="samd51a" projectFiles="true">
+        <logicalFolder name="gcc" displayName="gcc" projectFiles="true">
+          <logicalFolder name="gcc" displayName="gcc" projectFiles="true">
+            <itemPath>samd51a/gcc/gcc/startup_samd51.c</itemPath>
+          </logicalFolder>
+          <itemPath>samd51a/gcc/system_samd51.c</itemPath>
+        </logicalFolder>
+      </logicalFolder>
+      <logicalFolder name="f1" displayName="SHiFT" projectFiles="true">
+        <logicalFolder name="CommonSHIFT" displayName="CommonSHIFT" projectFiles="true">
+          <logicalFolder name="AsanRuntime" displayName="AsanRuntime" projectFiles="true">
+            <logicalFolder name="ASANMCU" displayName="ASANMCU" projectFiles="true">
+              <logicalFolder name="inc" displayName="inc" projectFiles="true">
+              </logicalFolder>
+              <logicalFolder name="src" displayName="src" projectFiles="true">
+                <itemPath>../CommonSHIFT/AsanRuntime/ASANMCU/src/McuASAN.c</itemPath>
+                <itemPath>../CommonSHIFT/AsanRuntime/ASANMCU/src/ubsan_handlers.c</itemPath>
+              </logicalFolder>
+            </logicalFolder>
+          </logicalFolder>
+          <logicalFolder name="FreeRTOS-Kernel"
+                         displayName="FreeRTOS-Kernel"
+                         projectFiles="true">
+            <logicalFolder name="include" displayName="include" projectFiles="true">
+            </logicalFolder>
+            <logicalFolder name="portable" displayName="portable" projectFiles="true">
+              <logicalFolder name="Common" displayName="Common" projectFiles="true">
+                <itemPath>../CommonSHIFT/FreeRTOS-Kernel/portable/Common/mpu_wrappers.c</itemPath>
+              </logicalFolder>
+              <logicalFolder name="GCC" displayName="GCC" projectFiles="true">
+                <logicalFolder name="ARM_CM4_MPU" displayName="ARM_CM4_MPU" projectFiles="true">
+                  <itemPath>../CommonSHIFT/FreeRTOS-Kernel/portable/GCC/ARM_CM4_MPU/port.c</itemPath>
+                </logicalFolder>
+              </logicalFolder>
+              <logicalFolder name="MemMang" displayName="MemMang" projectFiles="true">
+                <itemPath>../CommonSHIFT/FreeRTOS-Kernel/portable/MemMang/heap_4.c</itemPath>
+              </logicalFolder>
+            </logicalFolder>
+            <itemPath>../CommonSHIFT/FreeRTOS-Kernel/stream_buffer.c</itemPath>
+            <itemPath>../CommonSHIFT/FreeRTOS-Kernel/croutine.c</itemPath>
+            <itemPath>../CommonSHIFT/FreeRTOS-Kernel/event_groups.c</itemPath>
+            <itemPath>../CommonSHIFT/FreeRTOS-Kernel/timers.c</itemPath>
+            <itemPath>../CommonSHIFT/FreeRTOS-Kernel/queue.c</itemPath>
+            <itemPath>../CommonSHIFT/FreeRTOS-Kernel/list.c</itemPath>
+            <itemPath>../CommonSHIFT/FreeRTOS-Kernel/tasks.c</itemPath>
+          </logicalFolder>
+          <logicalFolder name="Fuzzing" displayName="Fuzzing" projectFiles="true">
+            <logicalFolder name="Inc" displayName="Inc" projectFiles="true">
+            </logicalFolder>
+            <logicalFolder name="Src" displayName="Src" projectFiles="true">
+              <itemPath>../CommonSHIFT/Fuzzing/Src/app_main.c</itemPath>
+              <itemPath>../CommonSHIFT/Fuzzing/Src/fault_handlersRTOS.c</itemPath>
+              <itemPath>../CommonSHIFT/Fuzzing/Src/SanitizerGCC.c</itemPath>
+              <itemPath>../CommonSHIFT/Fuzzing/Src/ring.c</itemPath>
+              <itemPath>../CommonSHIFT/Fuzzing/Src/fuzzing.c</itemPath>
+            </logicalFolder>
+          </logicalFolder>
+          <logicalFolder name="MallocMPU" displayName="MallocMPU" projectFiles="true">
+            <logicalFolder name="FreeRTOS" displayName="FreeRTOS" projectFiles="true">
+              <itemPath>../CommonSHIFT/MallocMPU/FreeRTOS/application_defined_privileged_functions.h</itemPath>
+              <itemPath>../CommonSHIFT/MallocMPU/FreeRTOS/application_defined_privileged_functions_1046.h</itemPath>
+              <itemPath>../CommonSHIFT/MallocMPU/FreeRTOS/freertos_tasks_c_additions.h</itemPath>
+              <itemPath>../CommonSHIFT/MallocMPU/FreeRTOS/malloc_mpu.h</itemPath>
+            </logicalFolder>
+          </logicalFolder>
+        </logicalFolder>
+        <logicalFolder name="FuzzerSHIFT" displayName="FuzzerSHIFT" projectFiles="true">
+          <logicalFolder name="inc" displayName="inc" projectFiles="true">
+          </logicalFolder>
+          <logicalFolder name="src" displayName="src" projectFiles="true">
+            <itemPath>FuzzerSHIFT/src/MonitorAndTargetSingleCore.c</itemPath>
+          </logicalFolder>
+          <logicalFolder name="Target" displayName="Target" projectFiles="true">
+            <logicalFolder name="inc" displayName="inc" projectFiles="true">
+            </logicalFolder>
+            <logicalFolder name="src" displayName="src" projectFiles="true">
+              <itemPath>FuzzerSHIFT/Target/src/test.c</itemPath>
+            </logicalFolder>
+          </logicalFolder>
+        </logicalFolder>
+      </logicalFolder>
+      <logicalFolder name="usb" displayName="usb" projectFiles="true">
+        <logicalFolder name="class" displayName="class" projectFiles="true">
+          <logicalFolder name="cdc" displayName="cdc" projectFiles="true">
+            <logicalFolder name="device" displayName="device" projectFiles="true">
+              <itemPath>usb/class/cdc/device/cdcdf_acm.c</itemPath>
+            </logicalFolder>
+          </logicalFolder>
+        </logicalFolder>
+        <logicalFolder name="device" displayName="device" projectFiles="true">
+          <itemPath>usb/device/usbdc.c</itemPath>
+        </logicalFolder>
+        <itemPath>usb/usb_protocol.c</itemPath>
+      </logicalFolder>
+      <itemPath>main.c</itemPath>
+      <itemPath>driver_init.c</itemPath>
+      <itemPath>usb_start.c</itemPath>
+      <itemPath>atmel_start.c</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>../CommonSHIFT</Elem>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="2">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <targetDevice>ATSAMD51J19A</targetDevice>
+        <targetHeader></targetHeader>
+        <targetPluginBoard></targetPluginBoard>
+        <platformTool>jlink</platformTool>
+        <languageToolchain>ARM</languageToolchain>
+        <languageToolchainVersion>12.3.1</languageToolchainVersion>
+        <platform>2</platform>
+      </toolsSet>
+      <packs>
+        <pack name="SAMD51_DFP" vendor="Microchip" version="3.7.237"/>
+        <pack name="CMSIS" vendor="ARM" version="5.4.0"/>
+      </packs>
+      <ScriptingSettings>
+      </ScriptingSettings>
+      <compileType>
+        <linkerTool>
+          <linkerLibItems>
+          </linkerLibItems>
+        </linkerTool>
+        <archiverTool>
+        </archiverTool>
+        <loading>
+          <useAlternateLoadableFile>false</useAlternateLoadableFile>
+          <parseOnProdLoad>false</parseOnProdLoad>
+          <alternateLoadableFile></alternateLoadableFile>
+        </loading>
+        <subordinates>
+        </subordinates>
+      </compileType>
+      <makeCustomizationType>
+        <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>
+        <makeUseCleanTarget>false</makeUseCleanTarget>
+        <makeCustomizationPreStep></makeCustomizationPreStep>
+        <makeCustomizationPostStepEnabled>false</makeCustomizationPostStepEnabled>
+        <makeCustomizationPostStep></makeCustomizationPostStep>
+        <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>
+        <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
+        <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
+      </makeCustomizationType>
+      <ARM-AR>
+        <property key="archiver-flags" value="-r"/>
+      </ARM-AR>
+      <ARM-AS>
+        <property key="announce-version" value="false"/>
+        <property key="include-paths" value=""/>
+        <property key="suppress-warnings" value="false"/>
+      </ARM-AS>
+      <ARM-AS-PRE>
+        <property key="announce-version" value="false"/>
+        <property key="include-paths" value=""/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="preprocessor-macros-undefined" value=""/>
+        <property key="suppress-warnings" value="false"/>
+      </ARM-AS-PRE>
+      <ARM-GCC>
+        <property key="additional-warnings" value="true"/>
+        <property key="called-functions-located" value="true"/>
+        <property key="default-bitfield-type" value="false"/>
+        <property key="default-char-type" value="false"/>
+        <property key="extra-include-directories" value=""/>
+        <property key="extra-warnings" value="false"/>
+        <property key="fast-math" value="false"/>
+        <property key="garbage-collect-data" value="false"/>
+        <property key="garbage-collect-functions" value="true"/>
+        <property key="inhibit-all" value="false"/>
+        <property key="make-warnings-into-errors" value="false"/>
+        <property key="no-system-directories" value="false"/>
+        <property key="optimization-level" value="-Os"/>
+        <property key="position-independent" value="false"/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="preprocessor-macros-undefined" value=""/>
+        <property key="strict-ansi" value="false"/>
+        <property key="strict-ansi-errors" value="false"/>
+        <property key="support-ansi" value="false"/>
+        <property key="syntax-only" value="false"/>
+        <property key="undefined-identifier" value="false"/>
+        <property key="unsafe-math" value="false"/>
+        <property key="verbose" value="false"/>
+        <appendMe value="-g3"/>
+      </ARM-GCC>
+      <ARM-Global>
+        <property key="bin" value="false"/>
+        <property key="common-include-directories"
+                  value="usb;hpl/port;hpl/osc32kctrl;hpl/oscctrl;./.;hpl/cmcc;usb/class/cdc;hal/utils/include;hal/include;hpl/pm;usb/class/cdc/device;hri;hpl/gclk;hpl/mclk;hpl/core;hpl/ramecc;usb/device;hpl/dmac;examples;hpl/usb;config;../CommonSHIFT/Fuzzing/Inc;../CommonSHIFT/FreeRTOS-Kernel/include;../CommonSHIFT/FreeRTOS-Kernel/portable/GCC/ARM_CM4_MPU;../CommonSHIFT/AsanRuntime/ASANMCU/inc;../CommonSHIFT/MallocMPU/FreeRTOS;FuzzerSHIFT/inc;FuzzerSHIFT/Target/inc;CMSIS/Core/Include"/>
+        <property key="eep" value="false"/>
+        <property key="hex" value="true"/>
+        <property key="lss" value="false"/>
+        <property key="omit-pack-options" value="true"/>
+        <property key="processor-mode" value="-mthumb"/>
+        <property key="srec" value="false"/>
+        <property key="user-pack-include" value="samd51a/include;CMSIS/Core/Include"/>
+        <appendMe value="-mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb "/>
+      </ARM-Global>
+      <ARM-LD>
+        <property key="additional-specs" value="--specs=nosys.specs"/>
+        <property key="exclude-standard-libraries" value="false"/>
+        <property key="extra-lib-directories" value="samd51a/gcc/gcc"/>
+        <property key="fast-math" value="false"/>
+        <property key="flash-segment" value=""/>
+        <property key="generate-map-file" value="true"/>
+        <property key="input-libraries" value=""/>
+        <property key="no-default-libs" value="false"/>
+        <property key="no-shared-libraries" value="false"/>
+        <property key="no-startup-files" value="false"/>
+        <property key="omit-symbol-information" value="false"/>
+        <property key="other-options" value=""/>
+        <property key="position-independent" value="false"/>
+        <property key="remove-unused-sections" value="true"/>
+        <property key="size-optimized-library" value="false"/>
+        <property key="sram-segment" value=""/>
+        <property key="unsafe-math" value="false"/>
+        <appendMe value="-T&quot;samd51a/gcc/gcc/samd51j19a_flashMPU.ld&quot; "/>
+      </ARM-LD>
+      <item path="FuzzerSHIFT/Target/src/test.c" ex="false" overriding="true">
+        <ARM-AR>
+          <property key="archiver-flags" value="-r"/>
+        </ARM-AR>
+        <ARM-AS>
+          <property key="announce-version" value="false"/>
+          <property key="include-paths" value=""/>
+          <property key="suppress-warnings" value="false"/>
+        </ARM-AS>
+        <ARM-AS-PRE>
+          <property key="announce-version" value="false"/>
+          <property key="include-paths" value=""/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="preprocessor-macros-undefined" value=""/>
+          <property key="suppress-warnings" value="false"/>
+        </ARM-AS-PRE>
+        <ARM-CPP>
+        </ARM-CPP>
+        <ARM-GCC>
+          <property key="additional-warnings" value="true"/>
+          <property key="called-functions-located" value="true"/>
+          <property key="default-bitfield-type" value="false"/>
+          <property key="default-char-type" value="false"/>
+          <property key="extra-include-directories" value=""/>
+          <property key="extra-warnings" value="false"/>
+          <property key="fast-math" value="false"/>
+          <property key="garbage-collect-data" value="false"/>
+          <property key="garbage-collect-functions" value="true"/>
+          <property key="inhibit-all" value="false"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="no-system-directories" value="false"/>
+          <property key="optimization-level" value="-Os"/>
+          <property key="position-independent" value="false"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="preprocessor-macros-undefined" value=""/>
+          <property key="strict-ansi" value="false"/>
+          <property key="strict-ansi-errors" value="false"/>
+          <property key="support-ansi" value="false"/>
+          <property key="syntax-only" value="false"/>
+          <property key="undefined-identifier" value="false"/>
+          <property key="unsafe-math" value="false"/>
+          <property key="verbose" value="false"/>
+          <appendMe value="-g3"/>
+        </ARM-GCC>
+        <ARM-Global>
+          <property key="bin" value="false"/>
+          <property key="common-include-directories"
+                    value="usb;hpl/port;hpl/osc32kctrl;hpl/oscctrl;./.;hpl/cmcc;usb/class/cdc;hal/utils/include;hal/include;hpl/pm;usb/class/cdc/device;hri;hpl/gclk;hpl/mclk;hpl/core;hpl/ramecc;usb/device;hpl/dmac;examples;hpl/usb;config;../CommonSHIFT/Fuzzing/Inc;../CommonSHIFT/FreeRTOS-Kernel/include;../CommonSHIFT/FreeRTOS-Kernel/portable/GCC/ARM_CM4_MPU;../CommonSHIFT/AsanRuntime/ASANMCU/inc;../CommonSHIFT/MallocMPU/FreeRTOS;FuzzerSHIFT/inc;FuzzerSHIFT/Target/inc;CMSIS/Core/Include"/>
+          <property key="eep" value="false"/>
+          <property key="hex" value="true"/>
+          <property key="lss" value="false"/>
+          <property key="omit-pack-options" value="true"/>
+          <property key="processor-mode" value="-mthumb"/>
+          <property key="srec" value="false"/>
+          <property key="user-pack-include" value="samd51a/include;CMSIS/Core/Include"/>
+          <appendMe value="-mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb     -fsanitize-coverage=trace-pc  -fno-common -fsanitize=address  "/>
+        </ARM-Global>
+        <ARM-LD>
+          <property key="additional-specs" value="--specs=nosys.specs"/>
+          <property key="exclude-standard-libraries" value="false"/>
+          <property key="extra-lib-directories" value="samd51a/gcc/gcc"/>
+          <property key="fast-math" value="false"/>
+          <property key="flash-segment" value=""/>
+          <property key="generate-map-file" value="true"/>
+          <property key="input-libraries" value=""/>
+          <property key="no-default-libs" value="false"/>
+          <property key="no-shared-libraries" value="false"/>
+          <property key="no-startup-files" value="false"/>
+          <property key="omit-symbol-information" value="false"/>
+          <property key="other-options" value=""/>
+          <property key="position-independent" value="false"/>
+          <property key="remove-unused-sections" value="true"/>
+          <property key="size-optimized-library" value="false"/>
+          <property key="sram-segment" value=""/>
+          <property key="unsafe-math" value="false"/>
+          <appendMe value="-T&quot;samd51a/gcc/gcc/samd51j19a_flashMPU.ld&quot; "/>
+        </ARM-LD>
+      </item>
+      <Tool>
+        <property key="AutoSelectMemRanges" value="auto"/>
+        <property key="arm.use_vtor" value="false"/>
+        <property key="arm.vtor_adr" value="exception_table"/>
+        <property key="communication.adaptivespeed" value="false"/>
+        <property key="communication.autoselectspeed" value="true"/>
+        <property key="communication.interface" value="swd"/>
+        <property key="communication.speed" value="4"/>
+        <property key="debugoptions.debug-startup" value="Use system settings"/>
+        <property key="debugoptions.reset-behaviour" value="Use system settings"/>
+        <property key="event.recorder.enabled" value="false"/>
+        <property key="event.recorder.scvd.files" value=""/>
+        <property key="jlink.override" value=""/>
+        <property key="lastid" value=""/>
+        <property key="loader.board_file" value="${ProjectDir}/board.xboard"/>
+        <property key="memories.bootflash" value="true"/>
+        <property key="memories.configurationmemory" value="true"/>
+        <property key="memories.eeprom" value="true"/>
+        <property key="memories.id" value="true"/>
+        <property key="memories.instruction.ram" value="true"/>
+        <property key="memories.instruction.ram.ranges"
+                  value="${memories.instruction.ram.ranges.default}"/>
+        <property key="memories.programmemory" value="true"/>
+        <property key="memories.programmemory.ranges" value="0x0-0x7ffff"/>
+        <property key="programoptions.eraseb4program" value="false"/>
+        <property key="programoptions.preservebootflash" value="false"/>
+        <property key="programoptions.preserveprogrammemory" value="false"/>
+        <property key="programoptions.preserveprogramrange.ranges" value="0x0-0x7ffff"/>
+        <property key="programoptions.resetafterprogram" value="true"/>
+        <property key="script.has_reset" value="true"/>
+        <property key="script.log_level" value="1"/>
+        <property key="script.reset_delay" value="0"/>
+        <property key="script.show_output" value="false"/>
+        <property key="x.erase.clearprot" value="true"/>
+      </Tool>
+      <jlink>
+        <property key="AutoSelectMemRanges" value="auto"/>
+        <property key="arm.use_vtor" value="false"/>
+        <property key="arm.vtor_adr" value="exception_table"/>
+        <property key="communication.adaptivespeed" value="false"/>
+        <property key="communication.autoselectspeed" value="true"/>
+        <property key="communication.interface" value="swd"/>
+        <property key="communication.speed" value="4"/>
+        <property key="debugoptions.debug-startup" value="Use system settings"/>
+        <property key="debugoptions.reset-behaviour" value="Use system settings"/>
+        <property key="event.recorder.enabled" value="false"/>
+        <property key="event.recorder.scvd.files" value=""/>
+        <property key="jlink.override" value=""/>
+        <property key="lastid" value=""/>
+        <property key="loader.board_file" value="${ProjectDir}/board.xboard"/>
+        <property key="memories.bootflash" value="true"/>
+        <property key="memories.configurationmemory" value="true"/>
+        <property key="memories.eeprom" value="true"/>
+        <property key="memories.id" value="true"/>
+        <property key="memories.instruction.ram" value="true"/>
+        <property key="memories.instruction.ram.ranges"
+                  value="${memories.instruction.ram.ranges.default}"/>
+        <property key="memories.programmemory" value="true"/>
+        <property key="memories.programmemory.ranges" value="0x0-0x7ffff"/>
+        <property key="programoptions.eraseb4program" value="false"/>
+        <property key="programoptions.preservebootflash" value="false"/>
+        <property key="programoptions.preserveprogrammemory" value="false"/>
+        <property key="programoptions.preserveprogramrange.ranges" value="0x0-0x7ffff"/>
+        <property key="programoptions.resetafterprogram" value="true"/>
+        <property key="script.has_reset" value="true"/>
+        <property key="script.log_level" value="1"/>
+        <property key="script.reset_delay" value="0"/>
+        <property key="script.show_output" value="false"/>
+      </jlink>
+    </conf>
+  </confs>
+</configurationDescriptor>
