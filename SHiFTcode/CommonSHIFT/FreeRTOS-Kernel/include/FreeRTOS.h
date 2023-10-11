@@ -56,7 +56,9 @@
 /* *INDENT-ON* */
 
 /* Application specific configuration options. */
-#include "../../../TemplateNXP/evkmimxrt1170Template/evkmimxrt1170/dev_cdc_vcom_lite_bm_cm7_evkmimxrt1170Template/source/FreeRTOSConfig.h"
+//#include "../../../TemplateNXP/evkmimxrt1170Template/evkmimxrt1170/dev_cdc_vcom_lite_bm_cm7_evkmimxrt1170Template/source/FreeRTOSConfig.h"
+
+#include "FreeRTOSConfig.h"
 
 /* Basic FreeRTOS definitions. */
 #include "projdefs.h"
