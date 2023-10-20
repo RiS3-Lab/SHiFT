@@ -7,20 +7,10 @@
 #define MCUASANCONFIG_H_
 #include "stdint.h"
 
-#define HUSART huart3
 
 
 
 /** Configurations **/
-
-#ifndef McuASAN_CONFIG_FreeRTOs
-#define McuASAN_CONFIG_FreeRTOs 0
-#endif
-
-#ifndef McuASAN_CONFIG_FreeRTOsnoMPU
-#define McuASAN_CONFIG_FreeRTOsnoMPU 1
-#endif
-
 
 #ifndef McuASAN_CONFIG_IS_ENABLED
   #define McuASAN_CONFIG_IS_ENABLED     (1)
@@ -43,17 +33,14 @@
 #endif
 
 #ifndef McuASAN_CONFIG_APP_MEM_SIZE
-  #define McuASAN_CONFIG_APP_MEM_SIZE  (128*1024)
+  #define McuASAN_CONFIG_APP_MEM_SIZE  (64*1024)
   /*!< RAM size */
 #endif
 
 #ifndef McuASAN_CONFIG_APP_MEM_OFFSET
-  //#define McuASAN_CONFIG_APP_MEM_OFFSET 0x20000000  //this is the standard value
+  #define McuASAN_CONFIG_APP_MEM_OFFSET 0x20000000  //this is the standard value
   //#define McuASAN_CONFIG_APP_MEM_OFFSET 0x1C010000  //this is for lower 64k for RAM and upper 64k for SHADOW, technically is wasting too much memory
   //#define McuASAN_CONFIG_APP_MEM_OFFSET 0x1C01C000     //this is using lower 112k for ram and upper 16k for shadow
-  //#define McuASAN_CONFIG_APP_MEM_OFFSET 0x1B800000
-  //#define McuASAN_CONFIG_APP_MEM_OFFSET 0x1c240000
-  #define McuASAN_CONFIG_APP_MEM_OFFSET 0x1C020000
   /*!< offset RAM address */
 #endif
 
@@ -135,8 +122,5 @@
 #ifndef McuASAN_FLAG_NEW_DELETE_TYPE_MISMATCH
 #define McuASAN_FLAG_NEW_DELETE_TYPE_MISMATCH true
 #endif
-
-
-
 
 #endif /* MCUASANCONFIG_H_ */

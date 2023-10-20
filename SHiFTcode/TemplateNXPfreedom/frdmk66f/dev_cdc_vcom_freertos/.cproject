@@ -138,10 +138,10 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/board}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/usb/device/class}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/usb/device/class/cdc}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/CommonSHIFT/AsanRuntime/ASANMCU/inc}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/CommonSHIFT/Fuzzing/Inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/FuzzerSHIFT/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/FuzzerSHIFT/Target/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/CommonSHIFT/AsanRuntime/ASANMCU/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/CommonSHIFT/Fuzzing/Inc}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.include.files.595865999" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files" useByScannerDiscovery="false"/>
 								<option id="com.crt.advproject.gcc.exe.debug.option.optimization.level.569481480" name="Optimization Level" superClass="com.crt.advproject.gcc.exe.debug.option.optimization.level" useByScannerDiscovery="true"/>
@@ -201,7 +201,7 @@
 								<option id="com.crt.advproject.gas.fpu.1178822661" name="Floating point" superClass="com.crt.advproject.gas.fpu" value="com.crt.advproject.gas.fpu.fpv4.hard" valueType="enumerated"/>
 								<option id="com.crt.advproject.gas.thumb.1491136789" name="Thumb mode" superClass="com.crt.advproject.gas.thumb" value="true" valueType="boolean"/>
 								<option id="com.crt.advproject.gas.arch.708491337" name="Architecture" superClass="com.crt.advproject.gas.arch" value="com.crt.advproject.gas.target.cm4" valueType="enumerated"/>
-								<option id="gnu.both.asm.option.flags.crt.1148723274" name="Assembler flags" superClass="gnu.both.asm.option.flags.crt"/>
+								<option id="gnu.both.asm.option.flags.crt.1148723274" name="Assembler flags" superClass="gnu.both.asm.option.flags.crt" value="-c -x assembler-with-cpp -D__REDLIB__" valueType="string"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.both.asm.option.include.paths.941363100" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source}&quot;"/>
 								</option>
@@ -338,7 +338,7 @@
 					</folderInfo>
 					<fileInfo id="com.crt.advproject.config.exe.debug.616966235.1770949545" name="test.c" rcbsApplicability="disable" resourcePath="FuzzerSHIFT/Target/src/test.c" toolsToInvoke="com.crt.advproject.gcc.exe.debug.1763915752.550046793">
 						<tool id="com.crt.advproject.gcc.exe.debug.1763915752.550046793" name="MCU C Compiler" superClass="com.crt.advproject.gcc.exe.debug.1763915752">
-							<option id="gnu.c.compiler.option.misc.otherExcludedFromScannerDiscovery.507573165" superClass="gnu.c.compiler.option.misc.otherExcludedFromScannerDiscovery" value="-fsanitize-coverage=trace-pc " valueType="string"/>
+							<option id="gnu.c.compiler.option.misc.otherExcludedFromScannerDiscovery.507573165" name="Other flags (excluded from discovery)" superClass="gnu.c.compiler.option.misc.otherExcludedFromScannerDiscovery" value="-fsanitize-coverage=trace-pc " valueType="string"/>
 							<inputType id="com.crt.advproject.compiler.input.762348964" superClass="com.crt.advproject.compiler.input"/>
 						</tool>
 						<tool customBuildStep="true" id="org.eclipse.cdt.managedbuilder.ui.rcbs.781743161" name="Resource Custom Build Step">
@@ -350,7 +350,7 @@
 					</fileInfo>
 					<sourceEntries>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CMSIS"/>
-						<entry excluding="Fuzzing/Src/sanitizer.c|MallocMPU|Fuzzing/Src/fault_handlersRTOS_DC.c|Fuzzing/MonitorTargetTemplates|Fuzzing/Config|AsanRuntime/ASANMCU/config|MallocMPU/Baremetal|Test|FreRTOS-Kernel-M23|FreeRTOS-Kernel-M4-NoMPU|FreeRTOS-Kernel-M33|FreeRTOS-Kernel-M3|FreeRTOS-Kernel" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CommonSHIFT"/>
+						<entry excluding="Fuzzing/Src/sanitizer.c|Fuzzing/Src/fault_handlersRTOS_DC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CommonSHIFT"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="FuzzerSHIFT"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="board"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="component"/>
@@ -556,7 +556,7 @@
 							<tool id="com.crt.advproject.gas.exe.release.1809128988" name="MCU Assembler" superClass="com.crt.advproject.gas.exe.release">
 								<option id="com.crt.advproject.gas.thumb.1802619537" name="Thumb mode" superClass="com.crt.advproject.gas.thumb" value="true" valueType="boolean"/>
 								<option id="com.crt.advproject.gas.arch.1835482817" name="Architecture" superClass="com.crt.advproject.gas.arch" value="com.crt.advproject.gas.target.cm4" valueType="enumerated"/>
-								<option id="gnu.both.asm.option.flags.crt.1677842802" name="Assembler flags" superClass="gnu.both.asm.option.flags.crt"/>
+								<option id="gnu.both.asm.option.flags.crt.1677842802" name="Assembler flags" superClass="gnu.both.asm.option.flags.crt" value="-c -x assembler-with-cpp -D__REDLIB__" valueType="string"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.both.asm.option.include.paths.1243521183" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/source}&quot;"/>
 								</option>
@@ -693,7 +693,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CMSIS"/>
-						<entry excluding="Fuzzing/Src/sanitizer.c|MallocMPU|Fuzzing/Src/fault_handlersRTOS_DC.c|Fuzzing/MonitorTargetTemplates|Fuzzing/Config|AsanRuntime/ASANMCU/config|MallocMPU/Baremetal|Test|FreRTOS-Kernel-M23|FreeRTOS-Kernel-M4-NoMPU|FreeRTOS-Kernel-M33|FreeRTOS-Kernel-M3|FreeRTOS-Kernel" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CommonSHIFT"/>
+						<entry excluding="Fuzzing/Src/sanitizer.c|Fuzzing/Src/fault_handlersRTOS_DC.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CommonSHIFT"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="FuzzerSHIFT"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="board"/>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="component"/>
@@ -764,5 +764,18 @@
 &lt;/infoList&gt;
 &lt;/TargetConfig&gt;</projectStorage>
 	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="openCmsis"/>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
+		<buildTargets>
+			<target name="make" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildArguments>-C ../build</buildArguments>
+				<buildTarget/>
+				<stopOnError>true</stopOnError>
+				<useDefaultCommand>false</useDefaultCommand>
+				<runAllBuilders>false</runAllBuilders>
+			</target>
+		</buildTargets>
+	</storageModule>
 </cproject>
