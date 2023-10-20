@@ -71,11 +71,13 @@
     <stringAttribute key="org.eclipse.cdt.dsf.gdb.TRACEPOINT_MODE" value="TP_NORMAL_ONLY"/>
     <booleanAttribute key="org.eclipse.cdt.dsf.gdb.UPDATE_THREADLIST_ON_SUSPEND" value="false"/>
     <intAttribute key="org.eclipse.cdt.launch.ATTR_BUILD_BEFORE_LAUNCH_ATTR" value="2"/>
+    <stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_ID" value="gdb"/>
     <stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_START_MODE" value="remote"/>
-    <stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="Debug/frdmk66f_dev_cdc_vcom_freertos.axf"/>
+    <stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="build/EVKMIMXRT1176_CMake.elf"/>
     <stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="frdmk66f_dev_cdc_vcom_freertos"/>
     <booleanAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_AUTO_ATTR" value="false"/>
     <stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value="com.crt.advproject.config.exe.debug.616966235"/>
+    <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
         <listEntry value="/frdmk66f_dev_cdc_vcom_freertos"/>
     </listAttribute>

@@ -132,7 +132,7 @@
 #define INCLUDE_xTaskResumeFromISR 1
 #define INCLUDE_xSemaphoreGetMutexHolder 1
 
-#define	configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY 5
+//#define	configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY 5
 
 
 #if defined(__ICCARM__)||defined(__CC_ARM)||defined(__GNUC__)

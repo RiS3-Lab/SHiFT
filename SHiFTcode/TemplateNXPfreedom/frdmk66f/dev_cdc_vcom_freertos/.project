@@ -30,11 +30,4 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>CommonSHIFT</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/CommonSHIFT</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>
