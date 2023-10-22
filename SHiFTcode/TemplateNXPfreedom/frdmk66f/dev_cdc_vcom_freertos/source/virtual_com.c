@@ -67,7 +67,7 @@ extern usb_device_endpoint_struct_t g_UsbDeviceCdcVcomDicEndpoints[];
 extern usb_device_class_struct_t g_UsbDeviceCdcVcomConfig;
 /* Data structure of virtual com device */
 usb_cdc_vcom_struct_t s_cdcVcom;
-static char const *s_appName = "app task";
+//static char const *s_appName = "app task";
 
 /* Line coding of cdc device */
 USB_DMA_INIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE)

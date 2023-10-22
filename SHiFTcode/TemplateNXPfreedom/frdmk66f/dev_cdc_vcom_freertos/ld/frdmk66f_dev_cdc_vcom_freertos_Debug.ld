@@ -162,6 +162,12 @@ SECTIONS
        PROVIDE(__end_bss_RAM2 = .) ;
        PROVIDE(__end_bss_SRAM_LOWER = .) ;
     } > SRAM_LOWER AT> SRAM_LOWER
+    
+    ._asan_var : 
+    {
+     . = ALIGN(8);     
+    } > SRAM_LOWER
+  
 
     /* BSS section for FLEX_RAM */
     .bss_RAM3 (NOLOAD) : ALIGN(8)
