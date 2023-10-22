@@ -14,7 +14,7 @@ file(GLOB FILESTARGET
 #add flags for ASAN and SANCOV
 #set_source_files_properties(${FILESTARGET} PROPERTIES COMPILE_FLAGS -fsanitize-coverage=trace-pc -fsanitize=address  -fno-common )
 
-set_source_files_properties(${FILESTARGET} PROPERTIES COMPILE_FLAGS -fsanitize-coverage=trace-pc -fsanitize=address  -fno-common )
+set_source_files_properties(${FILESTARGET} PROPERTIES COMPILE_FLAGS   "-fsanitize=address  -fno-common  -fsanitize-coverage=trace-pc"  )
 
 
 # add_library: With this declaration, you express the intent to build a library. 
