@@ -111,7 +111,6 @@
 									<listOptionValue builtIn="false" value="FSL_OSA_BM_TIMER_CONFIG=0"/>
 									<listOptionValue builtIn="false" value="MCUXPRESSO_SDK"/>
 									<listOptionValue builtIn="false" value="SDK_OS_BAREMETAL"/>
-									<listOptionValue builtIn="false" value="CR_INTEGER_PRINTF"/>
 									<listOptionValue builtIn="false" value="__MCUXPRESSO"/>
 									<listOptionValue builtIn="false" value="__USE_CMSIS"/>
 									<listOptionValue builtIn="false" value="DEBUG"/>
@@ -283,7 +282,7 @@
 								<option id="com.crt.advproject.link.arch.1804832242" name="Architecture" superClass="com.crt.advproject.link.arch" value="com.crt.advproject.link.target.cm7" valueType="enumerated"/>
 								<option id="gnu.c.link.option.nostart.683280412" name="Do not use standard start files (-nostartfiles)" superClass="gnu.c.link.option.nostart"/>
 								<option id="gnu.c.link.option.nodeflibs.2099002119" name="Do not use default libraries (-nodefaultlibs)" superClass="gnu.c.link.option.nodeflibs"/>
-								<option id="gnu.c.link.option.nostdlibs.1776913948" name="No startup or default libs (-nostdlib)" superClass="gnu.c.link.option.nostdlibs" value="true" valueType="boolean"/>
+								<option id="gnu.c.link.option.nostdlibs.1776913948" name="No startup or default libs (-nostdlib)" superClass="gnu.c.link.option.nostdlibs" value="false" valueType="boolean"/>
 								<option id="gnu.c.link.option.strip.1192674912" name="Omit all symbol information (-s)" superClass="gnu.c.link.option.strip"/>
 								<option id="gnu.c.link.option.noshared.1986808906" name="No shared libraries (-static)" superClass="gnu.c.link.option.noshared"/>
 								<option id="gnu.c.link.option.libs.2075083586" name="Libraries (-l)" superClass="gnu.c.link.option.libs"/>
@@ -344,7 +343,7 @@
 					</folderInfo>
 					<fileInfo id="com.crt.advproject.config.exe.debug.401774112.468429177" name="test.c" rcbsApplicability="disable" resourcePath="FuzzerSHIFT/Target/src/test.c" toolsToInvoke="com.crt.advproject.gcc.exe.debug.1500217123.1578212996">
 						<tool id="com.crt.advproject.gcc.exe.debug.1500217123.1578212996" name="MCU C Compiler" superClass="com.crt.advproject.gcc.exe.debug.1500217123">
-							<option id="gnu.c.compiler.option.misc.otherExcludedFromScannerDiscovery.1978644473" name="Other flags (excluded from discovery)" superClass="gnu.c.compiler.option.misc.otherExcludedFromScannerDiscovery" value="-fsanitize-coverage=trace-pc" valueType="string"/>
+							<option id="gnu.c.compiler.option.misc.otherExcludedFromScannerDiscovery.1978644473" name="Other flags (excluded from discovery)" superClass="gnu.c.compiler.option.misc.otherExcludedFromScannerDiscovery" value="-fsanitize-coverage=trace-pc " valueType="string"/>
 							<inputType id="com.crt.advproject.compiler.input.81552459" superClass="com.crt.advproject.compiler.input"/>
 						</tool>
 						<tool customBuildStep="true" id="org.eclipse.cdt.managedbuilder.ui.rcbs.1875542894" name="Resource Custom Build Step">

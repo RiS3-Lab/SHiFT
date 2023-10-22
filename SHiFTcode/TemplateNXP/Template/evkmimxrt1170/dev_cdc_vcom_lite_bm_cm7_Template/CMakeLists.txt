@@ -41,6 +41,7 @@ set(SRC_FILES
   
 )
 
+
 # Build the executable based on the source files
 add_executable(${EXECUTABLE} ${SRC_FILES})
 
@@ -65,8 +66,8 @@ add_compile_options(
 -D__NEWLIB__
  
 -std=gnu11  
--O0 
--g 
+-O1 
+-g3 
 -gdwarf-4 
 -c 
 -ffunction-sections 
@@ -109,8 +110,8 @@ target_compile_definitions(${EXECUTABLE} PRIVATE
 target_compile_options(${EXECUTABLE} PRIVATE
 
 -std=gnu11  
--O0 
--g 
+-O1 
+-g3 
 -gdwarf-4 
 -c 
 -ffunction-sections 
@@ -131,7 +132,13 @@ target_compile_options(${EXECUTABLE} PRIVATE
 # Linker options
 target_link_options(${EXECUTABLE} PRIVATE
 
-  
+  -g3
+  -Wall
+  -fno-common 
+  -ffunction-sections 
+  -fdata-sections 
+  -ffreestanding 
+  -fno-builtin 
   -nostdlib 
   -Xlinker -Map=${EXECUTABLE_OUTPUT_PATH}/${PROJECT_NAME}.map,--cref
   -mcpu=cortex-m7 

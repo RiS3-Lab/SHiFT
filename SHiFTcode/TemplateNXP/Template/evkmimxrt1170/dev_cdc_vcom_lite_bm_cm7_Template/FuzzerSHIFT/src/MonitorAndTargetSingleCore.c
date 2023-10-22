@@ -173,7 +173,7 @@ static void spawnNewTarget( )
         	.puxStackBuffer	= targetTaskStack,
         	.xRegions		=	{
         			                { AFLfuzzerRegion, AFLINPUTREGION_SIZE, portMPU_REGION_READ_WRITE }, // AFL bitmap, diff buffer, TX diff buffer, this region is shareable
-									{ __user_heap_start__, 8*1024, portMPU_REGION_READ_WRITE  },
+									{ __user_heap_start__, 0x200*2, portMPU_REGION_READ_WRITE  },
    							 	    //{ paflbitmap, AFL_BITMAP_SIZE_BYTES, portMPU_REGION_READ_WRITE},    // This is necessary because AFL_BITMAP is in the TCM region
    								    { ( void * )0x20240000, 32*1024, portMPU_REGION_READ_WRITE },     // shadow memory
 
