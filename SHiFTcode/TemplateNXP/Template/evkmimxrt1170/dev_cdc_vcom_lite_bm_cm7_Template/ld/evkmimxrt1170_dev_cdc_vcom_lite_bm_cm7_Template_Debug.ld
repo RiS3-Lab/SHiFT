@@ -122,12 +122,7 @@ SECTIONS
        . = ALIGN(4);
     } > BOARD_FLASH
     
-    
-    
-    
-    
-    
-    
+      
     
     /*
      * for exception handling/unwind - some Newlib functions (in common
@@ -155,18 +150,7 @@ SECTIONS
         FILL(0xff)
         PROVIDE(__start_data_RAM2 = .) ;
         PROVIDE(__start_data_SRAM_ITC_cm7 = .) ;
-        /* alemera */
-        *(privileged_data)
-        . = ALIGN(4);
-        FILL(0xDEAD);
-        /* Ensure that non-privileged data is placed after the region reserved for
-        * privileged kernel data. */
-        /* Note that dot (.) actually refers to the byte offset from the start of
-        * the current section (.privileged_data in this case). As a result, setting
-        * dot (.) to a value sets the size of the section. */
-        . = __privileged_data_region_size__;
-        . = ALIGN(4);
-         /* alemera */
+
         *(.ramfunc.$RAM2)
         *(.ramfunc.$SRAM_ITC_cm7)
         *(.data.$RAM2)
@@ -175,11 +159,14 @@ SECTIONS
         *(.data.$SRAM_ITC_cm7.*)
         . = ALIGN(4) ;
         
-        . = __unprivileged_data_region_size__ ;    
+      /*  . = __unprivileged_data_region_size__ ;*/    
         
         PROVIDE(__end_data_RAM2 = .) ;
         PROVIDE(__end_data_SRAM_ITC_cm7 = .) ;
      } > SRAM_ITC_cm7 AT>BOARD_FLASH
+
+     
+    
 
     /* DATA section for SRAM_ITC_cm4 */
 
@@ -323,6 +310,21 @@ SECTIONS
        _data = . ;
        PROVIDE(__start_data_RAM = .) ;
        PROVIDE(__start_data_SRAM_DTC_cm7 = .) ;
+       
+        /* alemera */
+        *(privileged_data)
+        . = ALIGN(4);
+        FILL(0xDEAD);
+        /* Ensure that non-privileged data is placed after the region reserved for
+        * privileged kernel data. */
+        /* Note that dot (.) actually refers to the byte offset from the start of
+        * the current section (.privileged_data in this case). As a result, setting
+        * dot (.) to a value sets the size of the section. */
+        . = __privileged_data_region_size__;
+        . = ALIGN(4);
+         /* alemera */
+       
+       
        *(vtable)
        *(.ramfunc*)
        KEEP(*(CodeQuickAccess))
@@ -590,15 +592,21 @@ SECTIONS
     } > SRAM_DTC_cm7 AT> SRAM_DTC_cm7
 
     /* Reserve and place Heap within memory map */
-    _HeapSize = 0x2000;
-    .heap (NOLOAD) :  ALIGN(4)
+    _HeapSize = 0x200;
+    .heap (NOLOAD) :  ALIGN(0x400)
     {
+        . = ALIGN(4) ;
         __user_heap_start__ = .;
         _pvHeapStart = .;
         . += _HeapSize;
         . = ALIGN(4);
         _pvHeapLimit = .;
     } > SRAM_DTC_cm7
+    ._asan_var :  ALIGN(4)
+    {
+     . = ALIGN(8);     
+    } > SRAM_DTC_cm7
+   
 
      _StackSize = 0x2000;
      /* Reserve space in memory for Stack */

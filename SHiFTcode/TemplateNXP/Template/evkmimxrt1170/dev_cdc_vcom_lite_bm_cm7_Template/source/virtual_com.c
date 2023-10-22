@@ -232,6 +232,9 @@ usb_status_t USB_DeviceCdcAcmBulkIn(usb_device_handle handle,
 
         	error =
                 USB_DeviceRecvRequest(handle, USB_CDC_VCOM_BULK_OUT_ENDPOINT, s_currRecvBuf, s_usbBulkMaxPacketSize);
+
+
+
 #if defined(FSL_FEATURE_USB_KHCI_KEEP_ALIVE_ENABLED) && (FSL_FEATURE_USB_KHCI_KEEP_ALIVE_ENABLED > 0U) && \
     defined(USB_DEVICE_CONFIG_KEEP_ALIVE_MODE) && (USB_DEVICE_CONFIG_KEEP_ALIVE_MODE > 0U) &&             \
     defined(FSL_FEATURE_USB_KHCI_USB_RAM) && (FSL_FEATURE_USB_KHCI_USB_RAM > 0U)
@@ -722,6 +725,19 @@ static void CDC_VCOM_BMExitCritical(uint32_t sr)
     EnableGlobalIRQ(sr);
 }
 
+
+int __io_putchar(int ch)
+{
+return DbgConsole_Putchar(ch);
+
+}
+int	putchar (int ch)
+{
+	return DbgConsole_Putchar(ch);
+}
+
+
+
 /*!
  * @brief Application initialization function.
  *
@@ -850,7 +866,7 @@ void main(void)
 
     APPInit();
 
-    //activateCortexMtrapsUNA();
+   // activateCortexMtrapsUNA();
     activateCortexMtraps();
     app_main();
 

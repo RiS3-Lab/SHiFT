@@ -35,7 +35,7 @@
 #if DUALCOREFUZZ == 0
 
 #define DTCMRAMORIGIN  0x20000000
-#define AFLINPUTREGION_SIZE (1024*64)
+#define AFLINPUTREGION_SIZE (1024*32)
 
 extern uint8_t AFLfuzzerRegion[AFLINPUTREGION_SIZE ] __attribute__( ( aligned( AFLINPUTREGION_SIZE ) ) );
 

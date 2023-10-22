@@ -16,8 +16,9 @@
 #define SIZE16  (1024 * 16)
 #define SIZE8  (1024 * 8)
 #define SIZE4  (1024 * 4)
+#define SIZE2  (1024 * 2)
 #define MAX_BUFFER_INPUT  (2048)       // 2 kb
-#define AFL_BITMAP_SIZE   SIZE8
+#define AFL_BITMAP_SIZE   SIZE4
 
 
 
