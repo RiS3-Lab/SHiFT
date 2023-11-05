@@ -34,6 +34,15 @@
 #include "fuzzing.h"
 #include "stdint.h"
 
+#if PRINTBB == 1
+
+void SytemCall_5_code(void *val)
+{
+
+	printf("#%08X\n",*(uint32_t *)val);
+}
+
+#endif
 
 void __sanitizer_cov_trace_pc(void)
 {
@@ -48,6 +57,12 @@ void __sanitizer_cov_trace_pc(void)
 #endif
 
 	register uint32_t R14 asm("r14");
+
+#if PRINTBB == 1
+	uint32_t bb;
+	bb = R14;
+	MPU_SytemCall_5(&bb);
+#endif
 
 	uint16_t guard;
 
