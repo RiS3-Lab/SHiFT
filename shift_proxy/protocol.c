@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <unistd.h>
+#include <time.h>
 
 #include "debug.h"
 #include "protocol.h"
@@ -363,17 +364,31 @@ void sendInputs(uint8_t* buf, uint32_t size){
     char *ptr = &buffaux[0];
     int i;
 
+
+    time_t timer;
+    char buffer[27];
+    struct tm* tm_info;
+    timer = time(NULL);
+    tm_info = localtime(&timer);
+
+    strftime(buffer, 26, "%Y-%m-%d %H:%M:%S", tm_info);
+    buffer[26]=0;
+
+
+  
     logfile = fopen("/home/alejandro/Documents/semi-fuzz-project/SHiFT/vanillaAFLplusplus/log/lofgile.txt", "a"); 
 
     if(logfile)
     {      
-        for(i=0; i<total_size; i++)
+        //for(i=0; i<total_size; i++)
+        for(i=0; i<size; i++)
         {
             //sprintf returns the number of written characters without the null, 
             //so ptr will point exactly where we need to write the next one
-            ptr += sprintf(ptr, "\\x%02X", buf_to_send[i]); 
+            //ptr += sprintf(ptr, "\\x%02X", buf_to_send[i]); 
+            ptr += sprintf(ptr, "\\x%02X", buf[i]); 
         }
-        fprintf(logfile,"Size: %d, Total Size: %d, CRC 0x%x, Data: %s\n", size, total_size, crc_result, buffaux);
+        fprintf(logfile,"%s Size: %d, Total Size: %d, CRC 0x%x, Data: %s\n", buffer, size, total_size, crc_result, buffaux);
         fclose(logfile);
     }
     
