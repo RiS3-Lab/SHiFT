@@ -73,7 +73,7 @@ main-build: Template-USBCDCH743FUZZER.elf secondary-outputs
 
 # Tool invocations
 Template-USBCDCH743FUZZER.elf Template-USBCDCH743FUZZER.map: $(OBJS) $(USER_OBJS) ../STM32H745ZITX_FLASH_MPU_ASAN.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Template-USBCDCH743FUZZER.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"../STM32H745ZITX_FLASH_MPU_ASAN.ld" --specs=nosys.specs -Wl,-Map="Template-USBCDCH743FUZZER.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "Template-USBCDCH743FUZZER.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"../STM32H745ZITX_FLASH_MPU_ASAN.ld" --specs=nosys.specs -Wl,-Map="Template-USBCDCH743FUZZER.map" -Wl,--gc-sections -static  -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

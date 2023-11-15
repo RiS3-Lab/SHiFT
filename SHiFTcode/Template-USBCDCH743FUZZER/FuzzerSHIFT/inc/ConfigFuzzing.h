@@ -11,11 +11,11 @@
 
 
 /* BITMAP defines */
-#define SIZE64  (1024 * 64)
-#define SIZE32  (1024 * 32)
-#define SIZE16  (1024 * 16)
-#define SIZE8  (1024 * 8)
-#define SIZE4  (1024 * 4)
+#define SIZE64  (1024 * 64) // 16
+#define SIZE32  (1024 * 32) // 15
+#define SIZE16  (1024 * 16) // 14
+#define SIZE8  (1024 * 8) // 13
+#define SIZE4  (1024 * 4) // 12
 #define MAX_BUFFER_INPUT  (2048)       // 2 kb
 #define AFL_BITMAP_SIZE   SIZE8
 
@@ -28,6 +28,6 @@
 #define  PERSISTENT_MODE 1
 #define DUALCOREFUZZ 0
 
-
+#define PRINTBB 1
 
 #endif /* FUZZING_CONFIG_CONFIGFUZZING_H_ */

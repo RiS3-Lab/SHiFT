@@ -411,6 +411,7 @@ static void fuzzerTask( void * pvParameters )
 			 memset(AFLfuzzer.afldiff,0,(AFLfuzzer.indexdif+2)*sizeof(tuple_t)); //we need on extra tuple to clean which is used for the CRC
 			 AFLfuzzer.indexdif = 0;
 			 AFLfuzzer.timespan = HAL_GetTick() - AFLfuzzer.timespan;
+			 //printf("\nNew case");
 
 			 //printf("Total time: %u \n", (uint)AFLfuzzer.timespan);
 #if USARTHW == 1

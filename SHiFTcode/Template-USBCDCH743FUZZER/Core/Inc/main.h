@@ -37,7 +37,7 @@ extern "C" {
 #include "FreeRTOS.h"
 #include "task.h"
 
-
+#define __weak  __attribute__((weak))
 
 #if DUALCOREFUZZ == 0
 
