@@ -30,6 +30,9 @@ SHiFT requires the following software and hardware components:
 
 The STM32CubeIDE is freely available on ST Microlectronics website for registered users. The user must register, download and install this IDE accepting the corresponding vendor's license agreements. Besides, SHiFT is based on many open source projects that are either added as submodules or directly included in this repository. 
 
+Before cloning this repository instal gitlfs as detailed in the following link:
+https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage
+
 
 For cloning and initializing this repository use the following command:
 
