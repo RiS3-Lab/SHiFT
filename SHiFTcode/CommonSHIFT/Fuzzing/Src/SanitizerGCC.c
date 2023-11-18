@@ -36,10 +36,25 @@
 
 #if PRINTBB == 1
 
+uint32_t bbcache[]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; // small circular cache of basic blocks to speed up loops
+uint8_t indexbb=0;
+
+
 void SytemCall_5_code(void *val)
 {
 
-	printf("#%08X\n",*(uint32_t *)val);
+	int i;
+	uint32_t addr = *(uint32_t *)val;
+
+	for(i=0; i<16; i++)
+	{
+		if(addr == bbcache[i]) return;
+
+	}
+	bbcache[indexbb] = addr;
+	indexbb++;
+    if(indexbb>=16)indexbb=0;
+	printf("#%08X\n",addr);
 }
 
 #endif
