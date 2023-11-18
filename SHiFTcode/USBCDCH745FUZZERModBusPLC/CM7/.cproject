@@ -105,12 +105,12 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
+						<entry excluding="FreRTOS-Kernel-M23|FreeRTOS-Kernel-M4-NoMPU|FreeRTOS-Kernel-M33|FreeRTOS-Kernel-M3|Fuzzing/Src/sanitizer.c|Fuzzing/Src/fault_handlersRTOS_DC.c|MallocMPU/Baremetal|AsanRuntime/ASANMCU/config|MallocMPU/Config|Test|NDSS_wycinwyc|Fuzzing/Config|Fuzzing/MonitorTargetTemplates|AsanRuntime/stdlib|AsanRuntime/printf" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CommonSHIFT"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Common"/>
-						<entry excluding="FreeRTOS-Kernel-M3|Fuzzing/Src/sanitizer.c|Fuzzing/Src/fault_handlersRTOS_DC.c|MallocMPU/Baremetal|AsanRuntime/ASANMCU/config|MallocMPU/Config|Test|NDSS_wycinwyc|Fuzzing/Config|Fuzzing/MonitorTargetTemplates|AsanRuntime/stdlib|AsanRuntime/printf" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CommonSHIFT"/>
-						<entry excluding="Src/sanitizer.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="FuzzerSHIFT"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
+						<entry excluding="Src/sanitizer.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
 					</sourceEntries>
 				</configuration>
@@ -191,9 +191,9 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Common"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry excluding="Src/sanitizer.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
 					</sourceEntries>
 				</configuration>

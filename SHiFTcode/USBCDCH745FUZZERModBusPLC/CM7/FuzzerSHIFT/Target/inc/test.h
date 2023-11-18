@@ -14,8 +14,8 @@ uint8_t u8serno; //!< serial port: 0-Serial, 1..3-Serial1..Serial3; 4: use softw
 uint8_t u8txenpin; //!< flow control pin: 0=USB or RS-232 mode, >0=RS-485 mode
 uint8_t u8state;
 uint8_t u8lastError;
-uint8_t au8Buffer[MAX_BUFFER];
 uint16_t u16regs[MAX_BUFFER];
+
 volatile uint8_t u8BufferSize;
 uint8_t u8lastRec;
 uint16_t *au16regs;
@@ -24,6 +24,7 @@ uint16_t u16timeOut;
 uint32_t u32time, u32timeOut;
 uint8_t u8regsize;
 unsigned char fctsupported[8];
+uint8_t au8Buffer[MAX_BUFFER];
 } modbusHandler_t;
 
 #define modbusHandle_size sizeof(modbusHandler_t)
