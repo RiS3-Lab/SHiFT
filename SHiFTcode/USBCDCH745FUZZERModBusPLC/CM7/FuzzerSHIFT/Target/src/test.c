@@ -372,7 +372,7 @@ enum
          u8currentRegister = (uint8_t) (u16coil / 16);
          u8currentBit = (uint8_t) (u16coil % 16);
 
-         bitWrite(
+         bitWrite(   //bug 3 identified by SHiFT
         	 ModbusH->au8Buffer[ ModbusH->u8BufferSize ],
              u8bitsno,
              // out of bound read can happen here
@@ -417,7 +417,7 @@ enum
 
      for (i = u8StartAdd; i < u8StartAdd + u8regsno; i++)
      {
-    	 ModbusH->au8Buffer[ ModbusH->u8BufferSize ] = highByte(regs[i]);
+    	 ModbusH->au8Buffer[ ModbusH->u8BufferSize ] = highByte(regs[i]); //bug 1 identified by SHiFT
     	 ModbusH->u8BufferSize++;
          ModbusH->au8Buffer[ ModbusH->u8BufferSize ] = lowByte(regs[i]);
          ModbusH->u8BufferSize++;
@@ -525,7 +525,7 @@ enum
         		 ModbusH->au8Buffer[ u8frameByte ],
                      u8bitsno );
 
-         bitWrite(
+         bitWrite(                       // bug 2 identified by SHiFT
              regs[ u8currentRegister ],
              u8currentBit,
              bTemp );
@@ -574,7 +574,7 @@ enum
      // write registers
      for (i = 0; i < u8regsno; i++)
      {
-         temp = word(
+         temp = word(                             // bug 4 found by SHiFT
         		 ModbusH->au8Buffer[ (BYTE_CNT + 1) + i * 2 ],
 				 ModbusH->au8Buffer[ (BYTE_CNT + 2) + i * 2 ]);
 

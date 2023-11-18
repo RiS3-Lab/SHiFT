@@ -28,6 +28,8 @@
 #define  PERSISTENT_MODE 1
 #define DUALCOREFUZZ 0
 
+#define PRINTBB 1
+
 
 
 #endif /* FUZZING_CONFIG_CONFIGFUZZING_H_ */
