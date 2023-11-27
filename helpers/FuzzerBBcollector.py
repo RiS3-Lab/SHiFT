@@ -64,9 +64,15 @@ if __name__ == "__main__":  # confirms that the code is under main function
 
         os.makedirs(args.out, exist_ok=True) 
         # command to run AFL with proxy: set here the serialport for fuzztesting
-        cmd_aflpp = ['../vanillaAFLplusplus/afl-fuzz', '-i', '../vanillaAFLplusplus/in', '-o', args.out ,'-t', '1000', '--','../shift_proxy/afl-proxy','-t', '1000', '-c', args.serial, '-w', str(args.baud) ]
+        #cmd_aflpp = ['../vanillaAFLplusplus/afl-fuzz', '-i', '../vanillaAFLplusplus/in', '-o', args.out ,'-t', '1000', '--','../shift_proxy/afl-proxy','-t', '1000', '-c', args.serial, '-w', str(args.baud) ]
+        #cmd_aflpp = ['../vanillaAFL/afl-fuzz', '-i', '../vanillaAFL/in', '-o', args.out ,'-t', '1000', '--','../shift_proxy/afl-proxy','-t', '1000', '-c', args.serial, '-w', str(args.baud) ]
+        # AFL_SKIP_CPUFREQ=1 AFL_NO_FORKSRV=1 ./afl-fuzz -c /dev/ttyACM1 -w 9600 -t 5000 -i ./in -o ./test/out 2>err.txt
+        my_env = os.environ.copy()
+        my_env["AFL_SKIP_CPUFREQ"]='1'
+        my_env["AFL_NO_FORKSRV"]='1'
+        cmd_aflpp = [  '../AFL/afl-fuzz',  '-c', args.serial, '-w', str(args.baud), '-t', '5000', '-i', '../AFL/in', '-o',args.out ]
         # launch AFL in a subprocess
-        procAFL = subprocess.Popen(cmd_aflpp)
+        procAFL = subprocess.Popen(cmd_aflpp, env = my_env)
     
       
         while( True ):
