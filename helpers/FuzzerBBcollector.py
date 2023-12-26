@@ -79,7 +79,7 @@ if __name__ == "__main__":  # confirms that the code is under main function
             if (int(time.time()) > timeend):
                 break
             
-            line = str(ser.readline().decode())
+            line = str(ser.readline().decode(errors='ignore'))
             if len(line)==10 and  line[0] == '#':
                      
                 bb ='0x'+line[1:9]
