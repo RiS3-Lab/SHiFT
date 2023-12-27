@@ -73,7 +73,7 @@ if __name__ == "__main__":  # confirms that the code is under main function
         my_env["AFL_NO_FORKSRV"]='1'
         cmd_aflpp = [  '../AFL/afl-fuzz',  '-c', args.serial, '-w', str(args.baud), '-t', '5000', '-i', '../AFL/in', '-o',args.out ]
         # launch AFL in a subprocess
-        err_file = open(args.error,"w")
+        err_file = open(args.error_file,"w")
         procAFL = subprocess.Popen(cmd_aflpp, env = my_env,stderr=err_file)
     
       
