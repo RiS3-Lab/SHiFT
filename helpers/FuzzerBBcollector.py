@@ -43,6 +43,7 @@ if __name__ == "__main__":  # confirms that the code is under main function
     parser.add_argument("-b2","--baudBB", type=int,required=True, help="Baud rate for collecting BB")
     parser.add_argument("-o","--out", type=str,required=True, help="out folder fuzzing")
     parser.add_argument("-t","--ttime", type=int,required=True, help="Total seconds for fuzzing campaign")
+    parser.add_argument('-e','--error_file', type=str, help="file to output the error message",default="error.txt")
     args = parser.parse_args()    
    
     
@@ -72,7 +73,8 @@ if __name__ == "__main__":  # confirms that the code is under main function
         my_env["AFL_NO_FORKSRV"]='1'
         cmd_aflpp = [  '../AFL/afl-fuzz',  '-c', args.serial, '-w', str(args.baud), '-t', '5000', '-i', '../AFL/in', '-o',args.out ]
         # launch AFL in a subprocess
-        procAFL = subprocess.Popen(cmd_aflpp, env = my_env)
+        err_file = open(args.error,"w")
+        procAFL = subprocess.Popen(cmd_aflpp, env = my_env,stderr=err_file)
     
       
         while( True ):
