@@ -21,7 +21,8 @@ from sys import version_info
 # Set here how many seconds are we going to fuzz test firmware
 totalseconds = 24*3600
 # the file to save the basic blocks
-plot_data = '/plot_dataBB'
+plot_data = 'plot_dataBB'
+acc_time_name = 'acc_time'
 timestart = 0
 
 
@@ -35,32 +36,28 @@ def saveBBs(bbs):
 
 def resume_session():
     assert(os.path.exists(args.out))
-    plot_dataBB_file = os.path.join(args.out,"plot_dataBB")
+    plot_dataBB_file = os.path.join(args.out,plot_data)
+    acc_time_file = os.path.join(args.out, acc_time_name)
     assert(os.path.exists(plot_dataBB_file))
-    
+    assert(os.path.exists(acc_time_file))
     old_BBs = {}
     acc_time = 0
+    with open(acc_time_file,'r') as rfile:
+        acc_time = int(rfile.readlines()[0].strip().split(':')[1].strip(),10)
     with open(plot_dataBB_file,"r") as rfile:
         for it, each_line in enumerate(rfile.readlines()):
-            if it == 0:
-                acc_time = int(each_line.strip().split(':')[1].strip(),10)
-            else:
-                t ,bb = each_line.strip().split(' ')
-                t, bb = int(t.strip(),10), bb.strip()
-                old_BBs[bb] = t
+            t ,bb = each_line.strip().split(' ')
+            t, bb = int(t.strip(),10), bb.strip()
+            old_BBs[bb] = t
+
     assert(acc_time != 0)
     return acc_time, old_BBs
 
-def rectify_first_line(filename, old_time, launch_time):
-    with open(filename, 'r') as file:
-        lines = file.readlines()
-    with open(filename, 'w') as file:
-        for line_number, line in enumerate(lines):
-            if line_number == 0:
-                acc_time = old_time + int(time.time()) - launch_time
-                file.write("acc_time:{}\n".format(acc_time))
-            else:
-                file.write(line)
+def record_time(filename, old_time, launch_time):
+
+    acc_time = old_time + int(time.time()) - launch_time
+    with open(filename,"w") as rfile:
+        rfile.write("acc_time:{}\n".format(acc_time))
 
 if __name__ == "__main__":  # confirms that the code is under main function
     parser = argparse.ArgumentParser()
@@ -112,7 +109,8 @@ if __name__ == "__main__":  # confirms that the code is under main function
             timeend -= old_time
         cmd_aflpp = [  '../AFL/afl-fuzz',  '-c', args.serial, '-w', str(args.baud), '-t', '5000', '-i', in_file, '-o',args.out ]
         # launch AFL in a subprocess
-        plot_dataBB_file = args.out + plot_data
+        plot_dataBB_file = os.path.join(args.out,plot_data)
+        acc_time_file = os.path.join(args.out, acc_time_name)
         err_file = open(args.error_file,"w")
         procAFL = subprocess.Popen(cmd_aflpp, env = my_env,stderr=err_file)
         
@@ -129,7 +127,7 @@ if __name__ == "__main__":  # confirms that the code is under main function
                     bbs[bb] = t
                     with open(plot_dataBB_file, 'a') as f:
                         f.write('{} {} \n'.format(t,bb))
-                    rectify_first_line(plot_dataBB_file, old_time,timestart)
+                    record_time(acc_time_file, old_time,timestart)
 
         ser.close()
         # terminate AFL
@@ -143,7 +141,7 @@ if __name__ == "__main__":  # confirms that the code is under main function
         procAFL.send_signal(signal.SIGINT)
         # wait till AFL terminates
         procAFL.wait()
-        rectify_first_line(plot_dataBB_file, old_time,timestart)
+        record_time(acc_time_file, old_time,timestart)
         print(bbs)
         #saveBBs(bbs)
         ser.close()
