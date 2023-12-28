@@ -16,6 +16,27 @@ from sys import version_info
 
 
 
+def resetBoard(conf):
+    from pyocd.core.helpers import ConnectHelper
+    from pyocd.core.target import Target
+    from pyocd.debug.elf.symbols import ELFSymbolProvider
+    import yaml
+    # use the following line  when no pyocd.yaml is in the current folder
+    #session = ConnectHelper.session_with_chosen_probe(unique_id = "0668FF323239524257253610", options = {"frequency": 8000000, "target_override": "stm32l552zetxq"})
+    # use the following line when a yocd.yaml is in the current folder
+    #session = ConnectHelper.session_with_chosen_probe()
+    with open(conf, 'r') as file:
+        conf = yaml.safe_load(file)
+
+    probes = conf['probes']
+    u_id=list(f.keys())[0]
+    opts=probes[u_id]
+    opts['frequency'] = conf['frequency']
+    
+    session = ConnectHelper.session_with_chosen_probe(unique_id = u_id , options = opts)
+    session.open()
+    target = session.target
+    target.reset()
 
 
 # Set here how many seconds are we going to fuzz test firmware
@@ -69,6 +90,8 @@ if __name__ == "__main__":  # confirms that the code is under main function
     parser.add_argument("-t","--ttime", type=int,required=True, help="Total seconds for fuzzing campaign")
     parser.add_argument('-e','--error_file', type=str, help="file to output the error message",default="error.txt")
     parser.add_argument('-c', '--cont', action=argparse.BooleanOptionalAction, help="whether to resume the last interrupted session",default=False)
+    parser.add_argument('-p', '--pconf', type=str,required=False, help="PyOCD configuration file to reset the board",default=None)
+
     args = parser.parse_args()
     if(version_info.major != 3):
         print("please use python3")
@@ -92,6 +115,11 @@ if __name__ == "__main__":  # confirms that the code is under main function
     
     
     try:
+        if arg.pconf:
+            resetBoard(arg.pconf)
+            time.sleep(3)
+
+
         os.makedirs(args.out, exist_ok=True) 
         # command to run AFL with proxy: set here the serialport for fuzztesting
         #cmd_aflpp = ['../vanillaAFLplusplus/afl-fuzz', '-i', '../vanillaAFLplusplus/in', '-o', args.out ,'-t', '1000', '--','../shift_proxy/afl-proxy','-t', '1000', '-c', args.serial, '-w', str(args.baud) ]
