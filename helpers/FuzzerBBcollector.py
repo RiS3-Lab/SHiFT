@@ -163,6 +163,7 @@ if __name__ == "__main__":  # confirms that the code is under main function
         # wait till AFL terminates
         procAFL.wait()
         print(bbs)
+        record_time(acc_time_file, old_time,timestart)
         #saveBBs(bbs)
     except KeyboardInterrupt:
         # terminate AFL
