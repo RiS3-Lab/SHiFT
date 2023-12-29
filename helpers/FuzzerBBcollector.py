@@ -29,7 +29,7 @@ def resetBoard(conf):
         conf = yaml.safe_load(file)
 
     probes = conf['probes']
-    u_id=list(f.keys())[0]
+    u_id=list(probes.keys())[0]
     opts=probes[u_id]
     opts['frequency'] = conf['frequency']
     
@@ -115,8 +115,8 @@ if __name__ == "__main__":  # confirms that the code is under main function
     
     
     try:
-        if arg.pconf:
-            resetBoard(arg.pconf)
+        if args.pconf:
+            resetBoard(args.pconf)
             time.sleep(3)
 
 
