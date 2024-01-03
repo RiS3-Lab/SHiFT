@@ -115,8 +115,8 @@ if __name__ == "__main__":  # confirms that the code is under main function
     
     
     try:
-        if arg.pconf:
-            resetBoard(arg.pconf)
+        if args.pconf:
+            resetBoard(args.pconf)
             time.sleep(3)
 
 
