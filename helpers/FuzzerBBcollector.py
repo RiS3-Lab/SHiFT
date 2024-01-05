@@ -31,7 +31,10 @@ def resetBoard(conf):
     opts=probes[u_id]
     opts['frequency'] = conf['frequency']
     
-    session = ConnectHelper.session_with_chosen_probe(unique_id = u_id , options = opts)
+    print(opts)
+    print(u_id)
+    exit
+    session = ConnectHelper.session_with_chosen_probe(unique_id = str(u_id) , options = opts)
     session.open()
     target = session.target
     target.reset()
