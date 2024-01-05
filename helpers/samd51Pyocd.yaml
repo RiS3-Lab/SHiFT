@@ -1,0 +1,14 @@
+# pyocd.yaml content sample: 
+probes:
+    261000325: # Probe's unique ID.
+        target_override: atsamd51j19a 
+
+
+
+auto_unlock: false
+frequency: 8000000 # Set 8 MHz SWD default for all probes
+
+
+#session = ConnectHelper.session_with_chosen_probe(unique_id = "0668FF323239524257253610", options = {"frequency": 8000000, "target_override": "stm32l552zetxq"})
+
+#session = ConnectHelper.session_with_chosen_probe(unique_id = "0668FF323239524257253610", options = {"frequency": 8000000, "target_override": "stm32l552zetxq"})
