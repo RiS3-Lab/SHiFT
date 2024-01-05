@@ -14,8 +14,6 @@ from sys import version_info
 
  '''
 
-
-
 def resetBoard(conf):
     from pyocd.core.helpers import ConnectHelper
     from pyocd.core.target import Target
