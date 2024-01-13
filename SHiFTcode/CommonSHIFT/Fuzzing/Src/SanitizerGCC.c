@@ -26,7 +26,7 @@
  * */
 
 #include <stdint.h>
-#include <stdio.h>
+//#include <stdio.h>
 #include "main.h"
 #include "random_guard.h"
 #include "stdbool.h"
@@ -34,16 +34,32 @@
 #include "fuzzing.h"
 #include "stdint.h"
 
+
+
+#ifdef ADAFRUIT
+#include "driver_examples.h"
+#define PRINTF_ALIAS_STANDARD_FUNCTION_NAMES 0
+#define PRINTF_ALIAS_STANDARD_FUNCTION_NAMES_SOFT 1
+#include "printf/printf/printf.h"
+#endif
+
 #if PRINTBB == 1
 
 uint32_t bbcache[]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; // small circular cache of basic blocks to speed up loops
 uint8_t indexbb=0;
 
 
+#if DUALCOREFUZZ
+void printBB(void *val)
+#else
+
 void SytemCall_5_code(void *val)
+#endif
+
 {
 
-	int i;
+	
+    int i;
 	uint32_t addr = *(uint32_t *)val;
 
 	for(i=0; i<16; i++)
@@ -54,7 +70,8 @@ void SytemCall_5_code(void *val)
 	bbcache[indexbb] = addr;
 	indexbb++;
     if(indexbb>=16)indexbb=0;
-	printf("#%08X\n",addr);
+   	printf("#%08X\n",addr);
+    
 }
 
 #endif
@@ -76,7 +93,13 @@ void __sanitizer_cov_trace_pc(void)
 #if PRINTBB == 1
 	uint32_t bb;
 	bb = R14;
+#if DUALCOREFUZZ
+	printBB(&bb);
+
+#else
 	MPU_SytemCall_5(&bb);
+#endif
+
 #endif
 
 	uint16_t guard;

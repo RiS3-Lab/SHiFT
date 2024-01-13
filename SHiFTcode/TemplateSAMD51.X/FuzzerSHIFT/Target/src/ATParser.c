@@ -1,14 +1,10 @@
-/*
- * test.c
- *
- *  Created on: Sep 3, 2021
- *      Author: alejandro
- */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "test.h"
-#include "main.h"
+#include "ATParser.h"
+#include <string.h>
+//#include "assert_param.h"
+//#include "vcom.h"
+
 //#include "stdio.h"
+#include "main.h"
 #include "afl.h"
 //#include "stdlib.h"
 #include "McuASAN.h"
@@ -24,125 +20,241 @@ uint8_t AFLfuzzerRegion[AFLINPUTREGION_SIZE ] __attribute__( ( aligned( AFLINPUT
 
 
 
-uint32_t bufferGlobal[10]; // accessing this buffer should trigger a memfault since there is no MPU region for it
+#define PRINTF_ALIAS_STANDARD_FUNCTION_NAMES 0
+#define PRINTF_ALIAS_STANDARD_FUNCTION_NAMES_SOFT 1
+//#include "printf/printf/printf.h"
 
-int test(uint8_t *buf, uint32_t size)
+#ifndef NULL
+#define NULL 0
+#endif
+
+#define assert_param( x )
+
+
+
+
+
+
+typedef enum {
+	ATParserCommandTypeInvalid,
+	ATParserCommandTypeGet,
+	ATParserCommandTypeSet,
+	ATParserCommandTypeTest,
+	ATParserCommandTypeExecute
+} ATParserCommandType_t;
+
+#define NOT_FOUND -1
+
+void process_data(char *buf, uint32_t len)
 {
 
-	uint8_t *localbuff;
-    uint32_t arr32[4];
-	uint16_t *ptr16;
-
-
-
-	if(size<7)
-	{
-		return FAULT_NONE_RTOS; //normal execution does not trigger any bug
-	}
-
-	if(buf[0] == 'H' && buf[1] == 'A' && buf[2] == 'N' && buf[3] == 'G' )
-	{
-
-		buf[100]='T';
-		while(1);  //Hang the task will be killed  by FreeRTOS
-	}
-
-	/***** MPU specific *******/
-	else if(buf[0] == 'S' && buf[1] == 'E' && buf[2] == 'G' )
-	{
-		bufferGlobal[0]++; // Segmentation fault accessing a global variable outside the scope of the current task
-		//return FAULT_CRASH; //this  line is not executed
-	}
-
-	else if(buf[0] == 'N' && buf[1] == 'U' && buf[2] == 'L' && buf[2] == 'L') //Null dereference
-	{
-			localbuff = 0x00;
-			buf[0] = *localbuff;
-
-	}
-
-	/**** Cortex M specific *********/
-	else if(buf[0] == 'Z' && buf[1] == 'E' && buf[2] == 'R' && buf[3] == '0')
-	{
-		arr32[0]= buf[0] / (buf[5]); //this should trigger a division by zero
-	}
-	else if(buf[0] == 'U' && buf[1] == 'D' && buf[2] == 'F')
-	{
-		__asm volatile("udf"); //this should trigger an undefined instruction exception
-	}
-
-	else if(buf[0] == 'U' && buf[1] == 'N' && buf[2] == 'A' )
-	{
-		arr32[0]= (uint32_t)buf[3];
-		arr32[1]= (uint32_t)buf[4];
-		localbuff = (uint8_t*)&arr32[0];
-		localbuff += 3;
-		ptr16 = (uint16_t *)localbuff;
-		buf[0]= *ptr16; // unaligned access
-	}
-
-
-	 /**** ASAN specific ********/
-
-    else if(buf[0] == 'U' && buf[1] == 'A' && buf[2] == 'F')
-    {
-    	localbuff =  malloc(32);
-    	if(localbuff)
-    	{
-    		localbuff[0] = buf[0];
-    		localbuff[1] = buf[0] + buf[2];
-    		free(localbuff);
-    		buf[0]=localbuff[1]; // use after free
-    	}
-
-    }
-    else if(buf[0] == '2' && buf[1] == 'F' && buf[2] == 'R')
-    {
-
-    		localbuff =  malloc(32);
-    		if(localbuff)
-    		{
-    			localbuff[0] = buf[0];
-    			localbuff[1] = buf[0] + buf[2];
-    			free(localbuff);
-    		}
-    		free(localbuff); //double free
-
-    }
-
-    else if(buf[0] == 'I' && buf[1] == 'F' && buf[2] == 'R')
-    {
-
-    	localbuff =  malloc(32);
-    	if(localbuff)
-    	{
-    		localbuff[0] = buf[0];
-    		localbuff[1] = buf[0] + buf[2];
-    	}
-    	localbuff+=10;
-    	free(localbuff); //invalid free
-
-    }
-
-    else if(buf[0] == 'O' && buf[1] == 'F' && buf[2] == 'S') //overflow in stack
-    {
-
-    	buf[0] = arr32[buf[4]];
-
-    }
-    else if(buf[0] == 'O' && buf[1] == 'F' && buf[2] == 'H') //overflow in heap
-    {
-    	localbuff =  malloc(8);
-    	if(localbuff)
-    	{
-    		localbuff[9]=10;//overflow in heap
-    		free(localbuff);
-    	}
-
-    }
-
-	return FAULT_NONE_RTOS; //normal execution does not trigger any bug
-
+    
+      mainparser(buf,len);
 
 }
 
+
+void ATParser_init( ATParser_t * parser, uint8_t * marker, uint8_t markerLen, ATParserCommand_t * commands, uint8_t commandCount, ATParserExecute markerOnlyCallback )
+{
+	assert_param( parser != NULL );
+	assert_param( marker != NULL && markerLen > 0 );
+	assert_param( commands != NULL & commandCount > 0 );
+
+	memcpy( parser->Marker, marker, markerLen );
+	parser->MarkerLen = markerLen;
+	parser->Commands = commands;
+	parser->CommandCount = commandCount;
+	parser->MarkerOnlyCallback = markerOnlyCallback;
+}
+
+
+ATParserResult_t ATParser_parseString( ATParser_t * parser, uint8_t * input, uint8_t inputLen )
+{
+    uint16_t start = 0;
+    uint16_t end = inputLen - 1;
+    uint16_t len = inputLen;
+    uint16_t cmdEnd;
+
+    // determine actual command start
+    for (bool found = false; !found && parser->MarkerLen < len;)
+    {
+    	if (memcmp( &input[start], parser->Marker, parser->MarkerLen) == 0)
+    	{
+    		found = true;
+    	}
+    	else
+    	{
+    		start++;
+    		len--;
+    	}
+    }
+
+    // if the length is shorter than the marker, there was no marker found
+    if (len < parser->MarkerLen)
+    {
+		// PRINTF("too short\n");
+    	return ATParserResultError;
+    }
+
+    // determine actual command ending (well, we trim)
+    for (bool found = false; !found && start < end; )
+    {
+    	switch(input[end])
+    	{
+    		// for convenience skip all of these characters
+    		case '\0':
+    		case '\n':
+    		case '\r':
+    		case ' ':
+    		case '\t':
+    			end--;
+    			len--;
+    			break;
+
+    		default:
+    			found = true;
+    			break;
+    	}
+    }
+
+    // if the length is exactly the marker length, then we're dealing with the markeronly test command
+    if (len == parser->MarkerLen)
+    {
+    	if ( parser->MarkerOnlyCallback != NULL )
+    	{
+    		return parser->MarkerOnlyCallback();
+    	}
+		// PRINTF("marker only but no handler\n");
+    	return ATParserResultError;
+    }
+
+    // determine +COMMAND length
+
+    cmdEnd = parser->MarkerLen;
+    for (bool found = false; !found && cmdEnd <= end; )
+    {
+    	switch (input[cmdEnd])
+    	{
+    		case '\0':
+    		case '\n':
+    		case '\r':
+    		case '?':
+    		case '=':
+    			found = true;
+    			break;
+    		default:
+    			cmdEnd++;
+    			break;
+    	}
+    }
+
+    // try to find a matching command
+    uint8_t * parseStart = &input[start + parser->MarkerLen];
+    ATParserCommand_t * command = NULL;
+    for (uint8_t i = 0; i < parser->CommandCount && command == NULL; i++)
+    {
+    	// if the remaining length is shorter than the command, it just can't be that one
+    	if (cmdEnd - start != parser->MarkerLen + parser->Commands[i].Length)
+    	{
+    		continue;
+    	}
+    	// if the string does not match, it just can't be it.
+    	if (memcmp( parseStart, parser->Commands[i].String, parser->Commands[i].Length ) == 0)
+    	{
+    		command = &(parser->Commands[i]);
+    	}
+    }
+
+    // if not found, return error
+    if ( command == NULL )
+    {
+    	// PRINTF("no command found\n");
+    	return ATParserResultError;
+    }
+
+    uint8_t argStart = start + parser->MarkerLen + command->Length;
+//    PRINTF("start = %d, argStart = %d, end = %d,  mrklen = %d, cmdlen = %d\n", start, argStart, end, parser->MarkerLen, command->Length);
+    ATParserCommandType_t commandType = ATParserCommandTypeInvalid;
+    if ( argStart == end + 1 )
+    {
+    	if (command->Execute != NULL)
+    	{
+        	commandType = ATParserCommandTypeExecute;
+    	}
+    }
+    else if ( input[argStart] == '?' )
+    {
+    	if (command->Get != NULL)
+    	{
+        	commandType = ATParserCommandTypeGet;
+        	argStart++;
+    	}
+    }
+    else if ( argStart + 1 <= end && input[argStart] == '=' && input[argStart+1] == '?' )
+    {
+    	if (command->Test != NULL)
+    	{
+        	commandType = ATParserCommandTypeTest;
+    	}
+    }
+    else if ( argStart < end && input[argStart] == '=' )
+    {
+    	if (command->Set != NULL)
+    	{
+        	commandType = ATParserCommandTypeSet;
+        	argStart++;
+    	}
+    }
+
+    // so we didn't find a valid command
+    if ( commandType == ATParserCommandTypeInvalid )
+    {
+    	// PRINTF("didn't detect a command type\n");
+    	return ATParserResultError;
+    }
+
+
+    uint8_t argc = 0;
+    uint8_t * argv[AT_PARSER_ARGUMENTS_MAX_COUNT];
+    if ( argStart <= end && ( commandType == ATParserCommandTypeGet || commandType == ATParserCommandTypeSet ) )
+    {
+    	argv[argc++] = &input[argStart];
+
+    	for (uint8_t i = argStart; i <= end && argc < AT_PARSER_ARGUMENTS_MAX_COUNT; i++)
+    	{
+    		// if there is a comma, we assume there's a new argument
+    		if (input[i] == ',')
+    		{
+    			// for convenience.. (although here we change the original buffer)
+    			input[i] = '\0';
+				argv[argc++] = &input[i+1];
+    		}
+    	}
+    	input[end+1] = '\0';
+
+    	if (argc == AT_PARSER_ARGUMENTS_MAX_COUNT)
+    	{
+    		// PRINTF("max argc\n");
+    		return ATParserResultError;
+    	}
+    }
+    switch( commandType )
+    {
+    	case ATParserCommandTypeGet:
+    		return command->Get( argc, argv );
+
+    	case ATParserCommandTypeSet:
+    		return command->Set( argc, argv );
+
+    	case ATParserCommandTypeExecute:
+    		return command->Execute();
+
+    	case ATParserCommandTypeTest:
+    		return command->Test();
+
+    	default: // this should never be reached
+        	// PRINTF("should not occur\n");
+    		return ATParserResultError;
+    }
+
+}

@@ -16,7 +16,7 @@
 #define SIZE16  (1024 * 16)
 #define SIZE8  (1024 * 8)
 #define SIZE4  (1024 * 4)
-#define MAX_BUFFER_INPUT  (512)       // 2 kb
+#define MAX_BUFFER_INPUT  (1024)       // 2 kb
 #define AFL_BITMAP_SIZE   SIZE4
 
 
@@ -28,6 +28,8 @@
 #define  PERSISTENT_MODE 1
 #define DUALCOREFUZZ 0
 
+#define ADAFRUIT 1
 
+#define PRINTBB 1
 
 #endif /* FUZZING_CONFIG_CONFIGFUZZING_H_ */

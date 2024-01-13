@@ -1510,15 +1510,15 @@ int32_t _usb_d_dev_enable(void)
 		hri_usbdevice_write_CTRLA_reg(hw, ctrla | USB_CTRLA_ENABLE);
 	}
 
-	NVIC_SetPriority(USB_0_IRQn,5);  //Alejandro: this is needed to notify from FreeRTOS priority must be lower than the higher priority configured for FreeRTOS
+	NVIC_SetPriority(USB_0_IRQn,5);  //Alejandro: this is needed to notify from FreeRTOS priority must be lower than the higher priority configured for >
     NVIC_EnableIRQ(USB_0_IRQn);   
     
     NVIC_SetPriority(USB_1_IRQn,5);
-	NVIC_EnableIRQ(USB_1_IRQn);
-	
+        NVIC_EnableIRQ(USB_1_IRQn);
+        
     NVIC_SetPriority(USB_2_IRQn,5);
     NVIC_EnableIRQ(USB_2_IRQn);
-	
+        
     NVIC_SetPriority(USB_3_IRQn,5);
     NVIC_EnableIRQ(USB_3_IRQn);
 
