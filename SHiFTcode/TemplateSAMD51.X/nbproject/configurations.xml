@@ -15,6 +15,7 @@
         <itemPath>config/hpl_usb_config.h</itemPath>
         <itemPath>config/peripheral_clk_config.h</itemPath>
         <itemPath>config/usbd_config.h</itemPath>
+        <itemPath>config/hpl_sercom_config.h</itemPath>
       </logicalFolder>
       <logicalFolder name="examples" displayName="examples" projectFiles="true">
         <itemPath>examples/driver_examples.h</itemPath>
@@ -112,6 +113,14 @@
         <itemPath>hri/hri_usb_d51.h</itemPath>
         <itemPath>hri/hri_wdt_d51.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="printf" displayName="printf" projectFiles="true">
+        <itemPath>printf/printf/printf.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="stdio_redirect"
+                     displayName="stdio_redirect"
+                     projectFiles="true">
+        <itemPath>stdio_redirect/stdio_io.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="usb" displayName="usb" projectFiles="true">
         <logicalFolder name="class" displayName="class" projectFiles="true">
           <logicalFolder name="cdc" displayName="cdc" projectFiles="true">
@@ -155,6 +164,7 @@
           <itemPath>hal/src/hal_io.c</itemPath>
           <itemPath>hal/src/hal_sleep.c</itemPath>
           <itemPath>hal/src/hal_usb_device.c</itemPath>
+          <itemPath>hal/src/hal_usart_sync.c</itemPath>
         </logicalFolder>
         <logicalFolder name="utils" displayName="utils" projectFiles="true">
           <logicalFolder name="src" displayName="src" projectFiles="true">
@@ -194,9 +204,15 @@
         <logicalFolder name="ramecc" displayName="ramecc" projectFiles="true">
           <itemPath>hpl/ramecc/hpl_ramecc.c</itemPath>
         </logicalFolder>
+        <logicalFolder name="f1" displayName="sercom" projectFiles="true">
+          <itemPath>hpl/sercom/hpl_sercom.c</itemPath>
+        </logicalFolder>
         <logicalFolder name="usb" displayName="usb" projectFiles="true">
           <itemPath>hpl/usb/hpl_usb.c</itemPath>
         </logicalFolder>
+      </logicalFolder>
+      <logicalFolder name="printf" displayName="printf" projectFiles="true">
+        <itemPath>printf/printf/printf.c</itemPath>
       </logicalFolder>
       <logicalFolder name="samd51a" displayName="samd51a" projectFiles="true">
         <logicalFolder name="gcc" displayName="gcc" projectFiles="true">
@@ -274,10 +290,18 @@
             <logicalFolder name="inc" displayName="inc" projectFiles="true">
             </logicalFolder>
             <logicalFolder name="src" displayName="src" projectFiles="true">
+              <itemPath>FuzzerSHIFT/Target/src/ATParser.c</itemPath>
               <itemPath>FuzzerSHIFT/Target/src/test.c</itemPath>
             </logicalFolder>
           </logicalFolder>
         </logicalFolder>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="stdio_redirect" projectFiles="true">
+        <logicalFolder name="gcc" displayName="gcc" projectFiles="true">
+          <itemPath>stdio_redirect/gcc/read.c</itemPath>
+          <itemPath>stdio_redirect/gcc/write.c</itemPath>
+        </logicalFolder>
+        <itemPath>stdio_redirect/stdio_io.c</itemPath>
       </logicalFolder>
       <logicalFolder name="usb" displayName="usb" projectFiles="true">
         <logicalFolder name="class" displayName="class" projectFiles="true">
@@ -296,6 +320,7 @@
       <itemPath>driver_init.c</itemPath>
       <itemPath>usb_start.c</itemPath>
       <itemPath>atmel_start.c</itemPath>
+      <itemPath>stdio_start.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -321,8 +346,8 @@
         <platform>2</platform>
       </toolsSet>
       <packs>
-        <pack name="SAMD51_DFP" vendor="Microchip" version="3.7.237"/>
         <pack name="CMSIS" vendor="ARM" version="5.4.0"/>
+        <pack name="SAMD51_DFP" vendor="Microchip" version="3.7.237"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>
@@ -366,6 +391,34 @@
         <property key="preprocessor-macros-undefined" value=""/>
         <property key="suppress-warnings" value="false"/>
       </ARM-AS-PRE>
+      <ARM-CPP>
+        <property key="additional-warnings" value="true"/>
+        <property key="called-functions-located" value="true"/>
+        <property key="default-bitfield-type" value="false"/>
+        <property key="default-char-type" value="false"/>
+        <property key="disable-extra-code-exception" value="true"/>
+        <property key="disable-extra-code-generation" value="true"/>
+        <property key="extra-include-directories" value=""/>
+        <property key="extra-warnings" value="false"/>
+        <property key="fast-math" value="false"/>
+        <property key="garbage-collect-data" value="false"/>
+        <property key="garbage-collect-functions" value="true"/>
+        <property key="inhibit-all" value="false"/>
+        <property key="make-warnings-into-errors" value="false"/>
+        <property key="no-system-directories" value="false"/>
+        <property key="optimization-level" value="-Os"/>
+        <property key="position-independent" value="false"/>
+        <property key="preprocess-only" value="false"/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="preprocessor-macros-undefined" value=""/>
+        <property key="strict-ansi" value="false"/>
+        <property key="strict-ansi-errors" value="false"/>
+        <property key="syntax-only" value="false"/>
+        <property key="undefined-identifier" value="false"/>
+        <property key="unsafe-math" value="false"/>
+        <property key="use-rodata" value="false"/>
+        <property key="verbose" value="false"/>
+      </ARM-CPP>
       <ARM-GCC>
         <property key="additional-warnings" value="true"/>
         <property key="called-functions-located" value="true"/>
@@ -379,7 +432,7 @@
         <property key="inhibit-all" value="false"/>
         <property key="make-warnings-into-errors" value="false"/>
         <property key="no-system-directories" value="false"/>
-        <property key="optimization-level" value="-Os"/>
+        <property key="optimization-level" value="-O1"/>
         <property key="position-independent" value="false"/>
         <property key="preprocessor-macros" value=""/>
         <property key="preprocessor-macros-undefined" value=""/>
@@ -395,7 +448,7 @@
       <ARM-Global>
         <property key="bin" value="false"/>
         <property key="common-include-directories"
-                  value="usb;hpl/port;hpl/osc32kctrl;hpl/oscctrl;./.;hpl/cmcc;usb/class/cdc;hal/utils/include;hal/include;hpl/pm;usb/class/cdc/device;hri;hpl/gclk;hpl/mclk;hpl/core;hpl/ramecc;usb/device;hpl/dmac;examples;hpl/usb;config;../CommonSHIFT/Fuzzing/Inc;../CommonSHIFT/FreeRTOS-Kernel/include;../CommonSHIFT/FreeRTOS-Kernel/portable/GCC/ARM_CM4_MPU;../CommonSHIFT/AsanRuntime/ASANMCU/inc;../CommonSHIFT/MallocMPU/FreeRTOS;FuzzerSHIFT/inc;FuzzerSHIFT/Target/inc;CMSIS/Core/Include"/>
+                  value="usb;hpl/port;hpl/osc32kctrl;hpl/oscctrl;./.;hpl/cmcc;usb/class/cdc;hal/utils/include;hal/include;hpl/pm;usb/class/cdc/device;hri;hpl/gclk;hpl/mclk;hpl/core;hpl/ramecc;usb/device;hpl/dmac;examples;hpl/usb;config;../CommonSHIFT/Fuzzing/Inc;../CommonSHIFT/FreeRTOS-Kernel/include;../CommonSHIFT/FreeRTOS-Kernel/portable/GCC/ARM_CM4_MPU;../CommonSHIFT/AsanRuntime/ASANMCU/inc;../CommonSHIFT/MallocMPU/FreeRTOS;FuzzerSHIFT/inc;FuzzerSHIFT/Target/inc;CMSIS/Core/Include;stdio_redirect"/>
         <property key="eep" value="false"/>
         <property key="hex" value="true"/>
         <property key="lss" value="false"/>
@@ -425,7 +478,7 @@
         <property key="unsafe-math" value="false"/>
         <appendMe value="-T&quot;samd51a/gcc/gcc/samd51j19a_flashMPU.ld&quot; "/>
       </ARM-LD>
-      <item path="FuzzerSHIFT/Target/src/test.c" ex="false" overriding="true">
+      <item path="FuzzerSHIFT/Target/src/ATParser.c" ex="false" overriding="true">
         <ARM-AR>
           <property key="archiver-flags" value="-r"/>
         </ARM-AR>
@@ -456,7 +509,7 @@
           <property key="inhibit-all" value="false"/>
           <property key="make-warnings-into-errors" value="false"/>
           <property key="no-system-directories" value="false"/>
-          <property key="optimization-level" value="-Os"/>
+          <property key="optimization-level" value=""/>
           <property key="position-independent" value="false"/>
           <property key="preprocessor-macros" value=""/>
           <property key="preprocessor-macros-undefined" value=""/>
@@ -467,7 +520,7 @@
           <property key="undefined-identifier" value="false"/>
           <property key="unsafe-math" value="false"/>
           <property key="verbose" value="false"/>
-          <appendMe value="-g3"/>
+          <appendMe value="-fsanitize-coverage=trace-pc  -fno-common -fsanitize=address  -g3"/>
         </ARM-GCC>
         <ARM-Global>
           <property key="bin" value="false"/>
@@ -480,7 +533,111 @@
           <property key="processor-mode" value="-mthumb"/>
           <property key="srec" value="false"/>
           <property key="user-pack-include" value="samd51a/include;CMSIS/Core/Include"/>
-          <appendMe value="-mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb     -fsanitize-coverage=trace-pc  -fno-common -fsanitize=address  "/>
+          <appendMe value="-mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb     "/>
+        </ARM-Global>
+        <ARM-LD>
+          <property key="additional-specs" value="--specs=nosys.specs"/>
+          <property key="exclude-standard-libraries" value="false"/>
+          <property key="extra-lib-directories" value="samd51a/gcc/gcc"/>
+          <property key="fast-math" value="false"/>
+          <property key="flash-segment" value=""/>
+          <property key="generate-map-file" value="true"/>
+          <property key="input-libraries" value=""/>
+          <property key="no-default-libs" value="false"/>
+          <property key="no-shared-libraries" value="false"/>
+          <property key="no-startup-files" value="false"/>
+          <property key="omit-symbol-information" value="false"/>
+          <property key="other-options" value=""/>
+          <property key="position-independent" value="false"/>
+          <property key="remove-unused-sections" value="true"/>
+          <property key="size-optimized-library" value="false"/>
+          <property key="sram-segment" value=""/>
+          <property key="unsafe-math" value="false"/>
+          <appendMe value="-T&quot;samd51a/gcc/gcc/samd51j19a_flashMPU.ld&quot; "/>
+        </ARM-LD>
+      </item>
+      <item path="FuzzerSHIFT/Target/src/test.c" ex="false" overriding="true">
+        <ARM-AR>
+          <property key="archiver-flags" value="-r"/>
+        </ARM-AR>
+        <ARM-AS>
+          <property key="announce-version" value="false"/>
+          <property key="include-paths" value=""/>
+          <property key="suppress-warnings" value="false"/>
+        </ARM-AS>
+        <ARM-AS-PRE>
+          <property key="announce-version" value="false"/>
+          <property key="include-paths" value=""/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="preprocessor-macros-undefined" value=""/>
+          <property key="suppress-warnings" value="false"/>
+        </ARM-AS-PRE>
+        <ARM-CPP>
+          <property key="additional-warnings" value="true"/>
+          <property key="called-functions-located" value="true"/>
+          <property key="default-bitfield-type" value="false"/>
+          <property key="default-char-type" value="false"/>
+          <property key="disable-extra-code-exception" value="true"/>
+          <property key="disable-extra-code-generation" value="true"/>
+          <property key="extra-include-directories" value=""/>
+          <property key="extra-warnings" value="false"/>
+          <property key="fast-math" value="false"/>
+          <property key="garbage-collect-data" value="false"/>
+          <property key="garbage-collect-functions" value="true"/>
+          <property key="inhibit-all" value="false"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="no-system-directories" value="false"/>
+          <property key="optimization-level" value="-Os"/>
+          <property key="position-independent" value="false"/>
+          <property key="preprocess-only" value="false"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="preprocessor-macros-undefined" value=""/>
+          <property key="strict-ansi" value="false"/>
+          <property key="strict-ansi-errors" value="false"/>
+          <property key="syntax-only" value="false"/>
+          <property key="undefined-identifier" value="false"/>
+          <property key="unsafe-math" value="false"/>
+          <property key="use-rodata" value="false"/>
+          <property key="verbose" value="false"/>
+        </ARM-CPP>
+        <ARM-GCC>
+          <property key="additional-warnings" value="true"/>
+          <property key="called-functions-located" value="true"/>
+          <property key="default-bitfield-type" value="false"/>
+          <property key="default-char-type" value="false"/>
+          <property key="extra-include-directories" value=""/>
+          <property key="extra-warnings" value="false"/>
+          <property key="fast-math" value="false"/>
+          <property key="garbage-collect-data" value="false"/>
+          <property key="garbage-collect-functions" value="true"/>
+          <property key="inhibit-all" value="false"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="no-system-directories" value="false"/>
+          <property key="optimization-level" value="-O1"/>
+          <property key="position-independent" value="false"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="preprocessor-macros-undefined" value=""/>
+          <property key="strict-ansi" value="false"/>
+          <property key="strict-ansi-errors" value="false"/>
+          <property key="support-ansi" value="false"/>
+          <property key="syntax-only" value="false"/>
+          <property key="undefined-identifier" value="false"/>
+          <property key="unsafe-math" value="false"/>
+          <property key="verbose" value="false"/>
+          <appendMe value="-fsanitize-coverage=trace-pc  -fno-common -fsanitize=address  -g3 -g3"/>
+        </ARM-GCC>
+        <ARM-Global>
+          <property key="bin" value="false"/>
+          <property key="common-include-directories"
+                    value="usb;hpl/port;hpl/osc32kctrl;hpl/oscctrl;./.;hpl/cmcc;usb/class/cdc;hal/utils/include;hal/include;hpl/pm;usb/class/cdc/device;hri;hpl/gclk;hpl/mclk;hpl/core;hpl/ramecc;usb/device;hpl/dmac;examples;hpl/usb;config;../CommonSHIFT/Fuzzing/Inc;../CommonSHIFT/FreeRTOS-Kernel/include;../CommonSHIFT/FreeRTOS-Kernel/portable/GCC/ARM_CM4_MPU;../CommonSHIFT/AsanRuntime/ASANMCU/inc;../CommonSHIFT/MallocMPU/FreeRTOS;FuzzerSHIFT/inc;FuzzerSHIFT/Target/inc;CMSIS/Core/Include;stdio_redirect"/>
+          <property key="eep" value="false"/>
+          <property key="hex" value="true"/>
+          <property key="lss" value="false"/>
+          <property key="omit-pack-options" value="true"/>
+          <property key="processor-mode" value="-mthumb"/>
+          <property key="srec" value="false"/>
+          <property key="user-pack-include" value="samd51a/include;CMSIS/Core/Include"/>
+          <appendMe value="-mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb "/>
         </ARM-Global>
         <ARM-LD>
           <property key="additional-specs" value="--specs=nosys.specs"/>
@@ -571,6 +728,7 @@
         <property key="script.log_level" value="1"/>
         <property key="script.reset_delay" value="0"/>
         <property key="script.show_output" value="false"/>
+        <property key="x.erase.clearprot" value="true"/>
       </jlink>
     </conf>
   </confs>

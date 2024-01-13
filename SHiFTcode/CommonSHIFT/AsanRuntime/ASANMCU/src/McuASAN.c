@@ -44,6 +44,11 @@ extern "C" {
 #endif
 
 
+#ifndef MPU_ENABLED
+#define MPU_ENABLED 1
+#endif
+
+
 #if defined(STM32H743xx) || defined(STM32L552xx)  || defined(STM32L552xx) || defined(STM32H745xx)
 extern UART_HandleTypeDef HUSART;
 #endif
@@ -1008,17 +1013,19 @@ void *Reallocate(void *old_ptr, uptr new_size) {
  */
 
 void *asan_malloc(size_t size) {
-#if McuASAN_CONFIG_FreeRTOs
+#if MPU_ENABLED
 	//return (void *) ASAN_malloc(size);
 	return (void *) MPU_ASAN_malloc(size);
 
 #else
-	return Allocate(size, 8, FROM_MALLOC, true);
+
+    return Allocate(size, 8, FROM_MALLOC, true);
+
 #endif
 }
 
 void asan_free(void *ptr) {
-#if McuASAN_CONFIG_FreeRTOs
+#if MPU_ENABLED
 	//ASAN_free(ptr);
 	MPU_ASAN_free(ptr);
 
@@ -1114,9 +1121,9 @@ void FreeRTOSReportFailure(type_exception_t  tEX)
 
 		  xTaskNotifyIndexed(AFLfuzzer.xTaskFuzzer,0,FAULT_ASAN,eSetValueWithOverwrite);
 
-		  //taskYIELD(); //bug reported to FreeRTOS
+		  taskYIELD(); //bug reported to FreeRTOS
 		  //MPU_SytemCall_1();
-		  vTaskDelay(0);
+		  //vTaskDelay(0);
 
 
 		  while(1);

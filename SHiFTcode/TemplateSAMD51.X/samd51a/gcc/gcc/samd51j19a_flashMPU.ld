@@ -62,11 +62,11 @@ __privileged_data_end__               = __SRAM_segment_start__ + __privileged_da
 
 
 /* The stack size used by the application. NOTE: you need to adjust according to your application. */
-/*STACK_SIZE = DEFINED(STACK_SIZE) ? STACK_SIZE : DEFINED(__stack_size__) ? __stack_size__ : 4k;*/
+STACK_SIZE = DEFINED(STACK_SIZE) ? STACK_SIZE : DEFINED(__stack_size__) ? __stack_size__ : 1k;
 
 
 /* Highest address of the user mode stack */
-_estack = ORIGIN(ram) + LENGTH(ram); /* end of "RAM_D1" Ram type memory */
+/*_estack = ORIGIN(ram) + LENGTH(ram); /* end of "RAM_D1" Ram type memory */
 
 _Min_Heap_Size = 4096 ; /* required amount of heap  */
 _Min_Stack_Size = 1024 ; /* required amount of stack */
@@ -101,7 +101,7 @@ SECTIONS
         . = ALIGN(4);
         *(.text .text.* .gnu.linkonce.t.*)
         *(.glue_7t) *(.glue_7)
-        *(.rodata .rodata* .gnu.linkonce.r.*)
+        
         *(.ARM.extab* .gnu.linkonce.armextab.*)
 
         /* Support C constructors, and C destructors in both user code
@@ -169,6 +169,7 @@ SECTIONS
         . = __privileged_data_region_size__;
         *(.ramfunc .ramfunc.*);
         *(.data .data.*);
+        *(.rodata .rodata* .gnu.linkonce.r.*)
         . = ALIGN(4);
         _erelocate = .;
     } > ram
@@ -219,6 +220,14 @@ SECTIONS
     . = . + _Min_Heap_Size;
     . = . + _Min_Stack_Size;
     . = ALIGN(8);
+    
+    
+     _sstack = .;
+    . = . + STACK_SIZE;
+    . = ALIGN(8);
+    _estack = .; 
+    
+    
     } > ram
 
     ._asan_var : 

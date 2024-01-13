@@ -13,14 +13,16 @@
 //#include "usb_device.h"
 //#include "usbd_cdc_if.h"
 #include "stdbool.h"
-#include "test.h"
+#include "ATParser.h"
 #include "McuASANconfig.h"
 #include "ConfigFuzzing.h"
+//#include "stdio.h"
 
 #include "usb_start.h"
 
-
-
+#define PRINTF_ALIAS_STANDARD_FUNCTION_NAMES 0
+#define PRINTF_ALIAS_STANDARD_FUNCTION_NAMES_SOFT 1
+#include "printf/printf/printf.h"
 
 
 //#include "freertos_tasks_c_additions.h"
@@ -59,6 +61,12 @@ const char * EX_str[]=
  *   region size. For example, if the region size is 4 KB(0x1000), the starting
  *   address must be N x 0x1000, where N is an integer.
  */
+
+
+
+
+
+
 
 /**
  * @brief Size of the shared memory region.
@@ -105,6 +113,11 @@ void callbackInvalidFree()
 #endif
 
 
+
+
+
+
+
 static void targetTask( void * pvParameters )
 {
 	/* Unused parameters. */
@@ -138,8 +151,19 @@ static void targetTask( void * pvParameters )
     	}
 
 	
-		test(&AFLfuzzer.inputAFL.uxBuffer[4], AFLfuzzer.inputAFL.u32availablenopad-4 );
-		xTaskNotifyIndexed(AFLfuzzer.xTaskFuzzer,0,FAULT_NONE_RTOS,eSetValueWithOverwrite);//notify that the test finished
+		//test(&AFLfuzzer.inputAFL.uxBuffer[4], AFLfuzzer.inputAFL.u32availablenopad-4 );
+		
+        mainparser(&AFLfuzzer.inputAFL.uxBuffer[4], AFLfuzzer.inputAFL.u32availablenopad-4);
+        
+        /*
+        input_cursor = 0;
+		// since if input_cursor goes beyond the input buffer, read will just return \n so the buffer won't overflow
+		while(input_cursor < (pAFLfuzzer->inputAFL.u32availablenopad-4))
+		{
+			cat_service(&cat_obj);
+		}
+        */
+        xTaskNotifyIndexed(AFLfuzzer.xTaskFuzzer,0,FAULT_NONE_RTOS,eSetValueWithOverwrite);//notify that the test finished
 		//HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_SET);
 	}
 }
@@ -159,11 +183,11 @@ static void spawnNewTarget( )
         	.pcName			= "Target",
         	.usStackDepth	= configMINIMAL_STACK_SIZE,
         	.pvParameters	= NULL,
-        	.uxPriority		= 3, //20,     //20 | portPRIVILEGE_BIT,
+        	.uxPriority		= 5 | portPRIVILEGE_BIT,
         	.puxStackBuffer	= targetTaskStack,
         	.xRegions		=	{
         			                { AFLfuzzerRegion, AFLINPUTREGION_SIZE, portMPU_REGION_READ_WRITE }, // AFL bitmap, diff buffer, TX diff buffer, this region is shareable
-									{__user_heap_start__, 8*1024, portMPU_REGION_READ_WRITE  },
+									{__user_heap_start__, 16*1024, portMPU_REGION_READ_WRITE  },
    							 	    { ( void * )0x20020000, 64*1024, portMPU_REGION_READ_WRITE },     // shadow memory
 
 									//{0,0,0}
@@ -381,7 +405,7 @@ TaskParameters_t fuzzerTaskParameters =
 	.pcName			= "Fuzzer",
 	.usStackDepth	= configMINIMAL_STACK_SIZE,
 	.pvParameters	= NULL,
-	.uxPriority		= 3 | portPRIVILEGE_BIT, //20 | portPRIVILEGE_BIT,
+	.uxPriority		= 5 | portPRIVILEGE_BIT, //20 | portPRIVILEGE_BIT,
 	.puxStackBuffer	= FuzzerTaskStack,
 	.xRegions		=	{
 			                { 0, 0, 0 },

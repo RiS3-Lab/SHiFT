@@ -33,5 +33,5 @@ MP_CPPC_DIR="/home/alejandro/Documents/semi-fuzz-project/SHiFT/toolchains/gcc-li
 MP_AS_DIR="/home/alejandro/Documents/semi-fuzz-project/SHiFT/toolchains/gcc-linaro12.3.1-0x20020000/bin"
 MP_LD_DIR="/home/alejandro/Documents/semi-fuzz-project/SHiFT/toolchains/gcc-linaro12.3.1-0x20020000/bin"
 MP_AR_DIR="/home/alejandro/Documents/semi-fuzz-project/SHiFT/toolchains/gcc-linaro12.3.1-0x20020000/bin"
-DFP_DIR=/opt/microchip/mplabx/v6.15/packs/Microchip/SAMD51_DFP/3.7.237
 CMSIS_DIR=/opt/microchip/mplabx/v6.15/packs/arm/CMSIS/5.4.0
+DFP_DIR=/opt/microchip/mplabx/v6.15/packs/Microchip/SAMD51_DFP/3.7.237

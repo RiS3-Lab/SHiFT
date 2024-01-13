@@ -12,6 +12,8 @@
 extern "C" {
 #endif
 
+void USART_0_example(void);
+
 #ifdef __cplusplus
 }
 #endif

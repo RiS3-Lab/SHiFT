@@ -62,7 +62,7 @@
 #endif
 
 #define configTICK_RATE_HZ						( ( TickType_t ) 1000 )
-#define configMAX_PRIORITIES					( 5 )
+#define configMAX_PRIORITIES					( 16 )
 #define configMINIMAL_STACK_SIZE				( ( uint16_t ) 1024 )
 #define configTOTAL_HEAP_SIZE					( ( size_t ) 15 * 1024 )
 #define configMAX_TASK_NAME_LEN					( 16 )
@@ -84,7 +84,7 @@
 
 /* Software timer definitions. */
 #define configUSE_TIMERS						1
-#define configTIMER_TASK_PRIORITY				( 2 )
+#define configTIMER_TASK_PRIORITY				( 0 ) //2
 #define configTIMER_QUEUE_LENGTH				10
 #define configTIMER_TASK_STACK_DEPTH			256
 
@@ -113,7 +113,7 @@
 
 /* The lowest interrupt priority that can be used in a call to a "set priority"
  * function. */
-#define configLIBRARY_LOWEST_INTERRUPT_PRIORITY	0x07
+#define configLIBRARY_LOWEST_INTERRUPT_PRIORITY	 0x7  //0x07  //0x07
 
 /* The highest interrupt priority that can be used by any interrupt service
  * routine that makes calls to interrupt safe FreeRTOS API functions.  DO NOT
@@ -149,7 +149,7 @@ See http://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html. */
   
   
 /* Allow system call from within FreeRTOS kernel only. */
-#define configENFORCE_SYSTEM_CALLS_FROM_KERNEL_ONLY	1
+#define configENFORCE_SYSTEM_CALLS_FROM_KERNEL_ONLY	0
 
 
 /* SAMD51 has 8 MPU regions and therefore it is necessary to configure
