@@ -114,7 +114,7 @@ if __name__ == "__main__":  # confirms that the code is under main function
 
     print('Fuzzing for {} seconds'.format(args.ttime))
     
-    
+    time.sleep(3)
     try:
         if args.pconf:
             resetBoard(args.pconf)
