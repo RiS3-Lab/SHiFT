@@ -32,7 +32,7 @@ This readme file contains the following sections:
 - A. [Getting Started](#a-getting-started)
 - B. [Fuzzing firmware with SHiFT](#b-fuzzing-firmware-with-shift)
 - C. [Video demo](#c-video-demo-of-shift-fuzzing-the-testing-program)
-- D. [Disclaimer] 
+- D. [Disclaimer](#d-disclaimer)
  
 Each section describes steps to set up and use our framework. We also provide some technical details that were not
 included in our paper. Nevertheless, our paper should be also used as a complement of this README file.
