@@ -27,6 +27,7 @@ This readme file contains the following sections:
 - A. [Getting Started](#a-getting-started)
 - B. [Fuzzing firmware with SHiFT](#b-fuzzing-firmware-with-shift)
 - C. [Video demo](#c-video-demo-of-shift-fuzzing-the-testing-program)
+- D. [Disclaimer] 
  
 Each section describes steps to set up and use our framework. We also provide some technical details that were not
 included in our paper. Nevertheless, our paper should be also used as a complement of this README file.
@@ -299,3 +300,13 @@ This video shows the complete process starting from a template pre-configured to
 fuzz the test.c file documented in our paper.
 
 <a href="https://user-images.githubusercontent.com/16860024/190512345-a374573a-7188-4b99-a8da-6c65e75ccc1a.webm" title="SHiFT Demo"><img src="./pictures/demo.png" alt="SHiFT fuzzing campaign vide demo" /></a>
+
+
+# D. Disclaimer 
+
+This repository is `work in progress` you can find the port described in our paper for the Cortex-M architecture. The port for the Xtensa architecture will be open sourced soon.
+You can find the latest version of our work under the `revision2023` branch, in particular you can find the proxy described in SHiFT to support AFL++ and other mutating engines. 
+However, we recommend to use AFL according to the instructions detailed in the main branch since we found it more stable, we are debugging the proxy.
+
+
+
