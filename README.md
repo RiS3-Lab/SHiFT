@@ -297,7 +297,7 @@ using the setup described in our paper.
 # C. Video Demo of SHiFT fuzzing the testing program
 
 This video shows the complete process starting from a template pre-configured to 
-fuzz the test.c file documented in our paper.
+fuzz the test.c file (Synthetic benchmark) documented in our paper.
 
 <a href="https://user-images.githubusercontent.com/16860024/190512345-a374573a-7188-4b99-a8da-6c65e75ccc1a.webm" title="SHiFT Demo"><img src="./pictures/demo.png" alt="SHiFT fuzzing campaign vide demo" /></a>
 
