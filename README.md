@@ -22,6 +22,11 @@ month = aug
 ```
 
 
+Please also find the source code of our  follow up work [`CO3: Concolic Co-execution for Firmware`](https://www.usenix.org/conference/usenixsecurity24/presentation/liu-changming), also presented at USENIX2024, 
+here: https://github.com/Lawliar/CO3
+
+
+
 
 This readme file contains the following sections:
 - A. [Getting Started](#a-getting-started)
