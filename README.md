@@ -1,7 +1,26 @@
 # SHiFT
 SHiFT: Semi-hosted Fuzz Testing for Embedded Applications
 
-This is the repository of our paper SHiFT under submission in The Network and Distributed System Security (NDSS) Symposium 2023.
+This is the repository of our paper presented at the 33rd Usenix Security Symposium  https://www.usenix.org/conference/usenixsecurity24/presentation/mera.
+
+If you use this work or parts of it, please cite our paper as follows:
+
+```
+@inproceedings {298010,
+author = {Alejandro Mera and Changming Liu and Ruimin Sun and Engin Kirda and Long Lu},
+title = {{SHiFT}: Semi-hosted Fuzz Testing for Embedded Applications},
+booktitle = {33rd USENIX Security Symposium (USENIX Security 24)},
+year = {2024},
+isbn = {978-1-939133-44-1},
+address = {Philadelphia, PA},
+pages = {5323--5340},
+url = {https://www.usenix.org/conference/usenixsecurity24/presentation/mera},
+publisher = {USENIX Association},
+month = aug
+}
+
+```
+
 
 
 This readme file contains the following sections:
