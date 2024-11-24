@@ -1,7 +1,7 @@
 
 # Precompiled toolchains
 
- Please follow the instructions here: https://4sksufrafeuvtpokf7jrjvwz340wgons.lambda-url.us-east-1.on.aws/
+ To download the precompiled binaries, please follow the instructions [here.](https://4sksufrafeuvtpokf7jrjvwz340wgons.lambda-url.us-east-1.on.aws/)
 
 
 # How to build a modified arm toolchain by yourself:
