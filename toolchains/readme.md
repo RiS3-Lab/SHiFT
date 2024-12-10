@@ -11,7 +11,7 @@ https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads
 
 
 The instructions uses the Linaro ABE (Advanced Build Environment), thus you need to have a 
-Linux hosting machine. Notice that you can build different ARM flavors using differen manifest for ABR. We used the arm-gnu-toolchain-arm-none-eabi-abe-manifest.txt  also provided by ARM in the same webpage linked above
+Linux hosting machine. Notice that you can build different ARM flavors using differen manifest for ABE. We used the arm-gnu-toolchain-arm-none-eabi-abe-manifest.txt  also provided by ARM in the same webpage linked above
 
 
 2. After you succesfully built the standard ARM GNU toolchain navigate to the snapshots in the build directory (the original compilation build folder used with abe). It should contain the snapshots of all the tarballs downloaded acccording to the manifest.
