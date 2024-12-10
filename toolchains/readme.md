@@ -41,7 +41,7 @@ arm_asan_shadow_offset (void)
 6. Calculate the MD5 digest for the tarball within the same folder
 	md5sum gcc.tar.xz > gcc.tar.xz.asc
 
-7. Create a new bulding folder (e.g., build2) at the same level of the "build" folder that contains the snapshots, and build the toolcahin using the local snapshots including the modified tarball fro GCC. 
+7. Create a new bulding folder (e.g., build2) at the same level of the "build" folder that contains the snapshots, and build the toolcahin using the local snapshots including the modified tarball for GCC. 
 
 ```
 cd ..
